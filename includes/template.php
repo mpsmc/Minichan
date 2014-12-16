@@ -89,8 +89,8 @@ $(document).ready(function() {
 		?>
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-18408700-1']);
-			_gaq.push(['_setDomainName', '.minichan.org']);
+			_gaq.push(['_setAccount', <?php echo GOOGLE_ANALYTICS_ID; ?>]);
+			_gaq.push(['_setDomainName', <?php echo GOOGLE_ANALYTICS_DOMAIN; ?>]);
 			_gaq.push(['_setCustomVar', 1, 'ID', '<?php echo $_SESSION['UID']; ?>', 2]); 
 			_gaq.push(['_trackPageview'<?php if($analytics_track_url) echo ", '".str_replace("'", '"', $analytics_track_url)."'"?>]);
 			(function() {

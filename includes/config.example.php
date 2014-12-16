@@ -13,6 +13,9 @@ $db_info = array
 
 $spam_phrases = array();
 
+define('GOOGLE_ANALYTICS_ID', '');
+define('GOOGLE_ANALYTICS_DOMAIN', '');
+
 //define('GOOGLE_TOKEN', ''); // Used for android notifications. You likely can't use it without a custom app
 define('ENABLE_PROFILER', false);
 define('ADMIN_PROFILER', true); // require administrator for profiler to activate
