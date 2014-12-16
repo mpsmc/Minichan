@@ -719,9 +719,11 @@ list($setName) = $link->fetch_row();
 -->
 	    <?php } ?>
 		<textarea class="inline" name="body" id="qr_text" rows="5" cols="90" tabindex="3"></textarea>
+		<?php if (ALLOW_IMAGES) { ?>
 		<input type="file" name="image" id="image" tabindex="5" />
        	Or use an imgur URL: <input class="inline" type="text" name="imageurl" id="imageurl" size="21" placeholder="http://i.imgur.com/rcrlO.jpg" /> <a href="javascript:document.getElementById('imgurupload').click()" id="uploader">[upload]</a><br />
 		<?php
+		}
 		if(USER_REPLIES < RECAPTCHA_MIN_POSTS) {
 			echo "<br /><b>You are required to fill in a captcha for your first " . RECAPTCHA_MIN_POSTS . " posts. That's only " . (RECAPTCHA_MIN_POSTS - USER_REPLIES) . " more! We apologize, but this helps stop spam.</b>";
 			recaptcha_inline();
