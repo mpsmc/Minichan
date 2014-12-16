@@ -244,7 +244,7 @@ if ($_POST['form_sent']) {
 			add_error('Bot detected.');
 		}
 		
-		if(!(ALLOW_IMAGES && (!empty($_FILES['image']['name']) || !empty($_POST['imageurl'])))) check_length($body, 'body', MIN_LENGTH_BODY, MAX_LENGTH_BODY);
+		if(!((ALLOW_IMAGES || ALLOW_IMGUR) && (!empty($_FILES['image']['name']) || !empty($_POST['imageurl'])))) check_length($body, 'body', MIN_LENGTH_BODY, MAX_LENGTH_BODY);
 		check_length($namefag, 'name', 0, 30);
 		if (count(explode("\n", $body)) > MAX_LINES) {
 			add_error('Your post has too many lines.');
@@ -327,7 +327,7 @@ if ($_POST['form_sent']) {
 					$image_data['name'] = $image_data['name'] . '.' . $image_data['type'];
 				}
 			}
-		}else if(ALLOW_IMAGES && !$editing && $_POST['imageurl']) {
+		}else if(ALLOW_IMGUR && !$editing && $_POST['imageurl']) {
 			$external = img_url_data($_POST['imageurl']);
 			if($external == null) {
 				add_error("This is not a valid/allowed image URL.");
@@ -834,7 +834,9 @@ if(!MOBILE_MODE){ ?>
 
 		if (ALLOW_IMAGES && !$editing) {
 			echo '<label for="image" class="noscreen">Image</label> <input type="file" name="image" id="image" />';
-			echo '<label for="imageurl">Or use an imgur URL</label> <input class="inline" type="text" name="imageurl" id="imageurl" size="21" placeholder="http://i.imgur.com/rcrlO.jpg" /> <a href="javascript:document.getElementById(\'imgurupload\').click()" id="uploader">[upload]</a><br />';
+		}
+		if (ALLOW_IMGUR && !$editing) {
+			echo '<label for="imageurl">Imgur URL:</label> <input class="inline" type="text" name="imageurl" id="imageurl" size="21" placeholder="http://i.imgur.com/rcrlO.jpg" /> <a href="javascript:document.getElementById(\'imgurupload\').click()" id="uploader">[upload]</a><br />';
 		}
 		if(!$editing && !$reply) {
 		?>
@@ -896,7 +898,7 @@ if(!MOBILE_MODE){ ?>
 	</form>
     
     <?php
-    	if(ALLOW_IMAGES && !$editing)
+    	if((ALLOW_IMAGES || ALLOW_IMGUR) && !$editing)
 			echo '<input style="visibility: hidden; width: 0px; height:0px" type="file" id="imgurupload" onchange="uploadImage(this.files[0])">';
 	?>
 </div>

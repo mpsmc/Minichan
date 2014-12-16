@@ -31,7 +31,7 @@ if($_SESSION['UID'] == "4c2d4fcde75992.06627601" && $_GET['id'] != 19735) {
 $link->db_exec("SELECT t1.report_allowed, t2.image_viewer, t2.disable_images FROM users AS t1 LEFT JOIN user_settings AS t2 ON t1.uid = t2.uid WHERE t1.uid = %1", $_SESSION['UID']);
 list($allow_user_report, $user_image_viewer, $user_disable_images) = $link->fetch_row();
 
-if (ALLOW_IMAGES) {
+if (ALLOW_IMAGES || ALLOW_IMGUR) {
 	$stmt = $link->db_exec('SELECT topics.flag, topics.time, topics.author, topics.visits, topics.replies, topics.headline, topics.body, topics.edit_time, topics.edit_mod, images.file_name, topics.namefag, topics.tripfag, topics.sticky, topics.locked, topics.deleted, topics.last_post, images.thumb_width, images.thumb_height, images.img_external, images.thumb_external, topics.poll, topics.post_html, topics.admin_hyperlink, topics.secret_id FROM topics LEFT OUTER JOIN images ON topics.id = images.topic_id WHERE topics.id = %1', $_GET['id']);
 } else {
 	$stmt = $link->db_exec('SELECT flag, time, author, visits, replies, headline, body, edit_time, edit_mod, namefag, tripfag, sticky, locked, deleted, last_post, poll, post_html, admin_hyperlink, secret_id FROM topics WHERE id = %1', $_GET['id']);
@@ -42,7 +42,7 @@ if ($link->num_rows($stmt) < 1) {
 	add_error('There is no such topic. It may have been deleted.', true);
 }
 
-if (ALLOW_IMAGES) {
+if (ALLOW_IMAGES || ALLOW_IMGUR) {
 	list($topic_flag, $topic_time, $topic_author, $topic_visits, $topic_replies, $topic_headline, $topic_body, $topic_edit_time, $topic_edit_mod, $topic_image_name, $opnamefag, $optripfag, $sticky, $locked, $deleted, $last_reply_time, $thumb_width, $thumb_height, $topic_img_external, $topic_thumb_external, $show_poll, $topic_html, $topic_hyperlink, $secret_id) = $link->fetch_row($stmt);
 } else {
 	list($topic_flag, $topic_time, $topic_author, $topic_visits, $topic_replies, $topic_headline, $topic_body, $topic_edit_time, $topic_edit_mod, $opnamefag, $optripfag, $sticky, $locked, $deleted, $last_reply_time, $show_poll, $topic_html, $topic_hyperlink, $secret_id) = $link->fetch_row($stmt);
@@ -335,7 +335,7 @@ if($show_poll) {
 
 	
 // Output replies.
-if (ALLOW_IMAGES) {
+if (ALLOW_IMAGES || ALLOW_IMGUR) {
 	$stmtTopic = $link->db_exec('SELECT replies.flag, replies.id, replies.time, replies.author, replies.poster_number, replies.body, replies.edit_time, replies.edit_mod, replies.stealth_ban, images.file_name, replies.namefag, replies.tripfag, replies.author_ip, replies.deleted, replies.admin_hyperlink, replies.post_html, images.thumb_width, images.thumb_height, images.img_external, images.thumb_external FROM replies LEFT OUTER JOIN images ON replies.id = images.reply_id WHERE replies.parent_id = %1 ORDER BY id', $_GET['id']);
 } else {
 	$stmtTopic = $link->db_exec('SELECT flag, id, time, author, poster_number, body, edit_time, edit_mod, namefag, tripfag, author_ip, deleted, stealth_ban, admin_hyperlink, post_html FROM replies WHERE parent_id = %1 ORDER BY id', $_GET['id']);
@@ -369,7 +369,7 @@ $tuple              = array(
 
 function fetchReplyList(){
 	global $link, $stmtTopic;
-	if (ALLOW_IMAGES) {
+	if (ALLOW_IMAGES || ALLOW_IMGUR) {
 		global $reply_flag, $reply_id, $reply_time, $reply_author, $reply_poster_number, $reply_body, $reply_edit_time, $reply_edit_mod, $reply_image_name, $namefag, $tripfag, $reply_deleted, $thumb_width, $thumb_height, $img_external, $thumb_external, $reply_stealth, $reply_ip, $reply_html, $reply_hyperlink;
 		return list($reply_flag, $reply_id, $reply_time, $reply_author, $reply_poster_number, $reply_body, $reply_edit_time, $reply_edit_mod, $reply_stealth, $reply_image_name, $namefag, $tripfag, $reply_ip, $reply_deleted, $reply_hyperlink, $reply_html, $thumb_width, $thumb_height, $img_external, $thumb_external) = $link->fetch_row($stmtTopic);
 	} else {
@@ -721,7 +721,8 @@ list($setName) = $link->fetch_row();
 		<textarea class="inline" name="body" id="qr_text" rows="5" cols="90" tabindex="3"></textarea>
 		<?php if (ALLOW_IMAGES) { ?>
 		<input type="file" name="image" id="image" tabindex="5" />
-       	Or use an imgur URL: <input class="inline" type="text" name="imageurl" id="imageurl" size="21" placeholder="http://i.imgur.com/rcrlO.jpg" /> <a href="javascript:document.getElementById('imgurupload').click()" id="uploader">[upload]</a><br />
+		<?php } if (ALLOW_IMGUR) { ?>
+       	<label for="imageurl">Imgur URL:</label> <input class="inline" type="text" name="imageurl" id="imageurl" size="21" placeholder="http://i.imgur.com/rcrlO.jpg" /> <a href="javascript:document.getElementById('imgurupload').click()" id="uploader">[upload]</a><br />
 		<?php
 		}
 		if(USER_REPLIES < RECAPTCHA_MIN_POSTS) {

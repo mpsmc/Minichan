@@ -66,6 +66,7 @@ define('DEFCON_4_MESSAGE', 'Creation of new accounts have been temporarly disabl
 
 // Images config.
 define('ALLOW_IMAGES', true); // Allow image uploading?
+define('ALLOW_IMGUR', true); // Allow imgur? Can be used with ALLOW_IMAGES false
 define('MAX_IMAGE_SIZE', 560000); // Maximum image filesize in bytes.
 define('MAX_IMAGE_DIMENSIONS', 180); // Maximum thumbnail height/width.
 define('FANCY_IMAGE', true); // Use a fancy image viewer or not.
