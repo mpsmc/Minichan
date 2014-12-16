@@ -767,8 +767,8 @@ $url = htmlspecialchars($url);
 		</div>
 		<?php if( ! $reply): ?>
 		<div class="row">
-			<label for="headline">Headline</label> <script type="text/javascript"> printCharactersRemaining('headline_remaining_characters', 100); </script>.
-			<input id="headline" name="headline" tabindex="1" type="text" size="<?php echo (MOBILE_MODE) ? 30 : 124 ?>" maxlength="100" onkeydown="updateCharactersRemaining('headline', 'headline_remaining_characters', 100);" onkeyup="updateCharactersRemaining('headline', 'headline_remaining_characters', 100);" value="<?php if($_POST['form_sent'] || $editing) echo htmlspecialchars($headline) ?>">
+			<label for="headline">Headline</label> <script type="text/javascript"> printCharactersRemaining('headline_remaining_characters', <?php echo MAX_LENGTH_HEADLINE; ?>); </script>.
+			<input id="headline" name="headline" tabindex="1" type="text" size="<?php echo (MOBILE_MODE) ? 30 : 124 ?>" maxlength="<?php echo MAX_LENGTH_HEADLINE; ?>" onkeydown="updateCharactersRemaining('headline', 'headline_remaining_characters', <?php echo MAX_LENGTH_HEADLINE; ?>);" onkeyup="updateCharactersRemaining('headline', 'headline_remaining_characters', <?php echo MAX_LENGTH_HEADLINE; ?>);" value="<?php if($_POST['form_sent'] || $editing) echo htmlspecialchars($headline) ?>">
 		</div>
 		<?php endif; ?>
 		<?php

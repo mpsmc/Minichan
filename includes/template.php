@@ -41,6 +41,7 @@
 		<?php if(FANCY_IMAGE&&!MOBILE_MODE){ ?><link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN; ?>style/thickbox.css" /><?php } ?>
 		<?php /* <link rel="stylesheet" type="text/css" href="<?php echo STATIC_DOMAIN; ?>style/april.css?13"> */ ?>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript">var IMGUR_CLIENT_ID = "<?php echo IMGUR_CLIENT_ID; ?>";</script>
 		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/main.js?6534395"></script>
 		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/extras.js?4"></script>
         <?php if($administrator && FALSE) { ?><script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/scrollBar.js"></script><?php } ?>
@@ -89,8 +90,8 @@ $(document).ready(function() {
 		?>
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', <?php echo GOOGLE_ANALYTICS_ID; ?>]);
-			_gaq.push(['_setDomainName', <?php echo GOOGLE_ANALYTICS_DOMAIN; ?>]);
+			_gaq.push(['_setAccount', '<?php echo GOOGLE_ANALYTICS_ID; ?>']);
+			_gaq.push(['_setDomainName', '<?php echo GOOGLE_ANALYTICS_DOMAIN; ?>']);
 			_gaq.push(['_setCustomVar', 1, 'ID', '<?php echo $_SESSION['UID']; ?>', 2]); 
 			_gaq.push(['_trackPageview'<?php if($analytics_track_url) echo ", '".str_replace("'", '"', $analytics_track_url)."'"?>]);
 			(function() {

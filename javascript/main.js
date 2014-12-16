@@ -45,19 +45,31 @@ function uploadImage(file) {
 	/* It is! */
 	document.getElementById("uploader").innerHTML = "Uploading...";
 	document.getElementById("uploader").href = "";
-	
-	var fd = new FormData();
-	fd.append("image", file);
-	fd.append("key", "c5c016df9f08091756ee992928b7b05d");
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", "http://api.imgur.com/2/upload.json");
-	xhr.onload = function() {
-		// Big win!
-		document.getElementById("imageurl").value = JSON.parse(xhr.responseText).upload.links.original;
-		$("#uploader").remove();
+	var reader = new FileReader(); 
+	reader.onloadend = function () {
+		console.log('Doin');
+		$.ajax({
+			url: 'https://api.imgur.com/3/image',
+			type: 'post',
+			headers: {
+				Authorization: 'Client-ID ' + IMGUR_CLIENT_ID
+			},
+			data: {
+				image: reader.result.split(',')[1]
+			},
+			dataType: 'json',
+			success: function(response) {
+				if(!response.success) {
+					alert(JSON.stringify(response));
+					return;
+				}
+				
+				document.getElementById("imageurl").value = response.data.link;
+				$("#uploader").remove();
+			}
+		});
 	}
-
-	xhr.send(fd);
+	reader.readAsDataURL(file);
 }
 
 $(document).ready(function(){
