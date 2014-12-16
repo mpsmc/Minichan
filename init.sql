@@ -144,6 +144,14 @@ CREATE TABLE IF NOT EXISTS `flood_control` (
   KEY `value` (`value`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `flood_control`
+--
+
+INSERT INTO `flood_control` (`setting`, `value`) VALUES
+('defcon', '5'),
+('search_disabeld', '0');
+
 -- --------------------------------------------------------
 
 --
