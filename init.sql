@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `android_tokens` (
   UNIQUE KEY `rand_token` (`rand_token`),
   UNIQUE KEY `uid` (`uid`),
   KEY `request_time` (`request_time`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=79 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `bulletins` (
   `uid` text NOT NULL,
   `ip` text NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=164 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `events` (
   `uid` varchar(30) NOT NULL,
   `ip` text NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=81 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
@@ -206,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `internal_shorturls` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `url` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2072352 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
@@ -279,7 +279,7 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `content` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `url` (`url`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
@@ -306,7 +306,7 @@ CREATE TABLE IF NOT EXISTS `poll_options` (
   `content` varchar(255) NOT NULL,
   `votes` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9177 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
@@ -339,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `pre_bulletins` (
   `uid` text NOT NULL,
   `ip` text NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=238 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
@@ -357,7 +357,7 @@ CREATE TABLE IF NOT EXISTS `pre_events` (
   `expires` int(11) NOT NULL,
   `time` int(11) NOT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=77 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
@@ -378,7 +378,7 @@ CREATE TABLE IF NOT EXISTS `private_messages` (
   KEY `source` (`source`),
   KEY `destination` (`destination`),
   KEY `expiration` (`expiration`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20002 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
@@ -430,7 +430,7 @@ CREATE TABLE IF NOT EXISTS `replies` (
   KEY `namefag` (`namefag`),
   KEY `tripfag` (`tripfag`),
   FULLTEXT KEY `repliesText` (`body`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=446933 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
@@ -448,7 +448,7 @@ CREATE TABLE IF NOT EXISTS `reports` (
   `handled` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `handled` (`handled`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1156 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
@@ -464,7 +464,7 @@ CREATE TABLE IF NOT EXISTS `search_log` (
   PRIMARY KEY (`search_id`),
   KEY `phrace` (`phrace`),
   KEY `time` (`time`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9392 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
@@ -534,7 +534,7 @@ CREATE TABLE IF NOT EXISTS `topics` (
   KEY `tripfag` (`tripfag`),
   FULLTEXT KEY `headline` (`headline`),
   FULLTEXT KEY `body` (`body`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37713 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 
 -- --------------------------------------------------------
 
