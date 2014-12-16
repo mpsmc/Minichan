@@ -1,0 +1,5 @@
+Options +Indexes -ExecCGI
+#<FilesMatch "\.(php[^.]*|htm|html|asp|pl|py|jsp|shtml|sh|cgi)$">
+# Order Allow,Deny
+# Deny from all
+#</FilesMatch>

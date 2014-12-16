@@ -1,0 +1,311 @@
+# Uncomment below line if your host doesn't support the php5.ini, if that fails rename php5.ini to php.ini
+# php_flag magic_quotes_gpc Offphp_flag display_startup_errors onphp_flag display_errors onphp_flag html_errors onphp_flag log_errors off
+
+# Base rules.
+Options -Indexes -MultiViews
+ServerSignature Off
+RewriteEngine On
+RewriteBase /
+
+RewriteRule ^minecraft/scripts/get/(.+)$ minecraft/scripts/get.php?file=$1
+
+#RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+# Proxy control.
+# Uncomment to block (transparent) proxies, do this in case of floods.
+#RewriteCond %{HTTP:VIA} !^$ [OR]
+#RewriteCond %{HTTP:FORWARDED} !^$ [OR]
+#RewriteCond %{HTTP:USERAGENT_VIA} !^$ [OR]
+#RewriteCond %{HTTP:X_FORWARDED_FOR} !^$ [OR]
+#RewriteCond %{HTTP:PROXY_CONNECTION} !^$ [OR]
+#RewriteCond %{HTTP:XPROXY_CONNECTION} !^$ [OR]
+#RewriteCond %{HTTP:HTTP_PC_REMOTE_ADDR} !^$ [OR]
+#RewriteCond %{HTTP:XROXY_CONNECTION} !^$ [OR]
+#RewriteCond %{HTTP:X-FORWARDED-FOR} !^$ [OR]
+#RewriteCond %{HTTP:FORWARDED-FOR} !^$ [OR]
+#RewriteCond %{HTTP:X-FORWARDED} !^$ [OR]
+#RewriteCond %{HTTP:HTTP_CLIENT_IP} !^$
+#RewriteRule ^(.*)$ - [F]
+
+# Static content
+#RewriteCond %{HTTP_HOST} !^static.minichan.org$
+#RewriteRule ^((img|thumbs)/.*)$ http://static.minichan.org/$1 [L,R=301]
+#RewriteCond %{HTTP_HOST} ^static.minichan.org$
+#RewriteRule !^(img|thumbs|javascript|style) http://minichan.org/ [L,R=301]
+
+# Tagging
+RewriteRule ^tag.js$ tag.php [L]
+
+# Permissions
+RewriteRule ^permissions$ permissions.php [L]
+
+# Chat
+RewriteRule ^chat chat.php [L]
+
+# ShortURL
+RewriteRule ^link/?$ shorturl/create.php [L]
+RewriteRule ^link/([A-Za-z0-9]*)$ shorturl/redirect.php?id=$1 [L]
+RewriteRule ^[i!]/?([A-Za-z0-9]+)$ shorturl/redirect.php?id=$1&internal=1 [L]
+
+# Android APP
+RewriteRule ^android/?$ android/link_device.php [L]
+RewriteRule ^android/link?$ android/link_device.php?link=1 [L]
+
+# Extension
+RewriteRule ^update-extension$ chrome-extension/update.php [L]
+RewriteRule ^notifications$ notifications.php [L]
+RewriteRule ^extension-changelog/(.*)$ chrome-extension/changelog.php?version=$1 [L]
+RewriteRule ^extension-changelog$ chrome-extension/changelog.php [L]
+
+# Main menu items.
+RewriteRule ^$ index.php?p=1 [L]
+RewriteRule ^topics/?([0-9]+)?$ index.php?topics=1&p=$1 [L]
+RewriteRule ^hot_topics$ hot_topics.php [L]
+RewriteRule ^topic/([0-9]+)$ topic.php?id=$1 [L]
+RewriteRule ^topics/?([0-9]+)?$ index.php?p=$1 [L]
+RewriteRule ^bumps/?([0-9]+)?$ index.php?bumps=1&p=$1 [L]
+RewriteRule ^replies/?([0-9]+)?$ replies.php?p=$1 [L]
+RewriteRule ^new_topic/([a-z0-9]*)$ post.php?token=$1 [L]
+RewriteRule ^new_topic$ post.php [L]
+RewriteRule ^shuffle$ shuffle.php [L]
+RewriteRule ^history/?([0-9]+)?$ history.php?p=$1 [L]
+RewriteRule ^citations$ history.php?citations=1 [L]
+RewriteRule ^watchlist$ watchlist.php [L]
+RewriteRule ^folks$ folks.php [L]
+RewriteRule ^stuff$ stuff.php [L]
+
+# New reply and topic stuff.
+RewriteRule ^new_reply/([0-9]+)/([a-z0-9]*)$ post.php?reply=$1&token=$2 [L]
+RewriteRule ^new_reply/([0-9]+)$ post.php?reply=$1 [L]
+RewriteRule ^new_reply/([0-9]+)/quote_topic/([a-z0-9]*)$ post.php?reply=$1&quote_topic=1&token=$2 [L]
+RewriteRule ^new_reply/([0-9]+)/quote_topic$ post.php?reply=$1&quote_topic=1 [L]
+RewriteRule ^new_reply/([0-9]+)/quote_reply/([0-9]+)/([a-z0-9]*)$ post.php?reply=$1&quote_reply=$2&token=$3 [L]
+RewriteRule ^new_reply/([0-9]+)/quote_reply/([0-9]+)$ post.php?reply=$1&quote_reply=$2 [L]
+RewriteRule ^new_reply/([0-9]+)/cite_reply/([0-9]+)/([a-z0-9]*)$ post.php?reply=$1&cite=$2&token=$3 [L]
+RewriteRule ^new_reply/([0-9]+)/cite_reply/([0-9]+)$ post.php?reply=$1&cite=$2 [L]
+RewriteRule ^edit_topic/([0-9]+)/([a-z0-9]*)$ post.php?&edit=$1&token=$2 [L]
+RewriteRule ^edit_topic/([0-9]+)$ post.php?&edit=$1 [L]
+RewriteRule ^edit_reply/([0-9]+)/([0-9]+)/([a-z0-9]*)$ post.php?reply=$1&edit=$2&token=$3 [L]
+RewriteRule ^edit_reply/([0-9]+)/([0-9]+)$ post.php?reply=$1&edit=$2 [L]
+RewriteRule ^watch_topic$ action.php?action=watch_topic [L]
+RewriteRule ^watch_topic/([0-9]+)$ action.php?action=watch_topic&id=$1 [L]
+RewriteRule ^trivia_for_topic/([0-9]+)$ topic_trivia.php?id=$1 [L]
+
+# Reports
+RewriteRule ^report_reply/([0-9]+)/([0-9]+)$ report.php?topic=$1&reply=$2
+RewriteRule ^report_topic/([0-9]+)$ report.php?topic=$1
+RewriteRule ^reports$ reports.php
+RewriteRule ^reports/handle/([0-9]+)/([0-9]+)$ reports.php?topic=$1&reply=$2
+RewriteRule ^reports/handle/([0-9]+)$ reports.php?topic=$1
+RewriteRule ^report/handle/([0-9]+)$ reports.php?handle=$1
+RewriteRule ^show_report/([0-9]+)$ show_report.php?topic=$1
+RewriteRule ^show_report/([0-9]+)/([0-9]+)$ show_report.php?topic=$1&reply=$2
+RewriteRule ^enable_reporting/(.+)$ action.php?action=enable_reporting&id=$1
+RewriteRule ^disable_reporting/(.+)$ action.php?action=disable_reporting&id=$1
+
+# Bulletins.
+RewriteRule ^bulletins$ bulletins.php [L]
+RewriteRule ^new_bulletin$ bulletins_new.php [L]
+RewriteRule ^moderate_bulletins$ bulletins_mod.php [L]
+RewriteRule ^moderate_bulletins/([0-9]*)/(.*)$ bulletins_mod.php?no=$1&mode=$2 [L]
+RewriteRule ^delete_bulletin/([0-9]+)$ bulletins.php?delete=$1 [L]
+RewriteRule ^edit_bulletin/([0-9]+)$ bulletins_new.php?edit=$1 [L]
+
+# Events.
+RewriteRule ^events$ events.php [L]
+RewriteRule ^new_event$ events_new.php [L]
+RewriteRule ^moderate_events$ events_mod.php [L]
+RewriteRule ^moderate_events/([0-9]*)/(.*)$ events_mod.php?no=$1&mode=$2 [L]
+RewriteRule ^edit_event/([0-9]+)$ events_new.php?edit=$1 [L]
+RewriteRule ^delete_event/([0-9]+)$ events.php?delete=$1 [L]
+
+# Search.
+RewriteRule ^search$ search2.php [L,QSA]
+#RewriteRule ^quick_search/history/(.+)$ search.php?q=$1&history=1 [L]
+#RewriteRule ^deep_search/history/(.+)?$ search.php?q=$1&deep_search=1&history=1 [L]
+#RewriteRule ^quick_search/(.+)$ search.php?q=$1 [L]
+#RewriteRule ^deep_search/(.+)?$ search.php?q=$1&deep_search=1 [L]
+RewriteRule ^toggle_search_mode/([01]+)$ action.php?action=toggle_search_mode&id=$1 [L]
+
+# Misc.
+RewriteRule ^dashboard$ dashboard.php [L]
+RewriteRule ^nocss$ dashboard.php?nocss=1 [L]
+RewriteRule ^trash_can$ trash_can.php [L]
+RewriteRule ^statistics$ statistics.php [L]
+RewriteRule ^date_and_time$ date_and_time.php [L]
+RewriteRule ^bans$ bans.php [L]
+RewriteRule ^defcon$ defcon.php [L]
+RewriteRule ^defcon/([1-5])$ defcon.php?mode=$1 [L]
+
+# Stuff and dashboard.
+RewriteRule ^back_up_ID$ back_up_id.php [L]
+RewriteRule ^generate_ID_card$ back_up_id.php?action=generate_id_card [L]
+RewriteRule ^restore_ID$ restore_id.php [L]
+RewriteRule ^restore_ID/([A-Za-z0-9.]+)/([A-Za-z0-9]+)$ restore_id.php?UID=$1&password=$2 [L]
+RewriteRule ^recover_ID_by_email$ recover_id_by_email.php [L]
+RewriteRule ^drop_ID$ drop_id.php [L]
+RewriteRule ^failed_postings$ failed_postings.php [L]
+RewriteRule ^edit_ignore_list$ edit_ignore_list.php [L]
+RewriteRule ^notepad$ notepad.php [L]
+RewriteRule ^The_Oracle$ oracle.php [L]
+
+# Moderation.
+RewriteRule ^login login.php [L]
+RewriteRule ^profile/([0-9a-fA-F.]+)$ profile.php?uid=$1 [L]
+RewriteRule ^stalk/uid/([0-9a-fA-F.]+)$ stalk.php?uid=$1 [L]
+RewriteRule ^IP_address/([0-9:a-fA-F.]+)$ ip_address.php?ip=$1 [L]
+RewriteRule ^stalk/ip/([0-9:a-fA-F.]+)$ stalk.php?ip=$1 [L]
+RewriteRule ^ban_poster/([0-9a-zA-Z.]+)$ action.php?action=ban_uid&id=$1 [L]
+RewriteRule ^perma_ban_poster/([0-9a-zA-Z.]+)$ action.php?action=ban_uid&id=$1&perma=1 [L]
+RewriteRule ^unban_poster/([0-9a-zA-Z.]+)$ action.php?action=unban_uid&id=$1 [L]
+RewriteRule ^unban_IP/([0-9:a-fA-F.]+)$ action.php?action=unban_ip&id=$1 [L]
+RewriteRule ^unban_IP_UIDS/([0-9:a-fA-F.]+)$ action.php?action=unban_ip&uids=1&id=$1 [L]
+RewriteRule ^delete_IP_IDs/([0-9:a-fA-F.]+)$ action.php?action=delete_ip_ids&id=$1 [L]
+RewriteRule ^nuke_IP/([0-9:a-fA-F.]+)$ action.php?action=nuke_ip&id=$1 [L]
+RewriteRule ^nuke_ID/([0-9a-zA-Z.]+)$ action.php?action=nuke_id&id=$1 [L]
+RewriteRule ^exterminate$ exterminate.php [L]
+RewriteRule ^undelete_topic/([0-9]+)$ action.php?action=undelete_topic&id=$1 [L]
+RewriteRule ^delete_topic/([0-9]+)$ action.php?action=delete_topic&id=$1 [L]
+RewriteRule ^undelete_reply/([0-9]+)$ action.php?action=undelete_reply&id=$1 [L]
+RewriteRule ^delete_reply/([0-9]+)$ action.php?action=delete_reply&id=$1 [L]
+RewriteRule ^stick_topic/([0-9]+)$ action.php?action=stick_topic&id=$1 [L]
+RewriteRule ^unstick_topic/([0-9]+)$ action.php?action=unstick_topic&id=$1 [L]
+RewriteRule ^lock_topic/([0-9]+)$ action.php?action=lock_topic&id=$1 [L]
+RewriteRule ^unlock_topic/([0-9]+)$ action.php?action=unlock_topic&id=$1 [L]
+RewriteRule ^delete_image/topic/([0-9]+)$ action.php?action=delete_image&type=topic&id=$1&topic=$1 [L]
+RewriteRule ^delete_image/topic/([0-9]+)/reply/([0-9]+)$ action.php?action=delete_image&type=reply&topic=$1&id=$2 [L]
+RewriteRule ^set_image/topic/([0-9]+)$ action.php?action=set_image&type=topic&id=$1&topic=$1 [L]
+RewriteRule ^set_image/topic/([0-9]+)/reply/([0-9]+)$ action.php?action=set_image&type=reply&topic=$1&id=$2 [L]
+RewriteRule ^modlog$ modlog.php [L]
+RewriteRule ^watch$ watch.php [L]
+RewriteRule ^deleted_topics$ deleted_topics.php [L]
+RewriteRule ^logout/([a-f0-9]*)$ login.php?logout=$1 [L]
+
+# Content management.
+RewriteRule ^CMS$ cms.php [L]
+RewriteRule ^edit_page/([0-9]+)$ cms_edit.php?edit=$1 [L]
+RewriteRule ^new_page$ cms_edit.php [L]
+RewriteRule ^delete_page/([0-9]+)$ action.php?action=delete_page&id=$1 [L]
+
+# Private messages.
+RewriteRule ^private_messages$ pm_inbox.php [L]
+RewriteRule ^private_messages/([0-9]+)$ pm_inbox.php?p=$1 [L]
+RewriteRule ^private_message/([0-9]+)$ pm.php?id=$1 [L]
+RewriteRule ^reply_to_message/([0-9]+)$ pm_compose.php?replyto=$1 [L]
+RewriteRule ^compose_message/([0-9a-zA-Z.]+)$ pm_compose.php?to=$1 [L]
+RewriteRule ^delete_message/([0-9]+)$ pm_delete.php?id=$1 [L]
+
+# Polls
+RewriteRule ^cast_vote/([0-9]+)$ action.php?action=cast_vote&id=$1 [L]
+
+# Custom 404 handler. No, we're not using .htaccess' 404 handler for specific reasons.
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteRule ^(.+)$ url_handler.php [L]
+
+# Modules.
+<ifModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml application/x-javascript
+</ifModule>
+
+<ifModule mod_gzip.c>
+  mod_gzip_on Yes
+  mod_gzip_dechunk Yes
+  mod_gzip_item_include file \.(html?|txt|css|js|php|pl)$
+  mod_gzip_item_include handler ^cgi-script$
+  mod_gzip_item_include mime ^text/.*
+  mod_gzip_item_include mime ^application/x-javascript.*
+  mod_gzip_item_exclude mime ^image/.*
+  mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</ifModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive on 
+  ExpiresByType image/jpg "access 1 month"
+  ExpiresByType image/jpeg "access 1 month"
+  ExpiresByType image/gif "access 1 month"
+  ExpiresByType image/png "access 1 month"
+</IfModule>
+
+<ifModule mod_headers.c>
+  <FilesMatch "\\.(ico|pdf|flv|jpg|jpeg|png|gif|swf)$">
+    Header set Cache-Control "max-age=2592000, public"
+  </FilesMatch>
+  <FilesMatch "\\.(xml|txt)$">
+    Header set Cache-Control "max-age=216000, public, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\\.(html|htm|php)$">
+    Header set Cache-Control "max-age=1, private, must-revalidate"
+  </FilesMatch>
+</ifModule>
+
+# Prevent people from opening backup files from editors that could be uploaded by mistake.
+<FilesMatch "\..+~$"> 
+order deny,allow 
+#deny from all 
+</FilesMatch>
+
+<Files 403.shtml>
+order allow,deny
+allow from all
+</Files>
+
+#ErrorDocument 403 "<b>404</b>: File not found.
+
+#order allow,deny
+#allow from all
+
+# swissvpn
+#deny from 80.254.66.0/24
+#deny from 80.254.73.0/24
+#deny from 80.254.74.0/24
+#deny from 80.254.75.0/24
+#deny from 93.94.244.0/24
+#deny from 93.94.245.0/24
+
+# kproxy
+#deny from 87.106.140.33
+#deny from 62.193.236.96
+#deny from 66.232.107.140
+#deny from 87.106.215.227
+
+# screw dm block all of china
+#deny from 58.14.0.0/15 58.16.0.0/13 58.24.0.0/15 58.30.0.0/15 58.32.0.0/11 58.66.0.0/15 58.68.128.0/17 58.82.0.0/15 58.87.64.0/18 58.99.128.0/17 58.100.0.0/15 58.116.0.0/14 58.128.0.0/13 58.144.0.0/16 58.154.0.0/15 58.192.0.0/11 58.240.0.0/12
+#deny from 59.32.0.0/11 59.64.0.0/13 59.72.0.0/15 59.77.0.0/16 59.78.0.0/15 59.80.0.0/14 59.107.0.0/16 59.108.0.0/14 59.151.0.0/17 59.155.0.0/16 59.172.0.0/14 59.191.0.0/16 59.192.0.0/10
+#deny from 60.0.0.0/11 60.55.0.0/16 60.63.0.0/16 60.160.0.0/11 60.194.0.0/15 60.200.0.0/13 60.208.0.0/12 60.232.0.0/15 60.235.0.0/16 60.245.128.0/17 60.247.0.0/16 60.252.0.0/16 60.253.128.0/17 60.255.0.0/16
+#deny from 61.4.80.0/20 61.4.176.0/20 61.8.160.0/20 61.28.0.0/17 61.29.128.0/17 61.45.128.0/18 61.47.128.0/18 61.48.0.0/13 61.87.192.0/18 61.128.0.0/10 61.232.0.0/14 61.236.0.0/15 61.240.0.0/14
+#deny from 116.1.0.0/16 116.2.0.0/15 116.4.0.0/14 116.8.0.0/14 116.13.0.0/16 116.16.0.0/12 116.52.0.0/14 116.56.0.0/15 116.58.128.0/20 116.58.208.0/20 116.60.0.0/14 116.66.0.0/17 116.69.0.0/16 116.70.0.0/17 116.76.0.0/14 116.89.144.0/20 116.90.184.0/21 116.95.0.0/16 116.112.0.0/14 116.116.0.0/15 116.128.0.0/10 116.192.0.0/16 116.193.16.0/20 116.193.32.0/19 116.194.0.0/15 116.196.0.0/16
+#deny from 116.198.0.0/16 116.199.0.0/17 116.199.128.0/19 116.204.0.0/15 116.207.0.0/16 116.208.0.0/14 116.212.160.0/20 116.213.64.0/18 116.213.128.0/17 116.214.32.0/19 116.214.64.0/20 116.214.128.0/17 116.215.0.0/16 116.216.0.0/14 116.224.0.0/12 116.242.0.0/15 116.244.0.0/14 116.248.0.0/15 116.252.0.0/15 116.254.128.0/17 116.255.128.0/17
+#deny from 117.8.0.0/13 117.21.0.0/16 117.22.0.0/15 117.24.0.0/13 117.32.0.0/13 117.40.0.0/14 117.44.0.0/15 117.48.0.0/14 117.53.176.0/20 117.57.0.0/16 117.58.0.0/17 117.59.0.0/16 117.60.0.0/14 117.64.0.0/13 117.72.0.0/15 117.74.64.0/20 117.74.128.0/17 117.75.0.0/16 117.76.0.0/14 117.80.0.0/12 117.100.0.0/15 117.103.16.0/20 117.103.128.0/20 117.106.0.0/15 117.112.0.0/13 117.120.64.0/18 117.120.128.0/17 117.121.0.0/17 117.121.128.0/18 117.121.192.0/21 117.122.128.0/17 117.124.0.0/14 117.128.0.0/10
+#deny from 118.24.0.0/13 118.64.0.0/15 118.66.0.0/16 118.67.112.0/20 118.72.0.0/13 118.80.0.0/15 118.84.0.0/15 118.88.32.0/19 118.88.64.0/18 118.88.128.0/17 118.89.0.0/16 118.91.240.0/20 118.102.16.0/20 118.112.0.0/13 118.120.0.0/14 118.124.0.0/15 118.126.0.0/16 118.132.0.0/14 118.144.0.0/14 118.178.0.0/16 118.180.0.0/14 118.184.0.0/13 118.192.0.0/12 118.212.0.0/15 118.224.0.0/14 118.228.0.0/15 118.230.0.0/16 118.239.0.0/16 118.242.0.0/16 118.244.0.0/14 118.248.0.0/13
+#deny from 119.0.0.0/15
+#deny from 121.0.16.0/20 121.4.0.0/15 121.8.0.0/13 121.16.0.0/12 121.32.0.0/13 121.40.0.0/14 121.46.0.0/15 121.48.0.0/15 121.51.0.0/16 121.52.160.0/19 121.52.208.0/20 121.52.224.0/19 121.55.0.0/18 121.56.0.0/15 121.58.0.0/17 121.58.144.0/20 121.59.0.0/16 121.60.0.0/14 121.68.0.0/14 121.76.0.0/15 121.79.128.0/18 121.89.0.0/16 121.100.128.0/17 121.192.0.0/13 121.201.0.0/16 121.204.0.0/14 121.224.0.0/12 121.248.0.0/14 121.255.0.0/16
+#deny from 122.0.64.0/18 122.0.128.0/17 122.4.0.0/14 122.8.0.0/13 122.48.0.0/16 122.49.0.0/18 122.51.0.0/16 122.64.0.0/11 122.96.0.0/15 122.102.0.0/20 122.102.64.0/19 122.112.0.0/14 122.119.0.0/16 122.136.0.0/13 122.144.128.0/17 122.156.0.0/14 122.192.0.0/14 122.198.0.0/16 122.200.64.0/18 122.204.0.0/14 122.224.0.0/12 122.240.0.0/13 122.248.48.0/20
+#deny from 123.0.128.0/18 123.4.0.0/14 123.8.0.0/13 123.49.128.0/17 123.52.0.0/14 123.56.0.0/13 123.64.0.0/11 123.96.0.0/15 123.98.0.0/17 123.99.128.0/17 123.100.0.0/19 123.101.0.0/16 123.103.0.0/17 123.108.128.0/20 123.108.208.0/20 123.112.0.0/12 123.128.0.0/13 123.136.80.0/20 123.137.0.0/16 123.138.0.0/15 123.144.0.0/12 123.160.0.0/12 123.176.80.0/20 123.177.0.0/16 123.178.0.0/15 123.180.0.0/14 123.184.0.0/13 123.196.0.0/15 123.199.128.0/17 123.232.0.0/14 123.244.0.0/14 123.249.0.0/16 123.253.0.0/16
+#deny from 124.6.64.0/18 124.14.0.0/15 124.16.0.0/15 124.20.0.0/14 124.28.192.0/18 124.29.0.0/17 124.31.0.0/16 124.40.112.0/20 124.40.128.0/18 124.42.0.0/16 124.47.0.0/18 124.64.0.0/15 124.66.0.0/17 124.67.0.0/16 124.68.0.0/14 124.72.0.0/13 124.88.0.0/13 124.108.8.0/21 124.108.40.0/21 124.112.0.0/13 124.126.0.0/15 124.128.0.0/13 124.147.128.0/17 124.156.0.0/16 124.160.0.0/13 124.172.0.0/14 124.192.0.0/15 124.196.0.0/16 124.200.0.0/13 124.220.0.0/14 124.224.0.0/12 124.240.0.0/17 124.242.0.0/16 124.243.192.0/18 124.248.0.0/17 124.249.0.0/16 124.250.0.0/15 124.254.0.0/18
+#deny from 125.31.192.0/18 125.32.0.0/12 125.58.128.0/17 125.61.128.0/17 125.62.0.0/18 125.64.0.0/11 125.96.0.0/15 125.98.0.0/16 125.104.0.0/13 125.112.0.0/12 125.169.0.0/16 125.171.0.0/16 125.208.0.0/18 125.210.0.0/15 125.213.0.0/17 125.214.96.0/19 125.215.0.0/18 125.216.0.0/13 125.254.128.0/17
+#deny from 65.49.0.0/17
+#deny from 222.219.0.0/16
+#deny from 222.220.0.0/15
+#deny from 134.196.0.0/16
+#deny from 159.226.0.0/16
+#deny from 161.207.0.0/16
+#deny from 162.105.0.0/16
+#deny from 166.111.0.0/16
+#deny from 167.139.0.0/16
+#deny from 168.160.0.0/16
+#deny from 192.83.122.0/24 192.124.154.0/24 192.188.170.0/24
+#deny from 198.17.7.0/24 198.97.132.0/24
+#deny from 202.0.110.0/24 202.0.160.0/20 202.0.176.0/22 202.4.128.0/19 202.4.252.0/22 202.8.128.0/19 202.10.64.0/20 202.14.88.0/24 202.14.235.0/24 202.14.236.0/23 202.14.238.0/24 202.20.120.0/24 202.22.248.0/21 202.38.0.0/20 202.38.64.0/18 202.38.128.0/21 202.38.136.0/23 202.38.138.0/24 202.38.140.0/22 202.38.144.0/22 202.38.149.0/24 202.38.150.0/23 202.38.152.0/22 202.38.156.0/24 202.38.158.0/23 202.38.160.0/23 202.38.164.0/22 202.38.168.0/21 202.38.176.0/23 202.38.184.0/21 202.38.192.0/18 202.41.152.0/21 202.41.240.0/20 202.46.32.0/19 202.46.224.0/20
+#deny from 202.60.112.0/20 202.69.4.0/22 202.69.16.0/20 202.70.0.0/19 202.74.8.0/21 202.75.208.0/20 202.85.208.0/20 202.90.0.0/22 202.90.224.0/20 202.90.252.0/22 202.91.0.0/22 202.91.128.0/22 202.91.176.0/20 202.91.224.0/19 202.92.0.0/22 202.92.252.0/22 202.93.0.0/22 202.93.252.0/22 202.94.0.0/19 202.95.0.0/19 202.95.252.0/22 202.96.0.0/12
+#deny from 202.112.0.0/13 202.120.0.0/15 202.122.0.0/19 202.122.32.0/21 202.122.64.0/19 202.122.112.0/21 202.122.128.0/24 202.123.96.0/20 202.124.24.0/21 202.125.176.0/20 202.127.0.0/18 202.127.112.0/20 202.127.128.0/19 202.127.160.0/21 202.127.192.0/18 202.130.0.0/19 202.130.224.0/19 202.131.16.0/21 202.131.48.0/20 202.131.208.0/20 202.136.48.0/20 202.136.208.0/20 202.136.224.0/20 202.141.160.0/19 202.142.16.0/20 202.143.16.0/20 202.148.96.0/19 202.149.160.0/20 202.149.224.0/19
+#deny from 202.150.16.0/20 202.152.176.0/20 202.153.48.0/20 202.158.160.0/19 202.160.176.0/20 202.164.0.0/20 202.164.25.0/24 202.165.96.0/21 202.165.176.0/20 202.165.208.0/20 202.168.160.0/19 202.170.128.0/19 202.170.216.0/21 202.173.8.0/21 202.173.224.0/19 202.179.240.0/20 202.180.128.0/19 202.181.112.0/20 202.189.80.0/20 202.192.0.0/12
+#deny from 203.18.50.0/24 203.79.0.0/20 203.80.144.0/20 203.81.16.0/20 203.83.56.0/21 203.86.0.0/18 203.86.64.0/19 203.88.0.0/22 203.88.32.0/19 203.88.192.0/19 203.89.0.0/22 203.90.0.0/22 203.90.128.0/18 203.90.192.0/19 203.91.32.0/19 203.91.96.0/20 203.91.120.0/21 203.92.0.0/22 203.92.160.0/19 203.93.0.0/16 203.94.0.0/18 203.95.0.0/21 203.95.96.0/19 203.99.16.0/20 203.99.80.0/20
+#deny from 203.100.32.0/20 203.100.80.0/20 203.100.96.0/19 203.100.192.0/20 203.110.160.0/19 203.118.192.0/19 203.119.24.0/21 203.119.32.0/22 203.128.32.0/19 203.128.96.0/19 203.128.128.0/19 203.130.32.0/19 203.132.32.0/19 203.134.240.0/21 203.135.96.0/19 203.135.160.0/20 203.148.0.0/18 203.152.64.0/19 203.156.192.0/18 203.158.16.0/21 203.161.192.0/19 203.166.160.0/19 203.171.224.0/20 203.174.7.0/24 203.174.96.0/19 203.175.128.0/19 203.175.192.0/18 203.176.168.0/21 203.184.80.0/20 203.187.160.0/19 203.190.96.0/20 203.191.16.0/20 203.191.64.0/18 203.191.144.0/20 203.192.0.0/19 203.196.0.0/22
+#deny from 203.207.64.0/18 203.207.128.0/17 203.208.0.0/20 203.208.16.0/22 203.208.32.0/19 203.209.224.0/19 203.212.0.0/20 203.212.80.0/20 203.222.192.0/20 203.223.0.0/20
+#deny from 210.2.0.0/19 210.5.0.0/19 210.5.32.0/20 210.5.144.0/20 210.12.0.0/15 210.14.64.0/19 210.14.112.0/20 210.14.128.0/17 210.15.0.0/17 210.15.128.0/18 210.16.128.0/18 210.21.0.0/16 210.22.0.0/16 210.23.32.0/19 210.25.0.0/16 210.26.0.0/15 210.28.0.0/14 210.32.0.0/12 210.51.0.0/16 210.52.0.0/15 210.56.192.0/19 210.72.0.0/14 210.76.0.0/15 210.78.0.0/16 210.79.64.0/18 210.79.224.0/19 210.82.0.0/15 210.87.128.0/18 210.185.192.0/18 210.192.96.0/19
+#deny from 211.64.0.0/13 211.80.0.0/12 211.96.0.0/13 211.136.0.0/13 211.144.0.0/12 211.160.0.0/13
+#deny from 218.0.0.0/11 218.56.0.0/13 218.64.0.0/11 218.96.0.0/14 218.104.0.0/14 218.108.0.0/15 218.192.0.0/12 218.240.0.0/13 218.249.0.0/16
+#deny from 219.72.0.0/16 219.82.0.0/16 219.128.0.0/11 219.216.0.0/13 219.224.0.0/12 219.242.0.0/15 219.244.0.0/14
+#deny from 220.101.192.0/18 220.112.0.0/14 220.152.128.0/17 220.154.0.0/15 220.160.0.0/11 220.192.0.0/12 220.231.0.0/18 220.231.128.0/17 220.232.64.0/18 220.234.0.0/16 220.242.0.0/15 220.248.0.0/14
+#deny from 221.0.0.0/13 221.8.0.0/14 221.12.0.0/17 221.12.128.0/18 221.13.0.0/16 221.14.0.0/15 221.122.0.0/15 221.129.0.0/16 221.130.0.0/15 221.133.224.0/19 221.136.0.0/15 221.172.0.0/14 221.176.0.0/13 221.192.0.0/14 221.196.0.0/15 221.198.0.0/16 221.199.0.0/17 221.199.128.0/18 221.199.192.0/20 221.199.224.0/19 221.200.0.0/13 221.208.0.0/12 221.224.0.0/12
+#deny from 222.16.0.0/12 222.32.0.0/11 222.64.0.0/11 222.125.0.0/16 222.126.128.0/17 222.128.0.0/12 222.160.0.0/14 222.168.0.0/13 222.176.0.0/12 222.192.0.0/11 222.240.0.0/13 222.248.0.0/16 222.249.0.0/17 222.249.128.0/18 222.249.192.0/19 222.249.224.0/20 222.249.240.0/21 222.249.248.0/23

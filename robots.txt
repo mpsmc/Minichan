@@ -1,0 +1,9 @@
+# TinyBBS robots.txt
+# Uncomment the following 2 lines to prevent your site from being indexed/crawled at all.
+#User-agent: *
+#Disallow: /
+User-agent: *
+Disallow: /folks
+Disallow: /topics
+Disallow: /style
+Disallow: /javascript
