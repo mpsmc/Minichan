@@ -67,7 +67,7 @@ define('DEFCON_4_MESSAGE', 'Creation of new accounts have been temporarly disabl
 // Images config.
 define('ALLOW_IMAGES', true); // Allow image uploading?
 define('ALLOW_IMGUR', true); // Allow imgur? Can be used with ALLOW_IMAGES false
-define('IMGUR_CLIENT_ID', ''); // Client id, get one at https://api.imgur.com/oauth2/addclient the callback url does not matter.
+define('IMGUR_CLIENT_ID', ''); // Client id, get one at https://api.imgur.com/oauth2/addclient - The callback url does not matter, just use http://localhost/ if you do not intend to use the tokens further
 define('MAX_IMAGE_SIZE', 560000); // Maximum image filesize in bytes.
 define('MAX_IMAGE_DIMENSIONS', 180); // Maximum thumbnail height/width.
 define('FANCY_IMAGE', true); // Use a fancy image viewer or not.
