@@ -95,7 +95,7 @@ define('MODERATOR_MONDAY', false); // Make everyone a mod. However they cannot b
 
 // Post limits.
 define('ITEMS_PER_PAGE', 50); // The number of topics shown on the index, the number of replies on replies.php, etc.
-define('MAX_LENGTH_HEADLINE', 100); // Maximum length of headlines.
+define('MAX_LENGTH_HEADLINE', 100); // Maximum length of headlines. Note that for values greater than 100 the topics table in the database needs to have the length of the headline field edited as well.
 define('MIN_LENGTH_HEADLINE', 3); // Minimum length of headlines.
 define('MAX_LENGTH_BODY', 30000); // Maximum length of post bodies.
 define('MIN_LENGTH_BODY', 3); // Minimum length of post bodies.
