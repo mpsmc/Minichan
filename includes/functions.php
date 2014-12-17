@@ -528,10 +528,12 @@ function img_url_data($url) {
 			}else{
 				$thumb = $name . "m." . $ext;
 			}
-			$thumburl = $parts["scheme"] . "://".$parts["host"]."/" . urlencode($thumb);
+			
+			$thumburl = "https://".$parts["host"]."/" . urlencode($thumb);
 			
 			$disable_errors = true;
 			$thumbsize = getimagesize($thumburl);
+			
 			$disable_errors = false;
 					
 			if(!$thumbsize) return null; // Invalid URL
