@@ -34,6 +34,7 @@
 		<meta name="keywords" content="minichan, bbs, board, anonymous, free, debate, discuss, argue, drama, loldrama, youarenowbrowsingmanually" />
 		<title><?php echo strip_tags($page_title) . ' — ' . SITE_TITLE ?></title>
 		<link rel="icon" type="image/gif" href="<?php echo DOMAIN; ?>favicon.gif" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo (STATIC_DOMAIN . 'style/layout.css') ?>" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo (($custom_stylesheet) ? htmlspecialchars($custom_stylesheet) : (STATIC_DOMAIN . 'style/' . $stylesheet . '.css')) ?>" />
 		<?php if(MOBILE_MODE){ ?>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN . 'style/mobile.css' ?>" />
