@@ -43,7 +43,7 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript">var IMGUR_CLIENT_ID = "<?php echo IMGUR_CLIENT_ID; ?>";</script>
 		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/main.js?6534395"></script>
-		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/extras.js?4"></script>
+		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/extras.js?5"></script>
         <?php if($administrator && FALSE) { ?><script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/scrollBar.js"></script><?php } ?>
         <?php if(MOBILE_MODE && false) { ?><script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/textarea.js"></script><?php } ?>
 		<?php if(FANCY_IMAGE&&!MOBILE_MODE){ ?><script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/thickbox.js"></script><?php } ?>
