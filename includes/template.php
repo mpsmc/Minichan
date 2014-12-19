@@ -10,6 +10,7 @@
 		// Get or set style.
 		$stmt = $link->db_exec('SELECT style, custom_style FROM user_settings WHERE uid = %1', $_SESSION['UID']);
 		list($stylesheet, $custom_stylesheet) = $link->fetch_row($stmt);
+		if($custom_stylesheet) $custom_stylesheet = preg_replace('%^http://%s', 'https://', $custom_stylesheet);
 		if($stylesheet != "Custom" || $_GET['nocss'] == 1) {
 			unset($custom_stylesheet);
 			if(!$_SESSION['ID_activated'] || !$stylesheet || $_GET['nocss'] == 1 || !file_exists(SITE_ROOT . "/style/" . $stylesheet . ".css")) {
@@ -21,8 +22,6 @@
 	}else{
 		$stylesheet = DEFAULT_STYLESHEET;
 	}
-	
-	//$custom_stylesheet = "http://userstyles.org/styles/operacss/36539/Minichan%3A%20Sweet%20Board%20and%20Hella%20Sim.css";
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" id="top">
