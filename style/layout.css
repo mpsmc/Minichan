@@ -59,7 +59,7 @@ a:focus {
     text-shadow: 0 0 #000;
 }
 
-.spoiler:hover {
+.spoiler:hover, .spoiler:hover a {
     color:#fff;
 }
 
