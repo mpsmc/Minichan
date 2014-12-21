@@ -38,9 +38,6 @@ RewriteRule ^tag.js$ tag.php [L]
 # Permissions
 RewriteRule ^permissions$ permissions.php [L]
 
-# Chat
-RewriteRule ^chat chat.php [L]
-
 # ShortURL
 RewriteRule ^link/?$ shorturl/create.php [L]
 RewriteRule ^link/([A-Za-z0-9]*)$ shorturl/redirect.php?id=$1 [L]
