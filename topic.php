@@ -570,7 +570,7 @@ while (fetchReplyList()) {
 	}
 	
 	// Finish the header and begin outputting the body.
-	echo '<span class="reply_id unimportant"><a href="#top">[^]</a> <a href="#bottom">[v]</a> <a href="#reply_' . $reply_id . '" onclick="return highlightReply(\'' . $reply_id . '\'); removeSnapbackLink">#' . number_format($reply_id) . '</a>' . ((allowed("delete")) ? '<input style="display:inline" type="checkbox" class="mass_delete" value="'.$reply_id.'" />' : '') . '</span></h3> <div ' . $styleHidden . 'class="body" id="reply_box_' . $reply_id . '">';
+	echo '<span class="reply_id unimportant"><a href="#top">[^]</a> <a href="#bottom">[v]</a> <a href="#reply_' . $reply_id . '" onclick="return highlightReply(\'' . $reply_id . '\');">#' . number_format($reply_id) . '</a>' . ((allowed("delete")) ? '<input style="display:inline" type="checkbox" class="mass_delete" value="'.$reply_id.'" />' : '') . '</span></h3> <div ' . $styleHidden . 'class="body" id="reply_box_' . $reply_id . '">';
 	
 	if($user_disable_images != 1) {
 		if($img_external && $thumb_external) {
@@ -745,6 +745,11 @@ if(allowed("delete")) { ?>
 <?php
 }
 ?>
+<a id='snapback_link' style='display: none' class='help_cursor' onclick='popSnapbackLink()' title='Click me to snap back!' href='#'>
+<strong>↕</strong>
+<span>&nbsp;</span>			
+</a>
+
 <script>
 var defaults = {
 	'type':'keydown',
