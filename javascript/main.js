@@ -384,26 +384,32 @@ function printCharactersRemaining(idOfTrackerElement, numDefaultCharacters) {
 	document.write(' (<STRONG ID="' + idOfTrackerElement + '">' + numDefaultCharacters + '</STRONG> characters left)');
 }
 
-function removeSnapbackLink() {
+var snapbackStack = [];
+
+function popSnapbackLink() {
+	highlightReply(snapbackStack.pop());
 	var tmp = document.getElementById("snapback_link");
-	if (tmp)
-		tmp.parentNode.removeChild(tmp);
+	if (snapbackStack.length) {
+		tmp.href = '#reply_' + snapbackStack[snapbackStack.length - 1];
+
+		document.querySelector('#snapback_link span').innerHTML = snapbackStack.length > 1? snapbackStack.length : '';
+	} else {
+		tmp.style.display = 'none';
+	}
 }
 
 function createSnapbackLink(lastReplyId) {
-	removeSnapbackLink();
-	var div = document.createElement('DIV');
-	div.id = 'snapback_link';
-	var a = document.createElement('A');
+	if (snapbackStack.length && snapbackStack[snapbackStack.length - 1] === lastReplyId) {
+		return;
+	}
+
+	snapbackStack.push(lastReplyId);
+	var a = document.getElementById('snapback_link');
+	var linkCounter = document.querySelector('#snapback_link span');
+
 	a.href = '#reply_' + lastReplyId;
-	a.onclick = function () { highlightReply(lastReplyId); removeSnapbackLink(); };
-	a.className = 'help_cursor';
-	a.title = 'Click me to snap back!';
-	var strong = document.createElement('STRONG');
-	strong.appendChild(document.createTextNode('↕'));
-	a.appendChild(strong);
-	div.appendChild(a);
-	document.body.appendChild(div);
+	a.style.display = 'inline';
+	document.querySelector('#snapback_link span').innerHTML = snapbackStack.length > 1? snapbackStack.length : '';
 }
 
 function getCookie(c_name) {

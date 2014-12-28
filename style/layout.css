@@ -263,6 +263,19 @@ p.caption {
     left:2px;
     position:fixed;
     top:50%;
+    text-decoration: none;
+}
+
+#snapback_link strong {
+    position: absolute;
+}
+
+#snapback_link span {
+    font-size: 5pt;
+    position: absolute;
+    line-height: 4.5em;
+    float: left;
+    margin-left: 0.6em;
 }
 
 .video,video,a.video {
@@ -284,7 +297,7 @@ p.caption {
     text-shadow: 0 0 #fff;
 }
 
-a:hover,h2 a,#snapback_link a {
+a:hover,h2 a {
     text-decoration:none;
 }
 
