@@ -744,5 +744,25 @@ if(allowed("delete")) { ?>
 </div>
 <?php
 }
+?>
+<script>
+var defaults = {
+	'type':'keydown',
+	'propagate':true, // Don't swallow keypresses.
+	'target':document
+};
+
+/* Do nothing when in insert mode. */
+function ignore() {
+    return $("input, textarea").is(":focus");
+}
+                        
+shortcut.add("j", function() { ignore() || replyCursor.next(); }, defaults);
+shortcut.add("k", function() { ignore() || replyCursor.previous(); }, defaults);
+shortcut.add("f", function() { ignore() || replyCursor.nextScreen(); }, defaults);
+shortcut.add("b", function() { ignore() || replyCursor.previousScreen(); }, defaults);
+</script>
+
+<?php
 require('includes/footer.php');
 ?>
