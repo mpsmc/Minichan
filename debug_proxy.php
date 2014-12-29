@@ -23,7 +23,7 @@ if(stripos($hostaddr, "ioflood.com")!==false) echo "f";
 if(IsTorExitPoint()) echo "g";
 if(strpos($hostaddr, ".") !== false && substr_count($hostaddr, ".") < 3) echo "h";
 if(strpos($_SERVER['REMOTE_ADDR'], '65.49.') === 0) echo "i";
-if($hosthaddr && substr_compare($hostaddr, $_test, -strlen($_test), strlen($_test)) === 0) echo "j";
+if($hostaddr && substr_compare($hostaddr, $_test, -strlen($_test), strlen($_test)) === 0) echo "j";
 
 
 require("includes/footer.php");
