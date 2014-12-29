@@ -979,7 +979,7 @@ EOF
 	(
 		'Headline',
 		'Content',
-		'Time since deletion ▼',
+		'Time since deletion ▲',
 		'Deleted by'
 	);
 
