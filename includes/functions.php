@@ -952,10 +952,27 @@ function fetch_ignore_list() { // For ostrich mode.
 function show_trash($uid, $silence = false) { // For profile and trash.
 	global $link, $administrator;
 
-// Next statement is not used, or needed seems.
-//	$output = '<table id="trash"><thead><tr> <th class="minimal headline">Headline</th> <th class="body">Body</th> <th class="minimal time">Time since deletion ▼</th> </tr></thead> <tbody>';
-	
-	$fetch_trash = $link->db_exec('(SELECT "" as headline, body, id, parent_id FROM replies WHERE author = %1 AND deleted = 1 ORDER BY time DESC) UNION ALL (SELECT headline, body, id, "" as parent_id FROM topics WHERE author = %1 AND deleted = 1 ORDER BY time DESC)', $uid);
+	$fetch_trash = $link->db_exec(<<<EOF
+	(
+		SELECT "" as headline, replies.body, replies.id, replies.parent_id, mod_actions.time, mod_actions.mod_UID
+		FROM replies
+		LEFT JOIN mod_actions
+			ON mod_actions.target = replies.id
+			AND mod_actions.action = "delete_reply"
+		WHERE replies.author = %1
+		AND replies.deleted = 1
+	) UNION ALL (
+		SELECT topics.headline, topics.body, topics.id, "" as parent_id, mod_actions.time, mod_actions.mod_UID
+		FROM topics
+		LEFT JOIN mod_actions
+			ON mod_actions.target = topics.id
+			AND mod_actions.action = "delete_topic"
+		WHERE topics.author = %1
+		AND topics.deleted = 1
+	)
+	ORDER BY time desc
+EOF
+, $uid);
 	
 	$table = new table();
 	$columns = array
@@ -969,7 +986,7 @@ function show_trash($uid, $silence = false) { // For profile and trash.
 	if(!allowed("open_profile")) unset($columns[3]);
 	$table->define_columns($columns, 'Headline');
 
-	while(list($trash_headline, $trash_body, $id, $parent_id) = $link->fetch_row($fetch_trash)) {
+	while(list($trash_headline, $trash_body, $id, $parent_id, $trash_time, $mod_uid) = $link->fetch_row($fetch_trash)) {
 		if(!$trash_headline) {
 			$trash_headline = '<span class="unimportant">(Reply.)</span>';
 			$reply = true;
@@ -979,18 +996,14 @@ function show_trash($uid, $silence = false) { // For profile and trash.
 		}
 		
 		
-			if($reply) {
-				$action = "delete_reply";
-				$trash_headline = '<a href="'. DOMAIN . 'topic/' . $parent_id . '#reply_'.$id.'">' . $trash_headline . '</a>';
-			}else{
-				$action = "delete_topic";
-				$trash_headline = '<a href="'. DOMAIN . 'topic/' . $id . '">' . $trash_headline . '</a>';
-			}
+		if($reply) {
+			$action = "delete_reply";
+			$trash_headline = '<a href="'. DOMAIN . 'topic/' . $parent_id . '#reply_'.$id.'">' . $trash_headline . '</a>';
+		}else{
+			$action = "delete_topic";
+			$trash_headline = '<a href="'. DOMAIN . 'topic/' . $id . '">' . $trash_headline . '</a>';
+		}
 			
-		//}
-		
-		$link->db_exec("SELECT mod_UID, time FROM mod_actions WHERE action = %1 AND target = %2 ORDER BY time DESC LIMIT 1", $action, $id);
-		list($mod_uid, $trash_time) = $link->fetch_row();
 		$values = array 
 		(
 			$trash_headline,
