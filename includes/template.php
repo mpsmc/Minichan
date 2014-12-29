@@ -33,7 +33,7 @@
 		<meta name="keywords" content="minichan, bbs, board, anonymous, free, debate, discuss, argue, drama, loldrama, youarenowbrowsingmanually" />
 		<title><?php echo strip_tags($page_title) . ' — ' . SITE_TITLE ?></title>
 		<link rel="icon" type="image/gif" href="<?php echo DOMAIN; ?>favicon.gif" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo (STATIC_DOMAIN . 'style/layout.css') ?>?2" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo (STATIC_DOMAIN . 'style/layout.css') ?>?3" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo (($custom_stylesheet) ? htmlspecialchars($custom_stylesheet) : (STATIC_DOMAIN . 'style/' . $stylesheet . '.css?2')) ?>" />
 		<?php if(MOBILE_MODE){ ?>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN . 'style/mobile.css' ?>" />
@@ -42,7 +42,7 @@
 		<?php /* <link rel="stylesheet" type="text/css" href="<?php echo STATIC_DOMAIN; ?>style/april.css?13"> */ ?>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript">var IMGUR_CLIENT_ID = "<?php echo IMGUR_CLIENT_ID; ?>";</script>
-		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/main.js?6534397"></script>
+		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/main.js?6534398"></script>
 		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/extras.js?5"></script>
         <?php if($administrator && FALSE) { ?><script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/scrollBar.js"></script><?php } ?>
         <?php if(MOBILE_MODE && false) { ?><script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/textarea.js"></script><?php } ?>

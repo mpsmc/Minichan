@@ -745,7 +745,7 @@ if(allowed("delete")) { ?>
 <?php
 }
 ?>
-<a id='snapback_link' style='display: none' class='help_cursor' onclick='popSnapbackLink()' title='Click me to snap back!' href='#'>
+<a id='snapback_link' style='display: none' class='help_cursor' onclick='popSnapbackLink(); return false' title='Click me to snap back!' href='#'>
 <strong>↕</strong>
 <span>&nbsp;</span>			
 </a>

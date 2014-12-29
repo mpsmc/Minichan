@@ -390,8 +390,6 @@ function popSnapbackLink() {
 	highlightReply(snapbackStack.pop());
 	var tmp = document.getElementById("snapback_link");
 	if (snapbackStack.length) {
-		tmp.href = '#reply_' + snapbackStack[snapbackStack.length - 1];
-
 		document.querySelector('#snapback_link span').innerHTML = snapbackStack.length > 1? snapbackStack.length : '';
 	} else {
 		tmp.style.display = 'none';
@@ -407,7 +405,6 @@ function createSnapbackLink(lastReplyId) {
 	var a = document.getElementById('snapback_link');
 	var linkCounter = document.querySelector('#snapback_link span');
 
-	a.href = '#reply_' + lastReplyId;
 	a.style.display = 'inline';
 	document.querySelector('#snapback_link span').innerHTML = snapbackStack.length > 1? snapbackStack.length : '';
 }
