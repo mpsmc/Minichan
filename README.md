@@ -2,9 +2,10 @@
 
 
 #Installation
-* Make a MySQL database and import init.sql.
+* Make an empty MySQL database.
 * Copy `includes/config.example.php` to `includes/config.php` and get editing.
-* Edit `.htaccess`
+* Run `php includes/upgrade.php` from the command line.
+* Optional: Edit `.htaccess`
 
 On a fresh Ubuntu/Debian installation you will likely want `apt-get install apache2 php5 php5-curl php5-mysql mysql-server mysql-client` and configure your `php.ini` as follows:
 
@@ -15,6 +16,9 @@ error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
 ````
 
 It is also possible to use nginx, and a sample `rewrite.conf` is available, but this is currently not officially supported.
+
+#Updating
+Update your working tree and run `php includes/upgrade.php`. See the wiki for scripts used by http://minichan.org
 
 #"Support"
 If you have any questions you can try your luck on the issue tracker or `##minichan @ irc.freenode.net`. Note that development is primarily geared towards running a functional [http://minichan.org](http://minichan.org) so your feature requests may not be a priority. Pull requests are welcome if they are discussed on the issue tracker or IRC (with r04r) first.
