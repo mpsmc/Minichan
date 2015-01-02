@@ -14,15 +14,41 @@ require_once('config.php');
 require_once('database.class.php');
 $link = new db($db_info['server'], $db_info['username'], $db_info['password'], $db_info['database']);
 
+$link->db_exec("show tables");
+$tableCount = 0;
+while($link->fetch_row()) $tableCount++;
+
 function doDatabaseUpgrade($old, $new) {
 	global $link;
 	$upgrade = true;
 	require("database/upgrade-$old-to-$new.php");
 }
 
+$logState = "base";
+function console($str, $state=null) {
+	global $logState;
+	if($state==null) $state=$logState;
+	echo "[$state] $str\n";
+}
+
+if($tableCount === 0) {
+	$logState="init";
+	console("Loading tables");
+	$sql = preg_split('/;\s*$/m', file_get_contents("../init.sql"));
+	foreach($sql as $query) {
+		if(trim($query) == "") continue;
+		console("Performing query...");
+		$link->db_exec($query);
+	}
+	console("Finished loading tables");
+}elseif($link->getVersion() == DB_VERSION) {
+	die("Nothing to upgrade!");
+}
+
 for($i = $link->getVersion(); $i < DB_VERSION; $i++) {
-	echo "Performing upgrade $i-to-".($i+1)."\n";
+	$logState="$i-to-".($i+1);
+	console("Starting upgrade $i-to-".($i+1), "base");
 	doDatabaseUpgrade($i, $i+1);
 	$link->setVersion($i+1);
-	echo "Finished upgrade $i-to-".($i+1)."\n";
+	console("Finished upgrade $i-to-".($i+1), "base");
 }
