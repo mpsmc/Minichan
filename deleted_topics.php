@@ -82,10 +82,7 @@ $num_rows_fetched = $table->num_rows_fetched;
 echo $table->output('topics');
 
 // Navigate backward or forward.
-$navigation_path = 'topics';
-if($_GET['bumps']) {
-	$navigation_path = 'bumps';
-}
+$navigation_path = 'deleted_topics';
 page_navigation($navigation_path, $current_page, $num_rows_fetched);
 require('includes/footer.php');
 ?>

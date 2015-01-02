@@ -175,6 +175,7 @@ RewriteRule ^set_image/topic/([0-9]+)/reply/([0-9]+)$ action.php?action=set_imag
 RewriteRule ^modlog$ modlog.php [L]
 RewriteRule ^watch$ watch.php [L]
 RewriteRule ^deleted_topics$ deleted_topics.php [L]
+RewriteRule ^deleted_topics/?([0-9]+)?$ deleted_topics.php?p=$1 [L]
 RewriteRule ^logout/([a-f0-9]*)$ login.php?logout=$1 [L]
 
 # Content management.
