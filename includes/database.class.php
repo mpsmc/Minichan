@@ -1,30 +1,6 @@
 <?php
-/**********************************************************************************
-* database.class.php                                                              *
-***********************************************************************************
-* Licensed to: TinyBBS (http://www.tinybbs.org) Open Source Project               *
-* =============================================================================== *
-* Software Version:           1.6                                                 *
-* Author:                     veryspecialdevelopment [AT] yahoo [DOT] com         *
-***********************************************************************************
-* This work is licenced under the Creative Commons Attribution-Non-Commercial-No  *
-* Derivative Works 3.0 Unported License. To view a copy of this licence, visit    *
-* http://creativecommons.org/licenses/by-nc-nd/3.0/ or send a letter to Creative  *
-* Commons, 171 Second Street, Suite 300, San Francisco, California 94105, USA.    *
-*                                                                                 *
-* You are free to Share — to copy, distribute and transmit the work, under the    *
-* following conditions:                                                           *
-*                                                                                 *
-* Attribution - You must provide a link to http://www.tinybbs.org/ on all pages   *
-* that includes (Or is included by an include) this database class and are        * 
-* publicly viewable. The link must be visible to all visitors of the site.        *
-*                                                                                 *
-* Noncommercial — You may not use this work for commercial purposes.              *
-*                                                                                 *
-* No Derivative Works — You may not alter, transform, or build upon this work.    *
-* With exception of the class name, and the $special_values array.                *
-*                                                                                 *
-**********************************************************************************/
+define('DB_VERSION', 0); // Version of the database that the code expects
+
 class db{
 	protected $db_link			= NULL;
 	protected $special_values	= array("NOW()", "NULL", "UNIX_TIMESTAMP()");
@@ -40,7 +16,6 @@ class db{
 		$this->db_link = @mysql_pconnect($server, $username, $password) or $this->error(mysql_error(), __FILE__, __LINE__, debug_backtrace());
 		$this->prefix = $prefix;
 		if($database) $this->setdb($database);
-		header('X-Special-DB-Class: true'); // Do not remove this line. Very important.
 	}
 	
 	function show_errors($bool) {
@@ -282,4 +257,14 @@ class db{
 		return $this->query_id;
 	}
 	
+	function getVersion() {
+		$this->db_exec("SELECT value FROM flood_control WHERE setting = 'db_version'");
+		list($db_version) = $this->fetch_row();
+		if($db_version == NULL) $db_version = 0;
+		return (int)$db_version;
+	}
+	
+	function setVersion($version) {
+		$this->db_exec("INSERT INTO flood_control (setting, value) VALUES ('db_version', %1) ON DUPLICATE KEY UPDATE value=%1", $version);
+	}
 }

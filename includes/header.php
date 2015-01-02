@@ -36,10 +36,6 @@ if(isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && isset($_SERVER["HTTP_CF_IPCOUNTRY
 	// }
 }
 
-// Becky favor
-if(ipCIDRCheck($_SERVER["REMOTE_ADDR"], "129.22.0.0/16"))
-	$_SERVER["REMOTE_ADDR"] = "71.72.22.169";
-
 $_start_time = microtime(); //Prepare our neat xx seconds to load thingy at the bottom of the page.
 require_once('includes/config.php');
 require_once('includes/database.class.php');
@@ -63,6 +59,24 @@ session_start();
 
 require_once("includes/ChromePhp.php");
 Console::useFile(SITE_ROOT . '/tmp', '/tmp');
+require("includes/useragents.php");
+define("MOBILE_MODE", check_user_agent("mobile"));
+
+function abortForMaintenance($error) {
+	date_default_timezone_set('UTC');
+	header('Content-Type: text/html; charset=UTF-8');
+	ob_start();
+	define('DEFCON', 5);
+	http_response_code(500);
+	$page_title = "Maintenance";
+	echo $error;
+	require("includes/footer.php");
+	die();
+}
+
+if(file_exists("includes/locked")) {
+	abortForMaintenance("The board is currently under maintenance! Please give us a minute and refresh the page!");
+}
 
 //print_r($_COOKIE);die();
 //Volgende is wat slimmer:
@@ -79,13 +93,15 @@ if(!isset($_COOKIE["last_topic"])){
 }
 */
 $link = new db($db_info['server'], $db_info['username'], $db_info['password'], $db_info['database']);
-require("includes/useragents.php");
-define("MOBILE_MODE", check_user_agent("mobile"));
 /*
 if(file_exists("includes/private.php")){
 	require("includes/private.php"); // This is some private bot detection code. If you don't have this file, I'm sorry =/
 }
 */
+
+if($link->getVersion() != DB_VERSION) {
+	abortForMaintenance("Database version mismatch! The Board has likely been upgraded lately, and the administrator has not yet executed includes/upgrade.php");
+}
 
 date_default_timezone_set('UTC');
 header('Content-Type: text/html; charset=UTF-8');
