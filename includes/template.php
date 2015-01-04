@@ -8,8 +8,8 @@
 	global $link;
 	if($link){
 		// Get or set style.
-		$stmt = $link->db_exec('SELECT style, custom_style FROM user_settings WHERE uid = %1', $_SESSION['UID']);
-		list($stylesheet, $custom_stylesheet) = $link->fetch_row($stmt);
+		$stmt = $link->db_exec('SELECT style, custom_style, rounded_corners FROM user_settings WHERE uid = %1', $_SESSION['UID']);
+		list($stylesheet, $custom_stylesheet, $rounded_corners) = $link->fetch_row($stmt);
 		if($custom_stylesheet) $custom_stylesheet = preg_replace('%^http://%s', 'https://', $custom_stylesheet);
 		if($stylesheet != "Custom" || $_GET['nocss'] == 1) {
 			unset($custom_stylesheet);
@@ -33,7 +33,7 @@
 		<meta name="keywords" content="minichan, bbs, board, anonymous, free, debate, discuss, argue, drama, loldrama, youarenowbrowsingmanually" />
 		<title><?php echo strip_tags($page_title) . ' — ' . SITE_TITLE ?></title>
 		<link rel="icon" type="image/gif" href="<?php echo DOMAIN; ?>favicon.gif" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo (STATIC_DOMAIN . 'style/layout.css') ?>?3" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo (STATIC_DOMAIN . 'style/layout.css') ?>?4" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo (($custom_stylesheet) ? htmlspecialchars($custom_stylesheet) : (STATIC_DOMAIN . 'style/' . $stylesheet . '.css?2')) ?>" />
 		<?php if(MOBILE_MODE){ ?>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN . 'style/mobile.css' ?>" />
@@ -120,7 +120,13 @@ window.onload=function(){
 		if(!empty($onload_javascript)) {
 			echo ' onload="' . $onload_javascript . '"';
 		}
-		echo '>'; if($administrator && false) { ?>
+		echo ' class="';
+		if($rounded_corners) {
+			echo 'rounded ';
+		}
+		echo '"';
+		echo '>';
+		if($administrator && false) { ?>
 <script type="text/javascript"> 
 	var toolbarConfig = {title:"Minichan",link:"http://minichan.org/topic/6296",slogan:"Get all the latest drama you've come to love, direct to your browser",hide:"hideMCToolbar_",slide:true};
 	document.write("<script type=\"text/javascript\" src=\"/javascript/chrome_toolbar.js?"+Math.random()+"\"></s"+"cript>");	

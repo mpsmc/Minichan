@@ -16,6 +16,7 @@ $defaults = array
 	'disable_images' => 0,
 	'snippet_length' => 80,
 	'image_viewer' => 1,
+	'rounded_corners' => 0,
 	'style' => DEFAULT_STYLESHEET
 );
 $user_config = $defaults;
@@ -38,12 +39,14 @@ $valid_settings = array
 	'snippet_length' => array('80', '100', '120', '140', '160'),
 	'image_viewer' => array('0', '1', '2'),
 	'disable_images' => array('0', '1'),
+	'rounded_corners' => array('0', '1'),
 	'style' => array_merge(explode(";", AVAILABLE_STYLES), array('Custom'))
 );
 
 // Get our user's settings from the database.
-$stmt = $link->db_exec('SELECT memorable_name, memorable_password, email, spoiler_mode, topics_mode, ostrich_mode, snippet_length, style, custom_style, image_viewer, disable_images FROM user_settings WHERE uid = %1', $_SESSION['UID']);
-list($user_config_db['memorable_name'], $user_config_db['memorable_password'], $user_config_db['email'], $user_config_db['spoiler_mode'], $user_config_db['topics_mode'], $user_config_db['ostrich_mode'], $user_config_db['snippet_length'], $user_config_db['style'], $user_config_db['custom_style'], $user_config_db['image_viewer'], $user_config_db['disable_images']) = $link->fetch_row($stmt);
+$stmt = $link->db_exec('SELECT memorable_name, memorable_password, email, spoiler_mode, topics_mode, ostrich_mode, snippet_length, style, custom_style, image_viewer, disable_images, rounded_corners FROM user_settings WHERE uid = %1', $_SESSION['UID']);
+$user_config_db = $link->fetch_assoc($stmt);
+if(!$user_config_db) $user_config_db = array();
 
 // If the values were set in the database, overwrite the defaults.
 foreach($user_config_db as $key => $value) {
@@ -179,6 +182,11 @@ print_errors();
 			<option value="160"<?php if($user_config['snippet_length'] == 160) echo ' selected' ?>>160</option>
 		</select>
 		<p class="caption"></p>
+	</div>
+	<div class="row">
+		<label class="common" for="rounded_corners">Rounded corners</label>
+		<input type="checkbox" id="rounded_corners" name="form[rounded_corners]" value="1" class="inline"<?php if($user_config['rounded_corners'] == 1) echo ' checked="checked"' ?> />
+		<p class="caption">Are you craving some Web 2.0? This is the option for you!</p>
 	</div>
 	<div class="row">
 		<label class="common" for="spoiler_mode">Spoiler mode</label>

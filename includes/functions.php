@@ -59,6 +59,7 @@ function get_all_permissions() {
 
 function allowed($permission, $uid = null) {
 	global $permissions, $link, $administrators;
+	if(!$link) return false;
 		
 	if(!$uid)
 		$uid = $_SESSION['UID'];

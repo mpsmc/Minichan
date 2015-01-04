@@ -63,6 +63,8 @@ require("includes/useragents.php");
 define("MOBILE_MODE", check_user_agent("mobile"));
 
 function abortForMaintenance($error) {
+	global $link;
+	$link = null;
 	date_default_timezone_set('UTC');
 	header('Content-Type: text/html; charset=UTF-8');
 	ob_start();

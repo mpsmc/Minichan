@@ -23,9 +23,6 @@ a:focus {
 }
 
 .body img {
-    -webkit-border-radius:8px;
-    -moz-border-radius:8px;
-    border-radius:8px;
     border:none!important;
     float:left;
     margin-bottom:6px;
@@ -285,7 +282,6 @@ p.caption {
     margin-right:auto;
     margin-bottom:1em;
     padding:8px;
-    border-radius:8px;
 }
 
 .standalone,.row {
@@ -329,6 +325,65 @@ a.video {
 .topic_headline a:visited, .topic_headline .visited {
     font-weight:400 !important;
 }
+
+/* ROUNDED CORNERS */
+
+/* All corners */
+body.rounded #notice,
+body.rounded .body img,
+body.rounded .video,video,a.video,
+body.rounded #main_menu,
+body.rounded table,
+body.rounded ul.body.standalone
+{     
+    border-radius: 9px;
+}
+
+/* Top */
+body.rounded #body_wrapper h3
+{
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+}
+
+/* Bottom */
+body.rounded #body_wrapper div.body,
+body.rounded h3#error
+{
+    border-bottom-left-radius: 9px;
+    border-bottom-right-radius: 9px;
+}
+
+/* Top Left */
+body.rounded #body_wrapper table thead tr th:first-child,
+body.rounded #body_wrapper form table tbody tr:first-child th:first-child, /* search box */
+body.rounded table#topic_poll tbody tr:first-child td:first-child
+{
+    border-top-left-radius: 9px;
+}
+
+/* Top Right */
+body.rounded #body_wrapper table thead tr th:last-child,
+body.rounded #body_wrapper form table tbody tr:first-child th:last-child, /* search box */
+body.rounded table#topic_poll tbody tr:first-child td:last-child
+{
+    border-top-right-radius: 9px;
+}
+
+/* Bottom left */
+body.rounded #body_wrapper table tbody tr:last-child td:first-child
+{
+    border-bottom-left-radius: 9px;
+}
+
+/* Bottom right */
+body.rounded #body_wrapper table tbody tr:last-child td:last-child
+{
+    border-bottom-right-radius: 9px;
+}
+
+/* END Rounded corners. */
+
 /*
 CSS is based on stal's Minichan Modern. You don't have to donate to keep this project alive. This CSS took 15 minutes to be generated.
 All trademarks and copyrights in this CSS are owned by their respective parties.
