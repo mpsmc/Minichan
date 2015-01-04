@@ -1412,7 +1412,7 @@ function snippet($text, $snippet_length = 80, $include_cites = false, $encode = 
 	if($snippet_length == 80 && ctype_digit($_COOKIE['snippet_length'])) {
 		$snippet_length = $_COOKIE['snippet_length'];
 	}
-	if(strlen($text) > $snippet_length) {
+	if(mb_strlen($text) > $snippet_length) {
 		$text = mb_substr($text, 0, $snippet_length) . ($encode ? '&hellip;' : '...');
 	}
 	
