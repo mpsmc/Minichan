@@ -1413,7 +1413,7 @@ function snippet($text, $snippet_length = 80, $include_cites = false, $encode = 
 		$snippet_length = $_COOKIE['snippet_length'];
 	}
 	if(strlen($text) > $snippet_length) {
-		$text = substr($text, 0, $snippet_length) . ($encode ? '&hellip;' : '...');
+		$text = mb_substr($text, 0, $snippet_length) . ($encode ? '&hellip;' : '...');
 	}
 	
 	if(!$include_cites && !trim($text))

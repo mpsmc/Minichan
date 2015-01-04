@@ -3,6 +3,7 @@
 //require('includes/profiler.php');
 //if(ENABLE_PROFILER) profile_start('init');
 ini_set("session.gc_maxlifetime", "21600"); //6 hours
+mb_internal_encoding("UTF-8");
 // No IPV6 yet :-/
 if(substr($_SERVER['REMOTE_ADDR'], 0, 7) == "::ffff:") $_SERVER['REMOTE_ADDR'] = substr($_SERVER["REMOTE_ADDR"], 7);
 if(substr($_SERVER['SERVER_ADDR'], 0, 7) == "::ffff:") $_SERVER['SERVER_ADDR'] = substr($_SERVER['SERVER_ADDR'], 7);
