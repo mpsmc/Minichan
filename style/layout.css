@@ -331,7 +331,9 @@ a.video {
 /* All corners */
 body.rounded #notice,
 body.rounded .body img,
-body.rounded .video,video,a.video,
+body.rounded .video,
+body.rounded video,
+body.rounded a.video,
 body.rounded #main_menu,
 body.rounded table,
 body.rounded ul.body.standalone
