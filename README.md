@@ -15,6 +15,13 @@ display_startup_errors = On
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
 ````
 
+Depending on your setup it may also be necessary to configure your `php.ini` to use UTF-8 internally so exotic tripcodes get converted correctly:
+
+````
+[mbstring]
+mbstring.internal_encoding = UTF-8
+````
+
 It is also possible to use nginx, and a sample `rewrite.conf` is available, but this is currently not officially supported.
 
 #Updating
