@@ -33,6 +33,7 @@ $page_title = 'Stuff';
 		<li><a href="<?php echo DOMAIN; ?>compose_message/mods">Contact</a> — <span class="unimportant">Send a personal message to the mod(s).</span></li>
 		<li><strong><a href="<?php echo DOMAIN; ?>addons">Add-ons</a></strong> — <span class="unimportant">Add-ons, ready to take over the world.</span></li>
 		<li><strong><a href="<?php echo DOMAIN; ?>link">MiniURL</a></strong> — <span class="unimportant">Minify links</span></li>
+		<li><strong><a href="<?php echo DOMAIN; ?>triptest">Tripcode Tester</a></strong> — <span class="unimportant">Test your tripcodes</span></li>
 		<?php
 		if(MOBILE_MODE){
 			$main_menu = array (
