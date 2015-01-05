@@ -233,7 +233,7 @@ RewriteRule ^(.+)$ url_handler.php [L]
     Header set Cache-Control "max-age=216000, public, must-revalidate"
   </FilesMatch>
   <FilesMatch "\\.(html|htm|php)$">
-    Header set Cache-Control "max-age=1, private, must-revalidate"
+    Header set Cache-Control "no-cache, no-store, private, must-revalidate"
   </FilesMatch>
 </ifModule>
 
