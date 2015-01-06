@@ -427,7 +427,7 @@ function preg_replace_anchors($data){
 			$you .= '<span class="unimportant"> (deleted)</span>';
 		}
 		
-		$retval = '<span class="unimportant"><a href="#reply_%pure_id%" onclick="createSnapbackLink(\'%reply_id%\'); return highlightReply(\'%pure_id%\');" class="help cite_reply" title="' . snippet($reply_ids[$pure_id]['body']) . '">%link_text%</a></span>' . $you;
+		$retval = '<span class="unimportant"><a href="#reply_%pure_id%" onclick="createSnapbackLink(\'%reply_id%\'); return true;" class="help cite_reply" title="' . snippet($reply_ids[$pure_id]['body']) . '">%link_text%</a></span>' . $you;
 		$anchor_cache[$formatted_id] = $retval;
 		return str_replace(array("%link_text%", "%reply_id%", "%pure_id%"), array($link_text, $reply_id, $pure_id), $retval);
 	}
@@ -570,7 +570,7 @@ while (fetchReplyList()) {
 	}
 	
 	// Finish the header and begin outputting the body.
-	echo '<span class="reply_id unimportant"><a href="#top">[^]</a> <a href="#bottom">[v]</a> <a href="#reply_' . $reply_id . '" onclick="return highlightReply(\'' . $reply_id . '\');">#' . number_format($reply_id) . '</a>' . ((allowed("delete")) ? '<input style="display:inline" type="checkbox" class="mass_delete" value="'.$reply_id.'" />' : '') . '</span></h3> <div ' . $styleHidden . 'class="body" id="reply_box_' . $reply_id . '">';
+	echo '<span class="reply_id unimportant"><a href="#top">[^]</a> <a href="#bottom">[v]</a> <a href="#reply_' . $reply_id . '">#' . number_format($reply_id) . '</a>' . ((allowed("delete")) ? '<input style="display:inline" type="checkbox" class="mass_delete" value="'.$reply_id.'" />' : '') . '</span></h3> <div ' . $styleHidden . 'class="body" id="reply_box_' . $reply_id . '">';
 	
 	if($user_disable_images != 1) {
 		if($img_external && $thumb_external) {
@@ -745,7 +745,7 @@ if(allowed("delete")) { ?>
 <?php
 }
 ?>
-<a id='snapback_link' style='display: none' class='help_cursor' onclick='popSnapbackLink(); return false' title='Click me to snap back!' href='#'>
+<a id='snapback_link' style='display: none' class='help_cursor' onclick='return popSnapbackLink();' title='Click me to snap back!' href='#'>
 <strong>↕</strong>
 <span>&nbsp;</span>			
 </a>

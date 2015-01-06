@@ -1,25 +1,3 @@
-/*$(function() {
-	var reply_id;
-	
-	$("div.body").each(function() {
-		reply_id = null;
-		reply_id = $(this).attr('id').substr(10);
-		$(this).find("fb\\:like").each(function(index,elem) {
-			if(index > 0) {
-				$(this).remove();
-			}else{
-				if(reply_id) {
-					$(this).attr('href', window.location.origin + window.location.pathname + "#reply_"+reply_id);
-				}
-			}
-		});
-	});
-	
-	FB.init({
-		xfbml  : true  // parse XFBML
-	});
-});*/
-
 function massDelete(domain, topic_id) {
 	
 	var output = [];
@@ -387,13 +365,17 @@ function printCharactersRemaining(idOfTrackerElement, numDefaultCharacters) {
 var snapbackStack = [];
 
 function popSnapbackLink() {
-	highlightReply(snapbackStack.pop());
-	var tmp = document.getElementById("snapback_link");
-	if (snapbackStack.length) {
-		document.querySelector('#snapback_link span').innerHTML = snapbackStack.length > 1? snapbackStack.length : '';
-	} else {
-		tmp.style.display = 'none';
-	}
+	setTimeout(function() {
+		snapbackStack.pop();
+		var tmp = document.getElementById("snapback_link");
+		if (snapbackStack.length) {
+			tmp.href = '#reply_' + snapbackStack[snapbackStack.length - 1];		
+			document.querySelector('#snapback_link span').innerHTML = snapbackStack.length > 1? snapbackStack.length : '';
+		} else {
+			tmp.style.display = 'none';
+		}
+	}, 10);
+	return true;
 }
 
 function createSnapbackLink(lastReplyId) {
@@ -405,6 +387,7 @@ function createSnapbackLink(lastReplyId) {
 	var a = document.getElementById('snapback_link');
 	var linkCounter = document.querySelector('#snapback_link span');
 
+	a.href = '#reply_' + lastReplyId;
 	a.style.display = 'inline';
 	document.querySelector('#snapback_link span').innerHTML = snapbackStack.length > 1? snapbackStack.length : '';
 }
@@ -439,75 +422,25 @@ function chooseImage(elem) {
 	return false;
 }
 
-function init() {
+function highlightReplyFromHash() {
 	if (window.location.hash && document.getElementById(window.location.hash.substring(1)) && window.location.hash.indexOf('reply_') != -1)
 		highlightReply(window.location.hash.substring(7));
 	else if (window.location.hash.indexOf('new') != -1)
 		highlightReply(document.getElementById('new_id').value);
-		
+	else
+		$("div.highlighted").removeClass("highlighted");
+}
+
+function init() {
+	$(window).on('hashchange', function() {
+		highlightReplyFromHash();
+	});
+	highlightReplyFromHash();
 	window['UID'] = getCookie("UID");
 	if(!getCookie('fp')) setCookie('fp', new Fingerprint({canvas: true}).get(), 7);
 }
 
 $(init);
-
-/*$(function() {
-	var contents;
-	var first = true;
-	
-	var exts = {
-		blpcfgokakmgnkcojhhkbfbldkacnbeo: "YouTube",
-		pjkljhegncpnkpknbcohdijeoejaedia: "Gmail",
-		coobgpohoikkiipiblmjeljniedjpjpf: "Google Search",
-		aknpkdffaafgjchaibgeefbgmgeghloj: "Angry Birds",
-		gighmmpiobklfepjocnamgkkbiglidom: "AdBlock",
-		cfhdojbkjhnklbpkdaibdccddilifddb: "Adblock Plus (Beta)",
-		ejjicmeblgpmajnghnpcppodonldlgfn: "Google Calendar",
-		mihcahmgecmbnbcchbopgniflfhgnkff: "Google Mail Checker",
-		lneaknkopdijkpnocmklfnjbeapigfbh: "Google Maps",
-		hbdpomandigafcibbmofojjchbcdagbl: "TweetDeck",
-		bmagokdooijbeehmkpknfglimnifench: "Firebug Lite for Google Chrome™",
-		hdokiejnpimakedhajhdlcegeplioahd: "LastPass",
-		nmameahlembdcigphohgiodcgjomcgeo: "Facebook Notifications",
-		jgoepmocgafhnchmokaimcmlojpnlkhp: "Google +1 Button",
-		kcahibnffhnnjcedflmchmokndkjnhpg: "StumbleUpon",
-		ojcanpkmlpgfpofghffigipfcljbadbe: "MinichanNotifier",
-		ehoopddfhgaehhmphfcooacjdpmbjlao: "imgur"
-	};
-
-	var detect = function(base, if_installed, if_not_installed) {
-		var s = document.createElement('script');
-		s.onerror = if_not_installed;
-		s.onload = if_installed;
-		document.body.appendChild(s);
-		s.src = 'chrome-extension://' + base + '/manifest.json';
-	};
-	
-	function log(i) {
-		return function() {
-			if(!contents) {
-				contents = $("<span></span>");
-				var b = $("<b>You're using the following Chrome extensions: </b>");
-				b.append(contents);
-				var center = $("<center></center>");
-				center.append(b);
-				
-				$("#logo").after(center);
-				detected = true;
-			}
-			
-			contents.append(((first) ? "" : ", ") + exts[i]);
-			first = false;
-		}
-	}
-	
-	for (var i in exts) {
-		if(exts.hasOwnProperty(i)) {
-			detect(i, log(i));
-		}
-	}
-});*/
-
 
 function submitSetTime(el) {
         var time = prompt("New last bump time?");
