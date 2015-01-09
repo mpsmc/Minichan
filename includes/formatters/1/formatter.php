@@ -5,22 +5,35 @@ require_once "JBBCode/CodeDefinitionBuilder.php";
 require_once "JBBCode/NodeVisitor.php";
 require_once "JBBCode/visitors/HTMLSafeVisitor.php";
 
-class LiTag extends JBBCode\CodeDefinition {
-	public function __construct() {
-		parent::__construct();
-		$this->setTagName("li");
-		$this->setReplacementText("<li>{param}</li>");
-	}
-	
-	public function asHtml(JBBCode\ElementNode $el) {
-		if(
-			!($el->getParent() instanceof JBBCode\ElementNode)
-			|| !in_array($el->getParent()->getTagName(), array("ul", "ol"))
-		)
-			return $el->getAsBBCode();
+/**
+ * Implements a [list] code definition that provides the following syntax:
+ *
+ * [list]
+ *   [*] first item
+ *   [*] second item
+ *   [*] third item
+ * [/list]
+ *
+ */
+class ListCodeDefinition extends JBBCode\CodeDefinition {
+    public function __construct() {
+        $this->parseContent = true;
+        $this->useOption = false;
+        $this->setTagName('list');
+        $this->nestLimit = -1;
+    }
 
-		return parent::asHtml($el);
-	}
+    public function asHtml(JBBCode\ElementNode $el) {
+        $bodyHtml = '';
+        foreach ($el->getChildren() as $child) {
+            $bodyHtml .= $child->getAsHTML();
+        }
+
+        $listPieces = preg_split('/^\s*(\*|\[\*\])\s*/m', $bodyHtml);
+        unset($listPieces[0]);
+        $listPieces = array_map(function($li) { return '<li>'.$li.'</li>' . "\n"; }, $listPieces);
+        return '<ul>'.implode('', $listPieces).'</ul>';
+    }
 }
 
 class CodeTag extends JBBCode\CodeDefinition {
@@ -143,7 +156,7 @@ class NewlineVisitor implements JBBCode\NodeVisitor {
 	}
 	
 	public function visitElementNode(JBBCode\ElementNode $elementNode) {
-		if(in_array($elementNode->getTagName(), array("code", "ul", "ol"))) return;
+		if(in_array($elementNode->getTagName(), array("code"))) return;
 		
 		foreach ($elementNode->getChildren() as $child) {
 			$child->accept($this);
@@ -164,10 +177,7 @@ class CustomizedBBCodeFormatter extends JBBCode\Parser implements MinichanFormat
 		$colorValidator = new JBBCode\validators\CssColorValidator();
 		
 		$this->addCodeDefinition(new CodeTag());
-		$this->addCodeDefinition(new LiTag());
-		
-		$this->addBBCode("ul", '<ul>{param}</ul>');
-		$this->addBBCode("ol", '<ol>{param}</ol>');
+		$this->addCodeDefinition(new ListCodeDefinition());
 		
 		$this->addBBCode('b', '<strong>{param}</strong>');
 		$this->addBBCode('i', '<em>{param}</em>');
