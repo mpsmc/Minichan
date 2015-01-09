@@ -223,7 +223,7 @@ class CustomizedBBCodeFormatter extends JBBCode\Parser implements MinichanFormat
 	
 	public function formatAsText($text, $nl2br, $encode=true) {
 		$this->parse($text, $nl2br, $encode);
-		return $this->getAsText();
+		return strip_tags($this->getAsText());
 	}
 }
 registerFormatter(1, new CustomizedBBCodeFormatter());
