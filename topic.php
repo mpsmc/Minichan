@@ -229,12 +229,13 @@ edited_message($topic_time, $topic_edit_time, $topic_edit_mod);
 
 echo '<ul class="menu">';
 
-$reply_body_quickquote = trim(preg_replace('/^@([0-9,]+|OP)/m', '', $topic_body));
+$reply_body_quickquote = $topic_body;
+detectFormatter($reply_body_quickquote);
+$reply_body_quickquote = trim(preg_replace('/^@([0-9,]+|OP)/m', '', $reply_body_quickquote));
 $reply_body_quickquote = preg_replace('/^/m', '> ', $reply_body_quickquote);
 $reply_body_quickquote = urlencode($reply_body_quickquote);
-
 	
-	if ($topic_author == $_SESSION['UID'] && TIME_TO_EDIT == 0 || $topic_author == $_SESSION['UID'] && ($_SERVER['REQUEST_TIME'] - $topic_time < (TIME_TO_EDIT * ($gold_account+1))) || allowed("edit_post")) {
+if ($topic_author == $_SESSION['UID'] && TIME_TO_EDIT == 0 || $topic_author == $_SESSION['UID'] && ($_SERVER['REQUEST_TIME'] - $topic_time < (TIME_TO_EDIT * ($gold_account+1))) || allowed("edit_post")) {
 	echo '<li><a class="editButton editOP" href="'.DOMAIN.'edit_topic/' . $_GET['id'] . '">Edit</a></li>';
 }
 
@@ -619,7 +620,9 @@ while (fetchReplyList()) {
 	
 	$reply_body_parsed = preg_replace_callback('/@([0-9,]+)/m', "preg_replace_anchors", $reply_body_parsed);
 	
-	$reply_body_quickquote = trim(preg_replace('/^@([0-9,]+|OP)/m', '', $reply_body));
+	$reply_body_quickquote = $reply_body;
+	detectFormatter($reply_body_quickquote);
+	$reply_body_quickquote = trim(preg_replace('/^@([0-9,]+|OP)/m', '', $reply_body_quickquote));
 	$reply_body_quickquote = preg_replace('/^/m', '> ', $reply_body_quickquote);
 	$reply_body_quickquote = urlencode($reply_body_quickquote);
 	

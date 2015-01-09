@@ -228,6 +228,8 @@ if ($_POST['form_sent']) {
 	//$namefag = str_replace(array(chr(226), chr(128), chr(174)), '', $namefag);
 	$namefag = str_replace(array(chr(226) . chr(128)), '', $namefag);
 	
+	$body = wrapUserFormatter($body);
+	
 	// Parse for mass quote tag ([quote]). I'm not sure about create_function, it seems kind of slow.
 	$body = preg_replace_callback('/\[quote\](.+?)\[\/quote\]/s', create_function('$matches', 'return preg_replace(\'/.*[^\s]$/m\', \'> $0\', $matches[1]);'), $body);
 	

@@ -26,7 +26,7 @@ if(isset($_GET['replyto'])) {
 	}
 	
 	list($contents, $source, $destination, $expiration, $can_reply) = $link->fetch_row($stmt);
-	$contents = sanitize_for_textarea(preg_replace('/^/m', '> ', $contents));
+	$contents = preg_replace('/^/m', '> ', sanitize_for_textarea($contents));
 	
 	if(!$can_reply) $error = true;
 
@@ -64,7 +64,7 @@ if(isset($_POST['contents']) && isset($_POST['submit'])) {
 	} else {
 		$message['destination'] = $_GET['to'];
 	}
-	$message['contents'] = $_POST['contents'];
+	$message['contents'] = wrapUserFormatter($_POST['contents']);
 	$message['time'] = time();
 	$message['expiration'] = (isset($_POST['expiration']) && !empty($_POST['expiration']) && allowed("mod_pm")) ? time() + $_POST['expiration'] : 0;
 	$message['read'] = 0;

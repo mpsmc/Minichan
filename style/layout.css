@@ -39,6 +39,12 @@ a:focus {
     margin:0 0 0 .5em;
 }
 
+.codebox2 {
+    overflow: auto;
+    font: 1em monaco, "andale mono","courier new", courier, mono;
+    margin: 0;
+}
+
 .codebox {
     overflow: auto;
     display: block;
