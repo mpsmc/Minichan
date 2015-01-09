@@ -136,7 +136,7 @@ class LegacyMarkupVisitor implements JBBCode\NodeVisitor {
 	}
 	
 	public function visitElementNode(JBBCode\ElementNode $elementNode) {
-		if($elementNode->getTagName() == "code") return;
+		if(in_array($elementNode->getTagName(), array("code", "raw"))) return;
 		
 		foreach ($elementNode->getChildren() as $child) {
 			$child->accept($this);
@@ -191,6 +191,7 @@ class CustomizedBBCodeFormatter extends JBBCode\Parser implements MinichanFormat
 		
 		$this->addBBCode('sp', '<span class="spoiler">{param}</span>');
 		$this->addBBCode('spoiler', '<span class="spoiler">{param}</span>');
+		$this->addBBCode('raw', '{param}', false, false, 1);
 		
 		$this->addCodeDefinition((new JBBCode\CodeDefinitionBuilder('url', '<a href="{param}">{param}</a>'))->setParseContent(false)->setBodyValidator($urlValidator)->build());
 		$this->addCodeDefinition((new JBBCode\CodeDefinitionBuilder('url', '<a href="{option}">{param}</a>'))->setUseOption(true)->setParseContent(false)->setOptionValidator($urlValidator)->build());
