@@ -39,7 +39,7 @@ function view_pre_events() {
 	
 	$sql = "SELECT * FROM pre_events ORDER BY time DESC";
 	if(!$send = mysql_query($sql)) {
-	$_SESSION['notice'] = mysql_error(); exit(header("Location: ".DOMAIN.""));
+		$_SESSION['notice'] = mysql_error(); exit(header("Location: ".DOMAIN.""));
 	}
 	
 	$selecter = 1;
@@ -57,12 +57,12 @@ function view_pre_events() {
 		
 		// Get data.
 		$no = $get['no'];
-		$des = $get['description'];
-		$addr = $get['address'];
-		$time = $get['time'];
+		$des = htmlspecialchars($get['description']);
+		$addr = htmlspecialchars($get['address']);
+		$time = htmlspecialchars($get['time']);
 		$time = calculate_age($time,$_SERVER['REQUEST_TIME']);
-		$date = $get['date'];
-		$expires = $get['expires'];
+		$date = htmlspecialchars($get['date']);
+		$expires = htmlspecialchars($get['expires']);
 		$uid = $get['uid'];
 		$uid = '<a href="'.DOMAIN.'profile/'.$uid.'">UID</a>';
 				

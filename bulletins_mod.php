@@ -40,7 +40,7 @@ function view_pre_bulletins() {
 	$sql = "SELECT * FROM pre_bulletins ORDER BY time DESC";
 	if(!$send = mysql_query($sql)) {
 		$_SESSION['notice'] = mysql_error(); exit(header("Location: ".DOMAIN));
-		}
+	}
 	
 	$selecter = 1;
 	while($get = mysql_fetch_array($send)) {
@@ -56,7 +56,7 @@ function view_pre_bulletins() {
 		
 		// Get data.
 		$no = $get['no'];
-		$message = $get['message'];
+		$message = htmlspecialchars($get['message']);
 		$poster = $get['poster'];
 		$time = $get['time'];
 		$time = calculate_age($time,$_SERVER['REQUEST_TIME']);
