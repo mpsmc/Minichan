@@ -220,7 +220,9 @@ if($user_disable_images != 1) {
 }
 
 if($topic_html) {
-	echo $topic_body;
+	$topic_body_parsed = $topic_body;
+	detectFormatter($topic_body_parsed);
+	echo $topic_body_parsed;
 }else{
 	echo parse($topic_body);
 }
@@ -614,6 +616,7 @@ while (fetchReplyList()) {
 	
 	if($reply_html) {
 		$reply_body_parsed = $reply_body;
+		detectFormatter($reply_body_parsed);
 	}else{
 		$reply_body_parsed = parse($reply_body);
 	}
