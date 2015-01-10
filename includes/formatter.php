@@ -4,7 +4,7 @@ interface MinichanFormatter {
 	public function formatAsText($text, $nl2br, $encode=true);
 }
 
-class InvalidFormatter {
+class InvalidFormatter implements MinichanFormatter {
 	public function formatAsHtml($text) {
 		return "<strong>Invalid formatter!</strong><br/><br/>" . nl2br(htmlspecialchars($text, ENT_COMPAT | ENT_HTML401, ""));
 	}

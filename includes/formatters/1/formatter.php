@@ -113,11 +113,11 @@ class LegacyMarkupVisitor implements JBBCode\NodeVisitor {
 		);
 			
 		$this->html = array (
-			'<a href="$1://$2" title="$1://$2" rel="nofollow">$3</a>', #06
-			'<em class="unimportant">(<a href="$1" rel="nofollow">topic $1</a>)</em>', #07
+			'<a href="$1://$2" title="$1://$2" style="color:inherit" rel="nofollow">$3</a>', #06
+			'<em class="unimportant">(<a href="$1" style="color:inherit" rel="nofollow">topic $1</a>)</em>', #07
 			'<span class="quote"><strong>></strong> $1</span>', #08
-			'$1$2<a href="$3" rel="nofollow" >$3</a>', #14
-			'$1$2<a href="http://$3" rel="nofollow" >$3</a>', #15
+			'$1$2<a href="$3" style="color:inherit" rel="nofollow" >$3</a>', #14
+			'$1$2<a href="http://$3" style="color:inherit" rel="nofollow" >$3</a>', #15
 			'<strong>$1</strong>', #16
 			'<em>$1</em>', #17
 			'<h4 class="user">$1</h4>', #18
@@ -193,8 +193,8 @@ class CustomizedBBCodeFormatter extends JBBCode\Parser implements MinichanFormat
 		$this->addBBCode('spoiler', '<span class="spoiler">{param}</span>');
 		$this->addBBCode('raw', '{param}', false, false, 1);
 		
-		$this->addCodeDefinition((new JBBCode\CodeDefinitionBuilder('url', '<a href="{param}">{param}</a>'))->setParseContent(false)->setBodyValidator($urlValidator)->build());
-		$this->addCodeDefinition((new JBBCode\CodeDefinitionBuilder('url', '<a href="{option}">{param}</a>'))->setUseOption(true)->setParseContent(false)->setOptionValidator($urlValidator)->build());
+		$this->addCodeDefinition((new JBBCode\CodeDefinitionBuilder('url', '<a href="{param}" style="color:inherit" rel="nofollow">{param}</a>'))->setParseContent(false)->setBodyValidator($urlValidator)->build());
+		$this->addCodeDefinition((new JBBCode\CodeDefinitionBuilder('url', '<a href="{option}" style="color:inherit" rel="nofollow">{param}</a>'))->setUseOption(true)->setParseContent(true)->setOptionValidator($urlValidator)->build());
 		
 		$this->addCodeDefinition((new JBBCode\CodeDefinitionBuilder('color', '<span style="color: {option}">{param}</span>'))->setUseOption(true)->setOptionValidator($colorValidator)->build());
 		$this->addCodeDefinition((new JBBCode\CodeDefinitionBuilder('colour', '<span style="color: {option}">{param}</span>'))->setUseOption(true)->setOptionValidator($colorValidator)->build());
