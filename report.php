@@ -41,10 +41,14 @@ if ($_POST["recaptcha_response_field"]) {
 	$store_report = true;
 }
 
+$link->db_exec("SELECT headline FROM topics WHERE id = %1", $topic_id);
+list($topic_headline) = $link->fetch_row();
+
+if(!$topic_headline) {
+	add_error("This appears to be an invalid topic", true);
+}
+
 if(!$store_report){
-	$link->db_exec("SELECT headline FROM topics WHERE id = %1", $topic_id);
-	list($topic_headline) = $link->fetch_row();
-	
 	echo "Use this function to inform the Moderators and Administrators of illegal content.<br />";
 	echo "<i>Please note that abuse of this feature may have your posting rights revoked.</i><br /><br />";
 	echo "<form action='' method='post'>";
