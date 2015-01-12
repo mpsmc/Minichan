@@ -33,8 +33,9 @@ If you have any questions you can try your luck on the issue tracker or `##minic
 And yes. The code is shit. :-)
 
 #Branches
-This repository consists of three branches:
+This repository consists of four primary branches, of which all but `master` may have their histories rewritten at any time:
 
 * `master`: The main development branch. The code on this branch should work, but may not be fully functional or stable when development is happening. If you intend to submit pull requests base them off of this branch.
-* `testing`: The testing branch, this branch may have its history rewritten and it's highly recommended you do not use it in any way other than testing upcoming features. A running copy of the code for this branch can be found on http://test.minichan.org
-* `minichan`: The main stable branch. The code on this branch is used for http://minichan.org
+* `testing`: http://test.minichan.org - For testing new changes in a staging setup
+* `beta`: http://beta.minichan.org - For testing new changes in a staging setup, with a shared database with http://minichan.org. Database changes will not be tested here.
+* `minichan`: http://minichan.org
