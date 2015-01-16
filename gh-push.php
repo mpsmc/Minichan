@@ -14,10 +14,10 @@ if($payload->ref != "refs/heads/minichan") {
 $body = array();
 
 foreach($payload->commits as $commit) {
-	$body[] = '- ' . explode("\n", $commit->message)[0];
+	$body[] = '* ' . $commit->message;
 }
 
-$body = implode($body, "\n") . "\n\n" . $payload->compare;
+$body = "[list]\n" . implode($body, "\n") . "[/list]" . $payload->compare;
 
 $headline = explode("\n", $payload->head_commit->message)[0];
 
@@ -29,6 +29,6 @@ $link->insert("topics", array(
 	"tripfag" => "",
 	"author_ip" => $_SERVER['REMOTE_ADDR'],
 	"headline" => "Update: " . $headline,
-	"body" => $body,
+	"body" => "1:".$body,
 	"admin_hyperlink" => true
 ));
