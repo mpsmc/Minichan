@@ -8,7 +8,7 @@ function printDemonstration($message) {
 
 	echo "<tr".($odd ? ' class="odd"' : '').">";
 	echo '<td class="minimal">' . parse('1:'.$message) . '</td>';
-	echo '<td><kbd>' . nl2br(htmlspecialchars($message)) . '</kbd></td>';
+	echo '<td><kbd>' . parse('1:[code]'.$message.'[/code]') . '</kbd></td>';
 	echo "</tr>";
 }
 
