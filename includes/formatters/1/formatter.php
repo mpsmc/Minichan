@@ -61,7 +61,7 @@ class CodeTag extends JBBCode\CodeDefinition {
 		if($this->usesOption() && $this->hasValidInputs($el)) $attr = $el->getAttribute()["code"];
 		
 		if($attr && $attr != "auto")
-			$content = "<code class='lang-".htmlspecialchars($attr, ENT_COMPAT | ENT_HTML401 | ENT_QUOTES)."'>$content</code>";
+			$content = "<code class='lang-".htmlspecialchars(strtolower($attr), ENT_COMPAT | ENT_HTML401 | ENT_QUOTES)."'>$content</code>";
 		else if($attr && $attr == "auto")
 			$content = "<code>$content</code>";
 		
