@@ -73,5 +73,17 @@ foreach(array(
 </tbody>
 </table>
 
+<p>
+<strong>Code</strong><br/>
+The following languages are supported by the [code] tags:<br/>
+<script>
+	var languages = hljs.listLanguages();
+	for(var i = 0; i < languages.length; i++) {
+		if(i != 0) document.write(", ");
+		document.write(languages[i]);
+	}
+</script>
+</p>
+
 <?php
 require('includes/footer.php');
