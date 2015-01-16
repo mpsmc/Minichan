@@ -32,7 +32,7 @@
 		<meta name="description" content="Minichan; annoyingly elitist." />
 		<meta name="keywords" content="minichan, bbs, board, anonymous, free, debate, discuss, argue, drama, loldrama, youarenowbrowsingmanually" />
 		<title><?php echo strip_tags($page_title) . ' — ' . SITE_TITLE ?></title>
-		<link rel="icon" type="image/gif" href="<?php echo DOMAIN; ?>favicon.gif" />
+		<link rel="icon" type="image/gif" href="<?php echo STATIC_DOMAIN; ?>favicon.gif" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo (STATIC_DOMAIN . 'style/layout.css') ?>?8" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo (($custom_stylesheet) ? htmlspecialchars($custom_stylesheet) : (STATIC_DOMAIN . 'style/' . $stylesheet . '.css?2')) ?>" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo (STATIC_DOMAIN . 'javascript/highlight-styles/vs.css') ?>" />
