@@ -36,10 +36,18 @@ class ListCodeDefinition extends JBBCode\CodeDefinition {
     }
 }
 
+class CodeLangValidator implements JBBCode\InputValidator {
+	public function validate($input) {
+		return (bool) preg_match('/^[A-Za-z]+$/', $input);
+	}
+}
+
 class CodeTag extends JBBCode\CodeDefinition {
-	public function __construct() {
+	public function __construct($option) {
 		parent::__construct();
 		$this->setTagName("code");
+		$this->setUseOption($option);
+		$this->optionValidator = array("code" => new CodeLangValidator());
 	}
 	
 	public function asHtml(JBBCode\ElementNode $el) {
@@ -49,7 +57,15 @@ class CodeTag extends JBBCode\CodeDefinition {
 		
 		$content = preg_replace('/^\n|\n$/', '', $content);
 		
-		return "<pre class='codebox2'>" . $content . "</pre>";
+		$attr = "";
+		if($this->usesOption() && $this->hasValidInputs($el)) $attr = $el->getAttribute()["code"];
+		
+		if($attr && $attr != "auto")
+			$content = "<code class='lang-".htmlspecialchars($attr, ENT_COMPAT | ENT_HTML401 | ENT_QUOTES)."'>$content</code>";
+		else if($attr && $attr == "auto")
+			$content = "<code>$content</code>";
+		
+		return "<pre class='codebox2'>$content</pre>";
 	}
 }
 
@@ -176,7 +192,8 @@ class CustomizedBBCodeFormatter extends JBBCode\Parser implements MinichanFormat
 		$urlValidator = new JBBCode\validators\UrlValidator();
 		$colorValidator = new JBBCode\validators\CssColorValidator();
 		
-		$this->addCodeDefinition(new CodeTag());
+		$this->addCodeDefinition(new CodeTag(true));
+		$this->addCodeDefinition(new CodeTag(false));
 		$this->addCodeDefinition(new ListCodeDefinition());
 		
 		$this->addBBCode('b', '<strong>{param}</strong>');
