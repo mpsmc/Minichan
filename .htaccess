@@ -145,6 +145,7 @@ RewriteRule ^failed_postings$ failed_postings.php [L]
 RewriteRule ^edit_ignore_list$ edit_ignore_list.php [L]
 RewriteRule ^notepad$ notepad.php [L]
 RewriteRule ^The_Oracle$ oracle.php [L]
+RewriteRule ^markup_syntax$ markup_syntax.php [L]
 
 # Moderation.
 RewriteRule ^login login.php [L]
