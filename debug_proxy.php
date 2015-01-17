@@ -20,6 +20,7 @@ if(stripos($hostaddr, "ipredate.net")!==false) echo "c";
 if(stripos($hostaddr, "proxy")!==false) echo "d";
 if(stripos($hostaddr, ".info")!==false) echo "e";
 if(stripos($hostaddr, "ioflood.com")!==false) echo "f";
+if(stripos($hostaddr, "linode.com")!==false) echo "F";
 if(IsTorExitPoint()) echo "g";
 if(strpos($hostaddr, ".") !== false && substr_count($hostaddr, ".") < 3) echo "h";
 if(strpos($_SERVER['REMOTE_ADDR'], '65.49.') === 0) echo "i";

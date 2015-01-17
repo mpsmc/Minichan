@@ -488,6 +488,7 @@ function check_proxy($extra = false) {
 	|| (stripos($hostaddr, "proxy")!==false)
 	|| (stripos($hostaddr, ".info")!==false)
 	|| (stripos($hostaddr, "ioflood.com")!==false)
+	|| (stripos($hostaddr, "linode.com")!==false)
 	//|| ($stopforumspam["ip"]["appears"])
 	|| IsTorExitPoint()
 	|| (strpos($hostaddr, ".") !== false && substr_count($hostaddr, ".") < 3)
