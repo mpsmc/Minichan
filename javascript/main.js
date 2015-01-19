@@ -438,6 +438,16 @@ function init() {
 	highlightReplyFromHash();
 	window['UID'] = getCookie("UID");
 	if(!getCookie('fp')) setCookie('fp', new Fingerprint({canvas: true}).get(), 7);
+	$("form").submit(function() {
+		var $inputs = $("input, button, textarea", this);
+		setTimeout(function() {
+			// This must run in the next tick or the input elem is not included in request
+			$inputs.prop("disabled", true);
+		}, 1);
+		setTimeout(function() {
+			$inputs.prop("disabled", false);
+		}, 3000);
+	});
 }
 
 $(init);
