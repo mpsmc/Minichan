@@ -424,6 +424,20 @@ function preg_replace_anchors($data){
 		
 		if ($reply_ids[$pure_id]['author'] == $_SESSION['UID']) {
 			$you = '<span class="unimportant"> (you)</span>';
+		}else{
+			$you = '<span class="unimportant"> (';
+			extract($reply_ids[$pure_id]);
+			if ($namefag == "" && $tripfag == "") {
+				if ($reply_poster_number == 0) {
+					$you .= 'A';
+				} else {
+					$you .= number_to_letter($reply_poster_number);
+				}
+			} else {
+				if($namefag=="") $tripfag = trim($tripfag);
+				$you .= '<strong>' . htmlspecialchars(trim($namefag)) . '</strong>' . $tripfag;
+			}
+			$you .= ')</span>';
 		}
 	
 		if ($reply_ids[$pure_id]['deleted']) {
@@ -452,7 +466,10 @@ while (fetchReplyList()) {
 					$hidden_replies[]     = $reply_id;
 					$reply_ids[$reply_id] = array(
 						'body' => $reply_body,
-						'author' => $reply_author
+						'author' => $reply_author,
+						'namefag' => $namefag,
+						'tripfag' => $tripfag,
+						'reply_poster_number' => $reply_poster_number
 					);
 					// We've encountered an ignored phrase, so skip the rest of this while() iteration.
 					continue 2;
@@ -663,7 +680,10 @@ while (fetchReplyList()) {
 	$reply_ids[$reply_id] = array(
 		'body' => $reply_body,
 		'author' => $reply_author,
-		'deleted' => $reply_deleted
+		'deleted' => $reply_deleted,
+		'namefag' => $namefag,
+		'tripfag' => $tripfag,
+		'reply_poster_number' => $reply_poster_number
 	);
 	
 	if(!$reply_deleted)
