@@ -1,7 +1,7 @@
 <?php
-if($_GET['secret'] != IP_INFO_SECRET) die("Unauthorized.");
 chdir("..");
 require('includes/config.php');
+if($_GET['secret'] != IP_INFO_SECRET) die("Unauthorized.");
 require('includes/database.class.php');
 $link = new db($db_info['server'], $db_info['username'], $db_info['password'], $db_info['database']);
 
