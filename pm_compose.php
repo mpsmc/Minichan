@@ -109,7 +109,7 @@ if(isset($_POST['contents']) && isset($_POST['submit'])) {
 		</div>
 		<?php endif; ?>
 		<label for="body" class="noscreen">Message</label> 
-		<textarea name="contents" cols="80" rows="10" tabindex="2" id="contents"><?php if(isset($_POST['contents'])): ?><?php echo htmlentities($_POST['contents']); ?><?php elseif(isset($contents)): ?><?php echo $contents . "\n"; ?><?php endif; ?></textarea>
+		<textarea name="contents" cols="80" rows="10" tabindex="2" id="contents" class="markup_editor"><?php if(isset($_POST['contents'])): ?><?php echo htmlentities($_POST['contents']); ?><?php elseif(isset($contents)): ?><?php echo $contents . "\n"; ?><?php endif; ?></textarea>
 		<?php if(allowed("mod_pm")): ?>
 		Expiration from now in seconds (leave empty for no expiration): <input type="text" name="expiration" size="8" class="inline" /><br />
 		Recipient can reply: <input type="checkbox" name="can_reply" id="can_reply" class="inline" checked="checked" /><br />
