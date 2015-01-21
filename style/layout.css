@@ -43,6 +43,7 @@ a:focus {
     overflow: auto;
     margin: 0;
 	display: inline-block;
+	line-height: normal;
 }
 
 .codebox {
