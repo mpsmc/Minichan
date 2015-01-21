@@ -38,3 +38,82 @@ $(function() {
 		'target':document
 	});
 });
+
+$(function() {
+	$(".markup_editor").each(createMarkupEditor);
+});
+
+function createMarkupEditor() {
+	var $this = $(this);
+	
+	var $bar = $("<span />");
+	$this.before($bar);
+	
+	function createButton(html, cb) {
+		var $elem = $("<h3 />");
+		$elem.css('display', 'inline-block');
+		$elem.css('cursor', 'pointer');
+		$elem.css('margin-right', '3px');
+		$elem.html(html);
+		$elem.click(function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			cb();
+			return false;
+		});
+		$bar.append($elem);
+	}
+	
+	function createBB(html, tag) {
+		createButton('['+html+']', function() {
+			wrapText($this, '['+tag+']', '[/'+tag+']');
+		});
+	}
+	
+	createBB('<strong>b</strong>', 'b');
+	createBB('<em>i</em>', 'i');
+	createBB('<u>u</u>', 'u');
+	createBB('<s>s</s>', 's');
+	createBB('spoiler', 'sp');
+	createButton('[code]', function() {
+		wrapText($this, '[code]\n', '\n[/code]');
+	});
+	createButton('[url]', function() {
+		var url = prompt("What URL do you want to use?");
+		var start = '', end = '';
+		if(url) {
+			start = '[url='+url+']';
+			end = '[/url]';
+		}
+		wrapText($this, start, end);
+	});
+}
+
+function wrapText(elem, openTag, closeTag) {
+	var textArea = $(elem);
+
+	var len = textArea.val().length;
+	var start = textArea[0].selectionStart;
+	var end = textArea[0].selectionEnd;
+	var selectedText = textArea.val().substring(start, end);
+	var replacement = openTag + selectedText + closeTag;
+
+	var event = document.createEvent('TextEvent');
+	event.initTextEvent('textInput', true, true, null, replacement);
+	textArea.get(0).dispatchEvent(event);
+
+	setSelectionRange(textArea[0], end+openTag.length, end+openTag.length);
+}
+
+function setSelectionRange(input, selectionStart, selectionEnd) {
+	if (input.setSelectionRange) {
+		input.focus();
+		input.setSelectionRange(selectionStart, selectionEnd);
+	} else if (input.createTextRange) {
+		var range = input.createTextRange();
+		range.collapse(true);
+		range.moveEnd('character', selectionEnd);
+		range.moveStart('character', selectionStart);
+		range.select();
+	}
+}

@@ -744,7 +744,7 @@ list($setName) = $link->fetch_row();
 		</div>
 -->
 	    <?php } ?>
-		<textarea class="inline" name="body" id="qr_text" rows="5" cols="90" tabindex="3"></textarea>
+		<textarea class="inline markup_editor" name="body" id="qr_text" rows="5" cols="90" tabindex="3"></textarea>
 		<?php if (ALLOW_IMAGES) { ?>
 		<input type="file" name="image" id="image" tabindex="5" />
 		<?php } if (ALLOW_IMGUR) { ?>

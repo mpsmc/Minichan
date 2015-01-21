@@ -800,9 +800,9 @@ $url = htmlspecialchars($url);
 <?php			
 // Give mobile users a slightly smaller text editing field.
 if(!MOBILE_MODE){ ?>
-<textarea name="body" cols="120" rows="18" tabindex="2" id="body">
+<textarea name="body" cols="120" rows="18" tabindex="2" id="body" class="markup_editor">
 <?php } else { ?>
-<textarea name="body" cols="120" rows="8" tabindex="2" id="body">
+<textarea name="body" cols="120" rows="8" tabindex="2" id="body" class="markup_editor">
 <?php }
 
 		// If we've had an error or are previewing, print the submitted text.
