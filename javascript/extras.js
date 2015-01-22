@@ -75,6 +75,7 @@ function createMarkupEditor() {
 	createBB('<u>u</u>', 'u');
 	createBB('<s>s</s>', 's');
 	createBB('spoiler', 'sp');
+	createBB('border', 'border');
 	createButton('[code]', function() {
 		wrapText($this, '[code]\n', '\n[/code]');
 	});
