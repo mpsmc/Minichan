@@ -109,16 +109,6 @@ class LegacyFormatter implements MinichanFormatter {
 		
 		$text = preg_replace($this->markup, $this->html, $text);
 		
-		// Video embedding.
-		if (EMBED_VIDEOS) {
-			if ( strpos ( $text, 'youtube.com' ) !== FALSE ) {
-				$text = preg_replace ( "/(<a href=\"https?:\/\/(www\.)?youtube\.com\/watch\?v=([^,\.& \t\r\n\v\f]+)([^,\. \t\r\n\v\f]+)?\"([^<]*)*<\/a>)/", "\\1 [<a href=\"javascript:void(0);\" onclick=\"play_video('youtube','\\3', this, '$record_class', '$record_ID');\" class=\"video youtube\">play</a>]", $text );
-			}
-			if ( strpos ( $text, 'vimeo.com' ) !== FALSE ) {
-				$text = preg_replace ( "/(<a href=\"https?:\/\/(www\.)?vimeo\.com\/([0-9]+)([^,\. \t\r\n\v\f]+)?\"([^<]*)*<\/a>)/", "\\1 [<a href=\"javascript:void(0);\" onclick=\"play_video('vimeo','\\3', this, '$record_class', '$record_ID');\" class=\"video vimeo\">play</a>]", $text );
-			}
-		}
-		
 		return nl2br($text);
 	}
 	

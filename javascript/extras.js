@@ -1,22 +1,59 @@
-/* play_video: Stolen from authorizedclone.com */
-function play_video ( provider, media_ID, element, record_class, record_ID ) {
-        my_ID = record_class + '-' + record_ID + '-media-' + media_ID;
-        if ( jQuery(element).html() == 'play' ) {
-                jQuery(element).html('close');
-        } else {
-                jQuery(element).html('play');
-                jQuery('#' + my_ID).slideUp();
-                return false;
-        }
-        video_player_html = '';
-        if ( provider == 'youtube' ) {
-                video_player_html = '<div id="' + my_ID + '" style="display: none;" class="video wrapper c"><object width="500" height="405"><param name="movie" value="https://www.youtube-nocookie.com/v/' + media_ID + '&amp;hl=en_US&amp;fs=1&amp;border=1&amp;autoplay=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="https://www.youtube-nocookie.com/v/' + media_ID + '&amp;hl=en_US&amp;fs=1&amp;border=1&amp;autoplay=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="500" height="405"></embed></object><a href="https://www.youtube.com/watch?v=' + media_ID + '" class="youtube_alternate"><img src="https://img.youtube.com/vi/' + media_ID + '/0.jpg" width="480" height="360" alt="Video" /></a></div>';
-        } else if ( provider == 'vimeo' ) {
-                video_player_html = '<div id="' + my_ID + '" style="display: none;" class="video wrapper c"><object width="512" height="294"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="https://vimeo.com/moogaloop.swf?clip_id=' + media_ID + '&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=1&amp;fullscreen=1&amp;autoplay=1" /><embed src="https://vimeo.com/moogaloop.swf?clip_id=' + media_ID + '&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;fullscreen=1&amp;autoplay=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="512" height="294"></embed></object></div>';
-        }
-        jQuery(element).parent().after(video_player_html + "\n");
-        jQuery('#' + my_ID).slideDown();
-}
+$(function() {
+	var youtubeEmbedHtml = '<div style="display: none;" class="video wrapper c"><object width="500" height="405"><param name="movie" value="https://www.youtube-nocookie.com/v/{vid}&amp;hl=en_US&amp;fs=1&amp;border=1&amp;autoplay=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="https://www.youtube-nocookie.com/v/{vid}&amp;hl=en_US&amp;fs=1&amp;border=1&amp;autoplay=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="500" height="405"></embed></object><a href="https://www.youtube.com/watch?v={vid}" class="youtube_alternate"><img src="https://img.youtube.com/vi/{vid}/0.jpg" width="480" height="360" alt="Video" /></a></div>';
+	var vimeoEmbedHtml = '<div style="display: none;" class="video wrapper c"><object width="512" height="294"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="https://vimeo.com/moogaloop.swf?clip_id={vid}&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=1&amp;fullscreen=1&amp;autoplay=1" /><embed src="https://vimeo.com/moogaloop.swf?clip_id={vid}&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;fullscreen=1&amp;autoplay=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="512" height="294"></embed></object></div>';
+
+	function transformVideoLink(vid, html) {
+		var $this = $(this);
+		var $play = $("<a href='#'>[play]</a>");
+		
+		var $video = $(html.replace(/\{vid\}/g, vid));
+		var active = false;
+		
+		$play.click(function(e) {
+			e.preventDefault();
+			if(active) return;
+			active = true;
+			
+			if($video.is(':visible')) {
+				$play.text('[play]');
+				$video.slideUp(function() {
+					$video.remove();
+					active = false;
+				});
+			}else{
+				$play.text('[close]');
+				$this.parent().after($video);
+				$video.slideDown(function() {
+					active = false;
+				});
+			}
+		});
+		
+		$this.after($play);
+		$this.after(" ");
+	}
+	
+	$("div.body a").each(function() {
+		var $this = $(this);
+		if(this.hostname.match(/(www\.)?youtube(-nocookie)?.com/)) {
+			if(this.pathname.match(/^\/watch/)) {
+				var parts = this.search.substring(1).split('&');
+				for(var i = 0; i < parts.length; i++) {
+					var pair = parts[i].split('=');
+					if(pair[0] == "v") {
+						transformVideoLink.call(this, decodeURIComponent(pair[1]), youtubeEmbedHtml);
+						break;
+					}
+				}
+			}
+		}else if(this.hostname.match(/(www\.)?vimeo.com/)) {
+			var match = /^\/([0-9]+)/.exec(this.pathname);
+			if(match) {
+				transformVideoLink.call(this, match[1], vimeoEmbedHtml);
+			}
+		}
+	});
+});
 
 var shortcut={'all_shortcuts':{},'add':function(shortcut_combination,callback,opt){var default_options={'type':'keydown','propagate':false,'disable_in_input':false,'target':document,'keycode':false}
 if(!opt)opt=default_options;else{for(var dfo in default_options){if(typeof opt[dfo]=='undefined')opt[dfo]=default_options[dfo];}}
