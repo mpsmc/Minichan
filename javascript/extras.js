@@ -46,6 +46,11 @@ $(function() {
 					}
 				}
 			}
+		}else if(this.hostname.match(/(www\.)?youtu.be/)) {
+			var match = /^\/([^\/?#]+)/.exec(this.pathname);
+			if(match) {
+				transformVideoLink.call(this, match[1], youtubeEmbedHtml);
+			}
 		}else if(this.hostname.match(/(www\.)?vimeo.com/)) {
 			var match = /^\/([0-9]+)/.exec(this.pathname);
 			if(match) {
