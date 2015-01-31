@@ -15,7 +15,7 @@ function printDemonstration($message) {
 ?>
 <p>
 This board uses two styles of formatting, BBCode and Wiki. They can be mixed however you like, and are used to style your posts.
-Below are examples of which formatting is available, and how it looks once applied.
+Below are examples of which formatting is available, and how it looks once applied. Emoticons are also supported, a full list can be found <a href="<?php echo DOMAIN; ?>emoticons">here</a>.
 </p>
 <strong>BBCode</strong>
 <table>
@@ -72,7 +72,6 @@ foreach(array(
 ?>
 </tbody>
 </table>
-
 <p>
 <strong>Code</strong><br/>
 The following languages are supported by the [code] tags:<br/>

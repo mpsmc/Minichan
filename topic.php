@@ -189,7 +189,7 @@ if($user_disable_images != 1) {
 			$thumb_width = $new_thumb_width;
 		}
 		
-		echo '<a href="'.htmlspecialchars($topic_img_external) . '"' . (($user_image_viewer==1) ? 'class="thickbox"' : '') . (($user_image_viewer==2) ? 'target=_blank"' : '') . '><img width="'.$thumb_width.'" height="'.$thumb_height.'" src="'. htmlspecialchars($topic_thumb_external) . '" alt="Externally hosted image" title="Externally hosted image" /></a>';
+		echo '<a href="'.htmlspecialchars($topic_img_external) . '"' . (($user_image_viewer==1) ? 'class="thickbox"' : '') . (($user_image_viewer==2) ? 'target=_blank"' : '') . '><img class="attached" width="'.$thumb_width.'" height="'.$thumb_height.'" src="'. htmlspecialchars($topic_thumb_external) . '" alt="Externally hosted image" title="Externally hosted image" /></a>';
 		
 	}elseif ($topic_image_name) {
 		if(!$thumb_width&&!$thumb_height){
@@ -207,12 +207,12 @@ if($user_disable_images != 1) {
 			if(!file_exists("thumbs/".$topic_image_name)){
 				thumbnail("img/" . $topic_image_name, $topic_image_name, end(explode(".", $topic_image_name)));
 			}
-			echo '<a href="'.STATIC_DOMAIN.'img/' . htmlspecialchars($topic_image_name) . '"' . (($user_image_viewer==1) ? 'class="thickbox"' : '') . (($user_image_viewer==2) ? 'target=_blank"' : '') . '><img width="'.$thumb_width.'" height="'.$thumb_height.'" src="'.STATIC_DOMAIN.'thumbs/' . htmlspecialchars($topic_image_name) . '" alt="" /></a>';
+			echo '<a href="'.STATIC_DOMAIN.'img/' . htmlspecialchars($topic_image_name) . '"' . (($user_image_viewer==1) ? 'class="thickbox"' : '') . (($user_image_viewer==2) ? 'target=_blank"' : '') . '><img class="attached" width="'.$thumb_width.'" height="'.$thumb_height.'" src="'.STATIC_DOMAIN.'thumbs/' . htmlspecialchars($topic_image_name) . '" alt="" /></a>';
 		}else{
 			if(file_exists("thumbs/".$topic_image_name)){
-				echo '<a href="'.STATIC_DOMAIN.'thumbs/' . htmlspecialchars($topic_image_name) . '"' . (($user_image_viewer==1) ? 'class="thickbox"' : '') . (($user_image_viewer==2) ? 'target=_blank"' : '') . '><img width="'.$thumb_width.'" height="'.$thumb_height.'" src="'.STATIC_DOMAIN.'thumbs/' . htmlspecialchars($topic_image_name) . '" alt="" /></a>';
+				echo '<a href="'.STATIC_DOMAIN.'thumbs/' . htmlspecialchars($topic_image_name) . '"' . (($user_image_viewer==1) ? 'class="thickbox"' : '') . (($user_image_viewer==2) ? 'target=_blank"' : '') . '><img class="attached" width="'.$thumb_width.'" height="'.$thumb_height.'" src="'.STATIC_DOMAIN.'thumbs/' . htmlspecialchars($topic_image_name) . '" alt="" /></a>';
 			}else{
-				echo '<a missing='.$topic_image_name.' href="http://minichan.org/topic/6346"><img width="147" height="180" src="'.DOMAIN.'style/deleted.png" alt="Image went missing" /></a>';
+				echo '<a missing='.$topic_image_name.' href="http://minichan.org/topic/6346"><img class="attached" width="147" height="180" src="'.DOMAIN.'style/deleted.png" alt="Image went missing" /></a>';
 			}
 		}
 		
@@ -600,7 +600,7 @@ while (fetchReplyList()) {
 				$thumb_width = $new_thumb_width;
 			}
 			
-			echo '<a href="'.htmlspecialchars($img_external) . '"' . (($user_image_viewer==1) ? 'class="thickbox"' : '') . (($user_image_viewer==2) ? 'target=_blank"' : '') . '><img width="'.$thumb_width.'" height="'.$thumb_height.'" src="'. htmlspecialchars($thumb_external) . '" alt="Externally hosted image" title="Externally hosted image" /></a>';
+			echo '<a href="'.htmlspecialchars($img_external) . '"' . (($user_image_viewer==1) ? 'class="thickbox"' : '') . (($user_image_viewer==2) ? 'target=_blank"' : '') . '><img class="attached" width="'.$thumb_width.'" height="'.$thumb_height.'" src="'. htmlspecialchars($thumb_external) . '" alt="Externally hosted image" title="Externally hosted image" /></a>';
 			
 		}elseif ($reply_image_name) {
 			if(!$thumb_width&&!$thumb_height&&file_exists("thumbs/".$reply_image_name)){
@@ -620,12 +620,12 @@ while (fetchReplyList()) {
 				if(!file_exists("thumbs/".$reply_image_name)){
 					thumbnail("img/" . $reply_image_name, $reply_image_name, end(explode(".", $reply_image_name)));
 				}
-				echo '<a href="'.STATIC_DOMAIN.'img/' . htmlspecialchars($reply_image_name) . '"' . (($user_image_viewer==1) ? 'class="thickbox"' : '') . (($user_image_viewer==2) ? 'target=_blank"' : '') . '><img width="'.$thumb_width.'" height="'.$thumb_height.'" src="'.STATIC_DOMAIN.'thumbs/' . htmlspecialchars($reply_image_name) . '" alt="" /></a>';
+				echo '<a href="'.STATIC_DOMAIN.'img/' . htmlspecialchars($reply_image_name) . '"' . (($user_image_viewer==1) ? 'class="thickbox"' : '') . (($user_image_viewer==2) ? 'target=_blank"' : '') . '><img class="attached" width="'.$thumb_width.'" height="'.$thumb_height.'" src="'.STATIC_DOMAIN.'thumbs/' . htmlspecialchars($reply_image_name) . '" alt="" /></a>';
 			}else{
 				if(file_exists("thumbs/".$reply_image_name)){
-					echo '<a href="'.STATIC_DOMAIN.'thumbs/' . htmlspecialchars($reply_image_name) . '"' . (($user_image_viewer==1) ? 'class="thickbox"' : '') . (($user_image_viewer==2) ? 'target=_blank"' : '') . '><img width="'.$thumb_width.'" height="'.$thumb_height.'" src="'.STATIC_DOMAIN.'thumbs/' . htmlspecialchars($reply_image_name) . '" alt="" /></a>';
+					echo '<a href="'.STATIC_DOMAIN.'thumbs/' . htmlspecialchars($reply_image_name) . '"' . (($user_image_viewer==1) ? 'class="thickbox"' : '') . (($user_image_viewer==2) ? 'target=_blank"' : '') . '><img class="attached" width="'.$thumb_width.'" height="'.$thumb_height.'" src="'.STATIC_DOMAIN.'thumbs/' . htmlspecialchars($reply_image_name) . '" alt="" /></a>';
 				}else{
-					echo '<a href="http://minichan.org/topic/6346"><img width="147" height="180" src="'.STATIC_DOMAIN.'style/deleted.png" alt="Image went missing" /></a>';
+					echo '<a href="http://minichan.org/topic/6346"><img class="attached" width="147" height="180" src="'.STATIC_DOMAIN.'style/deleted.png" alt="Image went missing" /></a>';
 				}
 			}
 		}

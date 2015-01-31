@@ -22,7 +22,7 @@ a:focus {
     word-wrap:break-word;
 }
 
-.body img {
+.body img.attached {
     border:none!important;
     float:left;
     margin-bottom:6px;

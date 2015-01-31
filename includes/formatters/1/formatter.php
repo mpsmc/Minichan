@@ -4,6 +4,7 @@ require_once "JBBCode/CodeDefinition.php";
 require_once "JBBCode/CodeDefinitionBuilder.php";
 require_once "JBBCode/NodeVisitor.php";
 require_once "JBBCode/visitors/HTMLSafeVisitor.php";
+require_once "img/emoticons/emoticons.php";
 
 /**
  * Implements a [list] code definition that provides the following syntax:
@@ -184,6 +185,32 @@ class NewlineVisitor implements JBBCode\NodeVisitor {
 	}
 }
 
+class EmoticonVisitor implements JBBCode\NodeVisitor {
+	public function visitDocumentElement(JBBCode\DocumentElement $documentElement) {
+		foreach ($documentElement->getChildren() as $child) {
+			$child->accept($this);
+		}
+	}
+	
+	public function visitElementNode(JBBCode\ElementNode $elementNode) {
+		if(in_array($elementNode->getTagName(), array("code", "raw"))) return;
+		
+		foreach ($elementNode->getChildren() as $child) {
+			$child->accept($this);
+		}
+	}
+	
+	public function visitTextNode(JBBCode\TextNode $textNode) {
+		$text = $textNode->getValue();
+		foreach(getEmoticons() as $key=>$img) {
+			$src = STATIC_DOMAIN . 'img/emoticons/'.$img;
+			$img = '<img title=":'.htmlspecialchars($key, ENT_COMPAT | ENT_HTML401 | ENT_QUOTES).':" src="'.$src.'" />';
+			$text = str_replace(':'.$key.':', $img, $text);
+		}
+		$textNode->setValue($text);
+	}
+}
+
 class CustomizedBBCodeFormatter extends JBBCode\Parser implements MinichanFormatter {
 	protected $visitors = array();
 
@@ -219,6 +246,7 @@ class CustomizedBBCodeFormatter extends JBBCode\Parser implements MinichanFormat
 		$this->visitors[] = new HTMLSafeVisitor();
 		$this->visitors[] = new LegacyMarkupVisitor();
 		$this->visitors[] = new NewlineVisitor();
+		$this->visitors[] = new EmoticonVisitor();
 	}
 	
 	public function parse($text, $nl2br=true, $encode=true) {
