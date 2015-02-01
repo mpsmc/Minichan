@@ -1,12 +1,12 @@
 $(function() {
-	var youtubeEmbedHtml = '<div style="display: none;" class="video wrapper c"><object width="500" height="405"><param name="movie" value="https://www.youtube-nocookie.com/v/{vid}&amp;hl=en_US&amp;fs=1&amp;border=1&amp;autoplay=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="https://www.youtube-nocookie.com/v/{vid}&amp;hl=en_US&amp;fs=1&amp;border=1&amp;autoplay=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="500" height="405"></embed></object><a href="https://www.youtube.com/watch?v={vid}" class="youtube_alternate"><img src="https://img.youtube.com/vi/{vid}/0.jpg" width="480" height="360" alt="Video" /></a></div>';
+	var youtubeEmbedHtml = '<div style="display: none; width:560px" class="video wrapper c"><iframe width="560" height="315" src="https://www.youtube.com/embed/{vid}?start={start}" frameborder="0" allowfullscreen></iframe></div>';
 	var vimeoEmbedHtml = '<div style="display: none;" class="video wrapper c"><object width="512" height="294"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="https://vimeo.com/moogaloop.swf?clip_id={vid}&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=1&amp;fullscreen=1&amp;autoplay=1" /><embed src="https://vimeo.com/moogaloop.swf?clip_id={vid}&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;fullscreen=1&amp;autoplay=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="512" height="294"></embed></object></div>';
 
-	function transformVideoLink(vid, html) {
+	function transformVideoLink(vid, start, html) {
 		var $this = $(this);
 		var $play = $("<a href='#'>[play]</a>");
 		
-		var $video = $(html.replace(/\{vid\}/g, vid));
+		var $video = $(html.replace(/\{vid\}/g, vid).replace(/\{start\}/g, start));
 		var active = false;
 		
 		$play.click(function(e) {
@@ -33,15 +33,64 @@ $(function() {
 		$this.after(" ");
 	}
 	
+	// This can probably do a lot more effecient...
+	function getTimeFromYTUrl(elem) {
+		var parts = elem.search.substring(1).split('&');
+		var time = null;
+		for(var i = 0; i < parts.length; i++) {
+			var pair = parts[i].split('=');
+			if(pair[0] == "t") {
+				time = decodeURIComponent(pair[1]);
+				break;
+			}
+		}
+		
+		if(time == null) {
+			var match = /^#t=([0-9ms]+)/.exec(elem.hash);
+			if(match) time = match[1];
+		}
+		
+		if(time == null) return 0;
+		if(time.match(/^\d*$/)) return time;
+		var regexp = /([0-9]+|[a-z]+)/g;
+		var match = regexp.exec(time);
+		var actual = 0;
+		var carry = null;
+		
+		var weights = {
+			'd': 86400,
+			'h': 3600,
+			'm': 60,
+			's': 1
+		};
+		
+		while(match != null) {
+			if(!isNaN(match[0])) {
+				carry = match[0];
+			}else if(carry !== null) {
+				var weight = weights[match[0]];
+				if(weight) {
+					actual += carry * weight;
+					carry = null;
+				}
+			}
+			
+			match = regexp.exec(time);
+		}
+		
+		return actual;
+	}
+	
 	$("div.body a").each(function() {
 		var $this = $(this);
 		if(this.hostname.match(/(www\.)?youtube(-nocookie)?.com/)) {
 			if(this.pathname.match(/^\/watch/)) {
 				var parts = this.search.substring(1).split('&');
+				var vid = null;
 				for(var i = 0; i < parts.length; i++) {
 					var pair = parts[i].split('=');
 					if(pair[0] == "v") {
-						transformVideoLink.call(this, decodeURIComponent(pair[1]), youtubeEmbedHtml);
+						transformVideoLink.call(this, decodeURIComponent(pair[1]), getTimeFromYTUrl(this), youtubeEmbedHtml);
 						break;
 					}
 				}
@@ -49,12 +98,12 @@ $(function() {
 		}else if(this.hostname.match(/(www\.)?youtu.be/)) {
 			var match = /^\/([^\/?#]+)/.exec(this.pathname);
 			if(match) {
-				transformVideoLink.call(this, match[1], youtubeEmbedHtml);
+				transformVideoLink.call(this, match[1], getTimeFromYTUrl(this), youtubeEmbedHtml);
 			}
 		}else if(this.hostname.match(/(www\.)?vimeo.com/)) {
 			var match = /^\/([0-9]+)/.exec(this.pathname);
 			if(match) {
-				transformVideoLink.call(this, match[1], vimeoEmbedHtml);
+				transformVideoLink.call(this, match[1], 0, vimeoEmbedHtml);
 			}
 		}
 	});
