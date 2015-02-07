@@ -219,6 +219,33 @@ table {
     word-wrap: break-word;
 }
 
+body.resizing {
+    cursor: col-resize !important;
+}
+
+body.resizing, body.resizable_columns, table.resizable th {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+body.resizable_columns table.resizable .minimal {
+    white-space: normal !important;
+}
+
+body.resizable_columns table.resizable th.minimal {
+    white-space: nowrap !important;
+    overflow: hidden;
+}
+
+
+body.resizing table.resizable th:not(:last-child) {
+    box-shadow: 1px 0px;
+}
+
 table th {
     padding:.5em;
     text-align:left;
