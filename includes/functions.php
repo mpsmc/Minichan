@@ -1055,7 +1055,20 @@ class table {
 	{
 		$this->columns = $all_columns;
 	
-		$this->output .= '<table>' . indent() . '<thead>' . indent(2) . '<tr>';
+		$this->output .= '<table class="resizable">' . indent(2);
+
+		// Output <col> or <col class='minimal'>
+		foreach($all_columns as $key => $column) {
+			$this->output .= '<col class="';
+			if($column != $primary_column) {
+				$this->output .= 'minimal ';
+			} else {
+				$this->primary_key = $key;
+			}
+			$this->output .= '">' . indent(2);
+		}
+
+		$this->output .= '<thead>' . indent(2) . '<tr>';
 		
 		foreach($all_columns as $key => $column) {
 			$this->output .=   indent(3) . ' <th class="';
