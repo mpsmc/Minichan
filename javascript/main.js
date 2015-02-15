@@ -162,6 +162,11 @@ var replyCursor = (function() {
 	var replies; // Use divs for paging.
 
 	function highlightReplyAndReplaceHash(id) {
+		// Navigation overrides any snapback operations.
+		// This avoids snapbacks spamming the history.
+		if (history.state && history.state.length) {
+			history.go(-1 * history.state.length);
+		}
 		highlightReply(id);
 		
 		// When scrolling, the hash needs updating, but never the history.
@@ -284,7 +289,7 @@ var replyCursor = (function() {
 	};
 }());
 
-/* Given a reply ID, highlight and scroll to it. */
+/* Given a reply ID, highlight it. */
 function highlightReply(id) {
 	var newHash;
 	var contentEl = document.getElementById('reply_' + id);
@@ -503,6 +508,7 @@ function init() {
 	highlightReplyFromHash();
 	window['UID'] = getCookie("UID");
 	if(!getCookie('fp')) setCookie('fp', new Fingerprint({canvas: true}).get(), 7);
+
 	$("form").submit(function() {
 		var $inputs = $("input, button, textarea", this);
 		setTimeout(function() {

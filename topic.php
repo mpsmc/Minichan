@@ -804,6 +804,7 @@ shortcut.add("3", function() { ignore() || visitNthCitation(2); }, defaults);
 
 // Handle history.back
 window.addEventListener('hashchange', updateSnapbackLink, false);
+$(function() { updateSnapbackLink(history.state); });
 </script>
 
 <?php
