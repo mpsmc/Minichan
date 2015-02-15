@@ -46,7 +46,7 @@ function uploadImage(file) {
 				$("#uploader").remove();
 			}
 		});
-	}
+	};
 	reader.readAsDataURL(file);
 }
 
@@ -143,11 +143,33 @@ function replyDivToId(div) {
 	}
 }
 
+function replyIdToHash(id) {
+	return "#reply_" + id;
+}
+
+function hashToReplyId() {
+	if (location.hash && document.getElementById(location.hash.substring(1)) && location.hash.indexOf('reply_') != -1) {
+		return location.hash.substring(7);
+	} else {
+		return null;
+	}
+}
+
 /* Browse replies. */
 var replyCursor = (function() {
 
 	var replyIds; // Use ID array for single stepping.
 	var replies; // Use divs for paging.
+
+	function highlightReplyAndReplaceHash(id) {
+		highlightReply(id);
+		
+		// When scrolling, the hash needs updating, but never the history.
+		newHash = replyIdToHash(id);
+		if (window.location.hash !== newHash) {
+			window.location.replace(newHash);
+		}
+	}
 
 	$(function() { // onDomReady callback.
 		replyIds = $('#body_wrapper h3.c')
@@ -201,7 +223,7 @@ var replyCursor = (function() {
 	// Highlight the last reply and goto the bottom of the page.
 	function _bottom() {
 		if (replyIds.length > 0) {
-			highlightReply(replyIds[replyIds.length - 1]);
+			highlightReplyAndReplaceHash(replyIds[replyIds.length - 1]);
 		} else { // Handle corner case of no replies.
 			highlightOp();
 		}
@@ -213,7 +235,7 @@ var replyCursor = (function() {
 		if (current < 0 || (current === 0 || replyIds.length === 0)) {
 			_top();
 		} else {
-			highlightReply(replyIds[current - 1]);
+			highlightReplyAndReplaceHash(replyIds[current - 1]);
 		}
 	}
 
@@ -223,19 +245,19 @@ var replyCursor = (function() {
 			if (replyIds.length === 0) {
 				_top();
 			} else {
-				highlightReply(replyIds[0]);
+				highlightReplyAndReplaceHash(replyIds[0]);
 			}
 		} else if ((current + 1) >= replyIds.length) {
 			_bottom();
 		} else {
-			highlightReply(replyIds[current + 1]);
+			highlightReplyAndReplaceHash(replyIds[current + 1]);
 		}
 	}
 
 	function previousScreen() {
 		var replyId = replyDivToId(_nearestElement(false));
 		if (replyId) {		  
-			highlightReply(replyId);
+			highlightReplyAndReplaceHash(replyId);
 		} else {
 			_top();
 		}
@@ -244,7 +266,7 @@ var replyCursor = (function() {
 	function nextScreen() {
 		var replyId = replyDivToId(_nearestElement(true));
 		if (replyId) {			  
-			highlightReply(replyId);
+			highlightReplyAndReplaceHash(replyId);
 		} else {
 			_bottom();
 		}
@@ -264,6 +286,7 @@ var replyCursor = (function() {
 
 /* Given a reply ID, highlight and scroll to it. */
 function highlightReply(id) {
+	var newHash;
 	var contentEl = document.getElementById('reply_' + id);
 	var boxEl = document.getElementById('reply_box_' + id);
 
@@ -274,7 +297,7 @@ function highlightReply(id) {
 	}
 	if (boxEl && contentEl) {
 		boxEl.className += ' highlighted';
-		window.location.replace('#' + contentEl.getAttribute("name"));
+		window.scroll(0, contentEl.offsetTop);
 	}
 		
 	if($("#reply_button_"+id).length > 0){
@@ -311,7 +334,6 @@ function quickQuote(id, content){
 	document.getElementById('qr_text').value += '@' + addCommas(id) + '\r\n\r\n';
 	document.getElementById('qr_text').value += decodeURIComponent(content.replace(/\+/g, '%20')) + "\r\n\r\n" ;
 	document.getElementById('qr_text').scrollTop = document.getElementById('qr_text').scrollHeight;
-	document.getElementById('qr_text').sel
 	return false;
 }
 
@@ -362,34 +384,78 @@ function printCharactersRemaining(idOfTrackerElement, numDefaultCharacters) {
 	document.write(' (<STRONG ID="' + idOfTrackerElement + '">' + numDefaultCharacters + '</STRONG> characters left)');
 }
 
-var snapbackStack = [];
-
-function popSnapbackLink() {
-	setTimeout(function() {
-		snapbackStack.pop();
-		var tmp = document.getElementById("snapback_link");
-		if (snapbackStack.length) {
-			tmp.href = '#reply_' + snapbackStack[snapbackStack.length - 1];		
-			document.querySelector('#snapback_link span').innerHTML = snapbackStack.length > 1? snapbackStack.length : '';
-		} else {
-			tmp.style.display = 'none';
+function visitNthCitation(n) {
+	var replyEl = document.querySelector('#body_wrapper h3 + .body.highlighted');
+	if (replyEl) {
+		var citations = replyEl.querySelectorAll('a.cite_reply');
+		if (citations.length > n) {
+			citations[n].click();
 		}
-	}, 10);
+	}
+}
+
+function updateSnapbackLink(state) {
+	var link = document.getElementById('snapback_link'), arrowhead, numeric;
+	if (link == null) { // create link
+		link = document.createElement("a"),
+			arrowhead = document.createElement("strong"),
+			numeric = document.createElement("span");
+
+		link.id = 'snapback_link';
+		link.style.display = 'none';
+		link.classList.add('help_cursor');
+		link.title = 'Click me to snap back!';
+		
+		link.addEventListener('click', function(evt) {
+			window.history.back();
+		});
+		
+		arrowhead.innerHTML = '↕';
+		numeric.innerHTML = '&nbsp;';
+		link.appendChild(arrowhead);
+		link.appendChild(numeric);
+		document.body.appendChild(link);
+	} else {
+		arrowhead = link.querySelector('strong');
+		numeric = link.querySelector('span');
+	}
+
+	if (!history.state || !history.state.length) {
+		link.style.display = 'none';
+	} else if (history.state.length === 1) {
+		numeric.innerHTML = '&nbsp;';
+		link.style.display = 'inline';
+	} else if (history.state.length > 1) {
+		numeric.innerHTML = history.state.length;
+		link.style.display = 'inline';		
+	}
+
+	highlightReply(hashToReplyId());
 	return true;
 }
 
-function createSnapbackLink(lastReplyId) {
-	if (snapbackStack.length && snapbackStack[snapbackStack.length - 1] === lastReplyId) {
-		return;
+function onBeforeFollowCitation(event, replyId, citationId) {
+	var newState;
+	if (history.state) {
+		if (history.state && history.state.lastId === replyId) {
+			// Avoid adding the same anchor again and again.
+		} else {
+			newState = {
+				length: history.state.length + 1,
+				lastId: replyId
+			};
+			history.pushState(newState, "", replyIdToHash(citationId));
+		}
+	} else {
+		newState = {
+			length: 1,
+			lastId: replyId
+		};
+		history.pushState(newState, "", replyIdToHash(citationId));		
 	}
 
-	snapbackStack.push(lastReplyId);
-	var a = document.getElementById('snapback_link');
-	var linkCounter = document.querySelector('#snapback_link span');
-
-	a.href = '#reply_' + lastReplyId;
-	a.style.display = 'inline';
-	document.querySelector('#snapback_link span').innerHTML = snapbackStack.length > 1? snapbackStack.length : '';
+	updateSnapbackLink(newState);
+	return false;
 }
 
 function getCookie(c_name) {
@@ -423,8 +489,10 @@ function chooseImage(elem) {
 }
 
 function highlightReplyFromHash() {
-	if (window.location.hash && document.getElementById(window.location.hash.substring(1)) && window.location.hash.indexOf('reply_') != -1)
-		highlightReply(window.location.hash.substring(7));
+	var replyId = hashToReplyId();
+	
+	if (replyId)
+		highlightReply(replyId);
 	else if (window.location.hash.indexOf('new') != -1)
 		highlightReply(document.getElementById('new_id').value);
 	else
@@ -432,9 +500,6 @@ function highlightReplyFromHash() {
 }
 
 function init() {
-	$(window).on('hashchange', function() {
-		highlightReplyFromHash();
-	});
 	highlightReplyFromHash();
 	window['UID'] = getCookie("UID");
 	if(!getCookie('fp')) setCookie('fp', new Fingerprint({canvas: true}).get(), 7);

@@ -444,7 +444,7 @@ function preg_replace_anchors($data){
 			$you .= '<span class="unimportant"> (deleted)</span>';
 		}
 		
-		$retval = '<span class="unimportant"><a href="#reply_%pure_id%" onclick="createSnapbackLink(\'%reply_id%\'); return true;" class="help cite_reply" title="' . snippet($reply_ids[$pure_id]['body']) . '">%link_text%</a></span>' . $you;
+		$retval = '<span class="unimportant"><a href="#reply_%pure_id%" onclick="return onBeforeFollowCitation(event, \'%reply_id%\', \'%pure_id%\');" class="help cite_reply" title="' . snippet($reply_ids[$pure_id]['body']) . '">%link_text%</a></span>' . $you;
 		$anchor_cache[$formatted_id] = $retval;
 		return str_replace(array("%link_text%", "%reply_id%", "%pure_id%"), array($link_text, $reply_id, $pure_id), $retval);
 	}
@@ -771,11 +771,6 @@ if(allowed("delete")) { ?>
 <?php
 }
 ?>
-<a id='snapback_link' style='display: none' class='help_cursor' onclick='return popSnapbackLink();' title='Click me to snap back!' href='#'>
-<strong>↕</strong>
-<span>&nbsp;</span>			
-</a>
-
 <script>
 var defaults = {
 	'type':'keydown',
@@ -785,13 +780,30 @@ var defaults = {
 
 /* Do nothing when in insert mode. */
 function ignore() {
-    return $("input, textarea").is(":focus");
+	return $("input, textarea").is(":focus");
+}
+
+function ignoreSnapback() {
+	var snapback = document.getElementById('snapback_link');
+	return !snapback || snapback.style.display == 'none';
 }
                         
 shortcut.add("j", function() { ignore() || replyCursor.next(); }, defaults);
 shortcut.add("k", function() { ignore() || replyCursor.previous(); }, defaults);
 shortcut.add("f", function() { ignore() || replyCursor.nextScreen(); }, defaults);
 shortcut.add("b", function() { ignore() || replyCursor.previousScreen(); }, defaults);
+
+/*
+ * Pressing '0' takes the user back a citation, and '1' goes forward a citation.
+ * If there are multiple citations on a post, the user can reference them with '2' or '3'.
+ */
+shortcut.add("0", function() { ignore() || ignoreSnapback() || document.getElementById('snapback_link').click(); }, defaults);
+shortcut.add("1", function() { ignore() || visitNthCitation(0); }, defaults);
+shortcut.add("2", function() { ignore() || visitNthCitation(1); }, defaults);
+shortcut.add("3", function() { ignore() || visitNthCitation(2); }, defaults);
+
+// Handle history.back
+window.addEventListener('hashchange', updateSnapbackLink, false);
 </script>
 
 <?php
