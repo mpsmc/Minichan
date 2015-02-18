@@ -492,7 +492,7 @@ function check_proxy($extra = false) {
 	|| (stripos($hostaddr, "rackcentre")!==false)
 	//|| ($stopforumspam["ip"]["appears"])
 	|| IsTorExitPoint()
-	|| (strpos($hostaddr, ".") !== false && substr_count($hostaddr, ".") < 3)
+	|| (strpos($hostaddr, ".") !== false && substr_count($hostaddr, ".") < 2)
 	){
 		$_SESSION['proxy'] = true;
 		return true;

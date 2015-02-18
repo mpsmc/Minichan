@@ -22,7 +22,7 @@ if(stripos($hostaddr, ".info")!==false) echo "e";
 if(stripos($hostaddr, "ioflood.com")!==false) echo "f";
 if(stripos($hostaddr, "linode.com")!==false) echo "F";
 if(IsTorExitPoint()) echo "g";
-if(strpos($hostaddr, ".") !== false && substr_count($hostaddr, ".") < 3) echo "h";
+if(strpos($hostaddr, ".") !== false && substr_count($hostaddr, ".") < 2) echo "h";
 if(strpos($_SERVER['REMOTE_ADDR'], '65.49.') === 0) echo "i";
 if($hostaddr && substr_compare($hostaddr, $_test, -strlen($_test), strlen($_test)) === 0) echo "j";
 
