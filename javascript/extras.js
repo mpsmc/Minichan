@@ -1,7 +1,7 @@
 $(function() {
-	var youtubeEmbedHtml = '<div style="display: none; width:560px" class="video wrapper c"><iframe width="560" height="315" src="https://www.youtube.com/embed/{vid}?start={start}" frameborder="0" allowfullscreen></iframe></div>';
+	var youtubeEmbedHtml = '<div style="display: none; width:560px" class="video wrapper c"><iframe width="560" height="315" src="https://www.youtube.com/embed/{vid}?autoplay=1&start={start}" frameborder="0" allowfullscreen></iframe></div>';
 	var vimeoEmbedHtml = '<div style="display: none;" class="video wrapper c"><object width="512" height="294"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="https://vimeo.com/moogaloop.swf?clip_id={vid}&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=1&amp;fullscreen=1&amp;autoplay=1" /><embed src="https://vimeo.com/moogaloop.swf?clip_id={vid}&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;fullscreen=1&amp;autoplay=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="512" height="294"></embed></object></div>';
-	var vidmeEmbedHtml = '<div style="display: none; width: 640px" class="video wrapper c"><iframe src="https://vid.me/e/{vid}" width="640" height="360" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen scrolling="no"></iframe></div>';
+	var vidmeEmbedHtml = '<div style="display: none; width: 640px" class="video wrapper c"><iframe src="https://vid.me/e/{vid}?autoplay=1" width="640" height="360" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen scrolling="no"></iframe></div>';
 	
 	function transformVideoLink(vid, start, html) {
 		var $this = $(this);
