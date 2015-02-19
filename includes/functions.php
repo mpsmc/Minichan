@@ -856,7 +856,7 @@ function activate_id() {
 }
 
 function force_id($proxy_value = null, $redirect = true, $allow = false) {
-	global $link;
+	global $link, $hostaddr;
 	
 	if($_SESSION['ID_activated'] && $_SESSION['UID']) {
 		return true;
@@ -866,6 +866,8 @@ function force_id($proxy_value = null, $redirect = true, $allow = false) {
 		$proxy = $proxy_value;
 	else
 		$proxy = check_proxy(true);
+		
+	if(!$hostaddr) $hostaddr = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 	
 	if( !isset($_SESSION['ID_activated']) || empty($_COOKIE['UID']) || empty($_COOKIE['password'])) {
 		if(DEFCON<5 && $redirect) { // DEFCON 4.
@@ -881,7 +883,7 @@ function force_id($proxy_value = null, $redirect = true, $allow = false) {
 		
 	}
 	
-	if(check_user_agent("bot")){
+	if(check_user_agent("bot") || preg_match('/^msnbot|search\.msn\.com$/', $hostaddr)){
 		$msg = "You have been identified as a bot, so no internal UID will be assigned to you. If you are a real person messing with your useragent, you should change it back to something normal.";
 		if(!$allow)
 			add_error($msg, true);
