@@ -132,10 +132,10 @@ if(empty($_COOKIE['UID']) || empty($_COOKIE['password'])) {
 	}else{
 		if(!$_SESSION['welcomed']){
 			$_SESSION['notice'] = 'Welcome to <strong>' . SITE_TITLE . '</strong>, an account has automatically been created and assigned to you, you don\'t have to register or log in to use the board, but don\'t clear your cookies unless you have <a href="'.DOMAIN.'dashboard">set a memorable name and password</a>. Alternatively, you can <a href="'.DOMAIN.'restore_ID">restore your ID</a>.';
-			$_SESSION['welcomed'] = true;
 		}
 		
-		force_id($proxy, false);
+		force_id($proxy, false, true);
+		$_SESSION['welcomed'] = true;
 	}
 } else if( ! empty($_COOKIE['password'])) {
 	// Log in those who have just began their session.

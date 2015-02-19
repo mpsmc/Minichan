@@ -855,7 +855,7 @@ function activate_id() {
 	create_id();
 }
 
-function force_id($proxy_value = null, $redirect = true) {
+function force_id($proxy_value = null, $redirect = true, $allow = false) {
 	global $link;
 	
 	if($_SESSION['ID_activated'] && $_SESSION['UID']) {
@@ -881,12 +881,16 @@ function force_id($proxy_value = null, $redirect = true) {
 		
 	}
 	
+	if(check_user_agent("bot")){
+		$msg = "You have been identified as a bot, so no internal UID will be assigned to you. If you are a real person messing with your useragent, you should change it back to something normal.";
+		if(!$allow)
+			add_error($msg, true);
+		elseif (!$_SESSION['welcomed'])
+			$_SESSION['notice'] = $msg;
+		$nouid = true;
+	}
+	
 	if((empty($_COOKIE['UID']) || empty($_COOKIE['password'])) && !$proxy) {
-		
-		if(check_user_agent("bot")){
-			add_error("You have been identified as a bot, so no internal UID will be assigned to you. If you are a real person messing with your useragent, you should change it back to something normal.", true);
-			$nouid = true;
-		}
 		
 		if(!$nouid){
 			create_id();
