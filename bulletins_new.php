@@ -1,5 +1,6 @@
 <?php
 require 'includes/header.php';
+force_id();
 $page_title = "New bulletin";
 update_activity('bulletins_new', 1);
 

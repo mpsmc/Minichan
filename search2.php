@@ -1,5 +1,6 @@
 <?php
 require("includes/header.php");
+force_id();
 
 $additional_head = "<style>input,textarea, span { display: inline; }</style>";
 $additional_head .= "<script type='text/javascript' src='".DOMAIN."/style/datepicker/js/datepicker.js'></script>";

@@ -916,7 +916,7 @@ function force_id($proxy_value = null, $redirect = true, $allow = false) {
 function update_activity($action_name, $action_id = '') {
 	global $link;
 	
-	if( ! isset($_SESSION['UID'])) {
+	if(!isset($_SESSION['UID']) || !$_SESSION['UID']) {
 		return false;
 	}
 	$values["time"] = "UNIX_TIMESTAMP()";

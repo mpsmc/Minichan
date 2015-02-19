@@ -1,5 +1,6 @@
 <?php
 require('includes/header.php');
+force_id();
 require_once("includes/recaptchalib.php");
 
 $page_title = "Report to Moderator";
