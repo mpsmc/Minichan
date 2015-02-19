@@ -907,6 +907,10 @@ function force_id($proxy_value = null, $redirect = true, $allow = false) {
 		*/
 		
 	}
+
+	if(!$allow && !$_SESSION['UID']) {
+		add_error("An UID could not be created. Try clearing your cookies? :-/", true);
+	}
 }
 
 function update_activity($action_name, $action_id = '') {
