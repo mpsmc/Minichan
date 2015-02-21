@@ -15,7 +15,7 @@ if ($_POST['form_sent']) {
 		$notepad_content = $_POST['notepad_list'];
 	}
 }
-$fetch_notepad_list = $link->db_exec('SELECT notepad_content FROM notepad WHERE uid = %1', $_COOKIE['UID']);
+$fetch_notepad_list = $link->db_exec('SELECT notepad_content FROM notepad WHERE uid = %1', $_SESSION['UID']);
 list($notepad_content) = $link->fetch_row($fetch_notepad_list);
 print_errors();
 ?> 
