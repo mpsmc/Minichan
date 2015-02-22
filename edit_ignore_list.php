@@ -20,7 +20,7 @@ if ($_POST['form_sent']) {
     }
 }
 
-$fetch_ignore_list = $link->db_exec('SELECT ignored_phrases FROM ignore_lists WHERE uid = %1', $_COOKIE['UID']);
+$fetch_ignore_list = $link->db_exec('SELECT ignored_phrases FROM ignore_lists WHERE uid = %1', $_SESSION['UID']);
 list($ignored_phrases) = $link->fetch_row($fetch_ignore_list);
 print_errors();
 ?> 
