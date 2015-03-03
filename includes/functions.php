@@ -883,7 +883,7 @@ function force_id($proxy_value = null, $redirect = true, $allow = false) {
 		
 	}
 	
-	if(check_user_agent("bot") || preg_match('/^msnbot|search\.msn\.com$|amazonaws\.com$/', $hostaddr)){
+	if(check_user_agent("bot") || preg_match('/^msnbot|search\.msn\.com$|amazonaws\.com$|linode\.com$/', $hostaddr)){
 		$msg = "You have been identified as a bot, so no internal UID will be assigned to you. If you are a real person messing with your useragent, you should change it back to something normal.";
 		if(!$allow)
 			add_error($msg, true);
