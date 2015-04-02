@@ -336,25 +336,6 @@ if($show_poll) {
 	}
 }
 
-?>
-<div style="
-  color: transparent;
-  background: no-repeat url(<?php echo STATIC_DOMAIN; ?>/style/april1/join.gif),
- no-repeat url(<?php echo STATIC_DOMAIN; ?>/style/april1/Netmechanic.gif) 100px 0,
- no-repeat url(<?php echo STATIC_DOMAIN; ?>/style/april1/100.png) 195px -12px,
- no-repeat url(<?php echo STATIC_DOMAIN; ?>/style/april1/invision.jpg) 305px 0,
- no-repeat url(<?php echo STATIC_DOMAIN; ?>/style/april1/website-award.png) 450px 0,
- no-repeat url(<?php echo STATIC_DOMAIN; ?>/style/april1/heartsoul.gif) 555px 0,
- no-repeat url(<?php echo STATIC_DOMAIN; ?>/style/april1/download.png) 685px 0,
- no-repeat url(<?php echo STATIC_DOMAIN; ?>/style/april1/usaverygood.jpg) 795px 0,
- no-repeat url(<?php echo STATIC_DOMAIN; ?>/style/april1/purrfect.gif) 905px 0,
- no-repeat url(<?php echo STATIC_DOMAIN; ?>/style/april1/AOE14_Winner-thumb.png) 1015px 0,
- no-repeat url(<?php echo STATIC_DOMAIN; ?>/style/april1/Phms.jpg) 1125px 0,
- no-repeat url(<?php echo STATIC_DOMAIN; ?>/style/april1/Award7.gif) 1275px 0;
-  background-size: auto, auto, 100px, auto, 100px, 120px, 100px, 100px, 100px, auto;
-  height: 100px;
-"></div>
-<?php
 	
 // Output replies.
 if (ALLOW_IMAGES || ALLOW_IMGUR) {

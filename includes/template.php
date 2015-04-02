@@ -40,7 +40,7 @@
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN . 'style/mobile.css' ?>" />
 			<?php } ?>
 		<?php if(FANCY_IMAGE&&!MOBILE_MODE){ ?><link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN; ?>style/thickbox.css" /><?php } ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo STATIC_DOMAIN; ?>style/april.css?13">
+		<?php /* <link rel="stylesheet" type="text/css" href="<?php echo STATIC_DOMAIN; ?>style/april.css?13"> */ ?>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript">var IMGUR_CLIENT_ID = "<?php echo IMGUR_CLIENT_ID; ?>";</script>
 		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/main.js?x2"></script>
@@ -129,9 +129,6 @@ window.onload=function(){
 		}
 		echo '"';
 		echo '>';
-		?>
-<center><img src="<?php echo STATIC_DOMAIN; ?>/style/april1/hourlyprize.gif" /></center>
-		<?php
 		if($administrator && false) { ?>
 <script type="text/javascript"> 
 	var toolbarConfig = {title:"Minichan",link:"http://minichan.org/topic/6296",slogan:"Get all the latest drama you've come to love, direct to your browser",hide:"hideMCToolbar_",slide:true};
@@ -333,6 +330,5 @@ $(document).ready(function() {
 });
 </script>
 */ ?>
-<span style='float: right; bottom: 0;' class='lulz-ads'><img src="<?php echo STATIC_DOMAIN; ?>/style/april1/singles.jpg" /></span>
 </body>
 </html>
