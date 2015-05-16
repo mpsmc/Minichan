@@ -1,0 +1,13 @@
+{  
+  "name": "Minichan Push",  
+  "short_name": "Minichan Push",  
+  "icons": [{  
+        "src": "favicon.gif",  
+        "sizes": "16x16",
+        "type": "image/gif" 
+      }],  
+  "start_url": "/",  
+  "display": "standalone",  
+  "gcm_sender_id": "254173585206",  
+  "gcm_user_visible_only": true  
+}

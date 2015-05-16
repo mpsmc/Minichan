@@ -31,6 +31,16 @@ function console($str, $state=null) {
 	echo "[$state] $str\n";
 }
 
+function multi_query($sql) {
+	global $link;
+	$sql = preg_split('/;\s*$/m', $sql);
+	foreach($sql as $query) {
+		if(trim($query) == "") continue;
+		console("Performing query...");
+		$link->db_exec($query);
+	}
+}
+
 if($tableCount === 0) {
 	$logState="init";
 	console("Loading tables");

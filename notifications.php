@@ -5,7 +5,10 @@ force_id();
 
 $cite_topics = array();
 
-if($new_citations) {
+if($num_pms > 0) {
+	header('Location: ' . DOMAIN . 'private_message/' . $_SESSION['pm_id']);
+	die();
+}elseif($new_citations) {
 	echo '<h2>Citations</h2>';
 		// Delete notifications of replies-to-replies that no longer exist.
 	$link->db_exec('DELETE FROM citations WHERE uid = %1 AND (NOT EXISTS (SELECT 1 FROM replies WHERE citations.reply = replies.id AND replies.deleted = 0) OR NOT EXISTS (SELECT 1 FROM topics WHERE citations.topic = topics.id AND topics.deleted = 0))', $_SESSION['UID']);
@@ -87,7 +90,7 @@ topics.replies > read_topics.replies
 	echo '</form>';
 }
 
-if(!($new_watchlists && $new_citations)) {
+if(!($new_watchlists || $new_citations)) {
 	echo "<p>Nothing to see here...</p>";
 }
 

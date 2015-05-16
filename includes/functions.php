@@ -106,6 +106,8 @@ function add_notification($event, $target, $identifier, $data, $parent_id = null
 	
 	//_send_notification('put', array('event'=>$event, 'target'=>$target, 'identifier'=>$identifier, 'data'=>json_encode($data), 'parent_id'=>$parent_id));
 	
+	sendMessageToChrome($target, $event, $data);
+	
 	$link->db_exec("SELECT token FROM android_tokens WHERE uid = %1", $target);
 	if($link->num_rows() > 0) {
 		$result = $link->fetch_assoc();
@@ -396,6 +398,51 @@ function print_statistics($uid, $public=true) {
 		</tr>
 	</table>
 	<?php
+}
+
+function sendMessageToChrome($uid, $type, $data) {
+	global $link;
+	
+	if(!defined('CHROME_TOKEN')) return;
+	// The push events don't support data yet
+	$subscriptions = array();
+	
+	$link->db_exec("SELECT subscription_id FROM chrome_tokens WHERE uid = %1", $uid);
+	while(($row = $link->fetch_assoc()) != null) {
+		$subscriptions[] = $row['subscription_id'];
+	}
+	
+	if(count($subscriptions) == 0) return;
+	
+	var_dump($subscriptions);
+
+	$headers = array(
+		'Authorization: key=' . CHROME_TOKEN,
+		'Content-Type: application/json'
+	);
+	
+	$post = array(
+		"registration_ids" => $subscriptions
+	);
+
+	$ch = curl_init();
+
+	curl_setopt($ch, CURLOPT_URL, "https://android.googleapis.com/gcm/send");
+	if ($headers)
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post));
+
+
+	$response = curl_exec($ch);
+var_dump(curl_error($ch));
+	curl_close($ch);
+	
+	var_dump($response);
+
+	return $response;
 }
 
 function sendMessageToPhone($deviceRegistrationId, $msgType, $extraParams) {

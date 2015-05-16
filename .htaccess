@@ -70,6 +70,7 @@ RewriteRule ^watchlist$ watchlist.php [L]
 RewriteRule ^folks$ folks.php [L]
 RewriteRule ^stuff$ stuff.php [L]
 RewriteRule ^triptest$ triptest.php [L]
+RewriteRule ^push$ push.php [L]
 
 # New reply and topic stuff.
 RewriteRule ^new_reply/([0-9]+)/([a-z0-9]*)$ post.php?reply=$1&token=$2 [L]
