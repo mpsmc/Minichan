@@ -13,6 +13,8 @@ $db_info = array
 
 $spam_phrases = array();
 
+define("LOG_DIR", "../");
+
 define('GOOGLE_ANALYTICS_ID', '');
 define('GOOGLE_ANALYTICS_DOMAIN', '');
 

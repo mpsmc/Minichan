@@ -45,19 +45,6 @@ class db{
 		$_db_args = func_get_args();
 		$query = $_db_args[0];
 		
-		/*
-		foreach($args as $num=>$arg){
-			if($num==0) continue;
-			if($num==(count($args)-1) && $arg===true) continue;
-
-			$arg = str_replace("%", "\\%", $arg);
-			$query = preg_replace('/(?<!\\\\)%@('.$num.')/', $arg, $query);
-			$e_arg = $this->escape($arg);
-			if(!is_numeric($e_arg)) $e_arg = '"' . $e_arg . '"';
-			$query = preg_replace('/(?<!\\\\)%('.$num.')/', $e_arg, $query);
-			echo $query . " ( " . $e_arg . " ) " . "<br />";
-		}
-		*/
 		$query = preg_replace_callback('/(\\\\?)%([0-9]+)/', 
 		create_function('$matches', '
 			global $_db_args, $_db_link;
@@ -234,18 +221,21 @@ class db{
 		$err = str_replace($this->db_username, "(hidden)", $err);
 		$err = str_replace($this->db_password, "(hidden)", $err);
 		
-		//echo "<h1>Database Error!</h1>";
-		echo "<!--";
-		echo "Error: $err\n";
-		echo "File: $file\n";
-		echo "Line: $line\n";
-		echo "Backtrace:\n";
-		//echo "<textarea style='width:800px; height:400px' readonly='readonly'>";
-		echo $backtrace;
-		echo "-->";
-		//echo "</textarea>";
+		$data = "Session: " . json_encode($_SESSION). "\n";
+		$data .= "Server: " . json_encode($_SERVER). "\n";
+		$data .= "Request: " . json_encode($_REQUEST). "\n";
+		$data .= "Cookie: " . json_encode($_COOKIE). "\n";
+		$data .= "Error: $err\n";
+		$data .= "File: $file\n";
+		$data .= "Line: $line\n";
+		$data .= $backtrace;
 		
-		echo "<b>We're having some database issues. These should be resolved soon, and we apologize for the inconvience.</b>";
+		$data = date("r\n") . preg_replace('/^/m', "\t", $data);
+		
+		file_put_contents(LOG_DIR.'db.log', $data, FILE_APPEND);
+		
+		echo "<b>We're having some database issues. These should be resolved soon, and we apologize for the inconvenience. The details have been logged for administrative review.</b>";
+		
 		die();
 	}
 	
