@@ -381,13 +381,13 @@ switch($_GET['action']) {
 		$id = $_GET['id'];
 		$page_title = 'Undelete topic';
 		
-		$link->db_exec("SELECT author, deleted FROM topics WHERE id = %1", $id);
-		list($author_id, $deleted) = $link->fetch_row();
-		if(!$deleted){
+		$link->db_exec("SELECT author, deleted, stealth_ban FROM topics WHERE id = %1", $id);
+		list($author_id, $deleted, $stealth_ban) = $link->fetch_row();
+		if(!$deleted && !$stealth_ban){
 			add_error("Topic isn't deleted.", true);
 		}
 		
-		$link->update("topics", array("deleted"=>0), "id=".$link->escape($id));
+		$link->update("topics", array("deleted"=>0, "stealth_ban"=>0), "id=".$link->escape($id));
 		log_mod("undelete_topic", $id);
 		redirect('Topic undeleted and pulled out of the archive.', '');
 		
@@ -453,19 +453,21 @@ switch($_GET['action']) {
 		$id = $_GET['id'];
 		$page_title = 'Undelete reply';
 		
-		$link->db_exec("SELECT author, deleted FROM replies WHERE id = %1", $id);
-		list($author_id, $deleted) = $link->fetch_row();
-		if(!$deleted){
+		$link->db_exec("SELECT author, deleted, stealth_ban FROM replies WHERE id = %1", $id);
+		list($author_id, $deleted, $stealth_ban) = $link->fetch_row();
+		if(!$deleted && !$stealth_ban){
 			add_error("Reply isn't deleted.", true);
 		}
 		
-		$link->update("replies", array("deleted"=>0), "id=".$link->escape($id));
+		$link->update("replies", array("deleted"=>0, "stealth_ban"=>0), "id=".$link->escape($id));
 		log_mod("undelete_reply", $id);
 		
 		$fetch_parent = $link->db_exec('SELECT parent_id FROM replies WHERE id = %1', $id);
 		list($parent_id) = $link->fetch_row();
 		
-		$link->db_exec('UPDATE topics SET replies = replies + 1 WHERE id = %1', $parent_id);
+		if(!$stealth_ban) {
+			$link->db_exec('UPDATE topics SET replies = replies + 1 WHERE id = %1', $parent_id);
+		}
 		redirect('Reply undeleted and pulled out of the archive.', 'topic/' . $parent_id . "#reply_" . $id);
 		
 	break;

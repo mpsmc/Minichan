@@ -446,47 +446,50 @@ if ($_POST['form_sent']) {
 						$ircname = chr(2) . trim($namefag[0]) . chr(2) . $namefag[1];
 					}
 					
-					log_irc("Reply in \"" . $replying_to . "\" by " . $ircname . " - " . create_link(DOMAIN . "topic/" . $_GET['reply'] . "#reply_" . $inserted_id) . " - " . trim(snippet($body, 150, false, false)));
+					if(!$stealth_banned)
+						log_irc("Reply in \"" . $replying_to . "\" by " . $ircname . " - " . create_link(DOMAIN . "topic/" . $_GET['reply'] . "#reply_" . $inserted_id) . " - " . trim(snippet($body, 150, false, false)));
 				}
 				unset($insert);
 				
-				// Notify cited posters.
-				preg_match_all('/@([0-9,]+)/m', $body, $matches);
-				// Needs to filter before array_unique in case of @11, @1,1 etc.
-				$citations = filter_var_array($matches[0], FILTER_SANITIZE_NUMBER_INT);
-				$citations = array_unique($citations);
-				$citations = array_slice($citations, 0, 10);
-				foreach ($citations as $citation) {
-					// Note that nothing is inserted unless the SELECT returns a row.
-					$link->db_exec('INSERT INTO citations (reply, topic, uid) SELECT %1, %2, `author` FROM replies WHERE replies.id = %3 AND replies.deleted = 0 AND replies.parent_id = %4', $inserted_id, $_GET['reply'], (int) $citation, $_GET['reply']);
-				}
-				
-				if($inserted_id && count($citations) > 0) {
-					// Push notifications
-					$link->db_exec('SELECT id, author FROM replies WHERE deleted = 0 AND parent_id = %1 AND id IN(' . implode(",", $citations) . ')', $_GET['reply']);
-					$citations_sent = array();
-					while($row = $link->fetch_row()) {
-						if(in_array($row[1], $citations_sent)) continue;
-						add_notification('citation', $row[1], $inserted_id, array('topic'=>$_GET['reply'], 'reply'=>$inserted_id, 'snippet'=>snippet($body, 90), 'headline'=>$replying_to), $_GET['reply']);
-						$citations_sent[] = $row[1];
+				if(!$stealth_banned) {
+					// Notify cited posters.
+					preg_match_all('/@([0-9,]+)/m', $body, $matches);
+					// Needs to filter before array_unique in case of @11, @1,1 etc.
+					$citations = filter_var_array($matches[0], FILTER_SANITIZE_NUMBER_INT);
+					$citations = array_unique($citations);
+					$citations = array_slice($citations, 0, 10);
+					foreach ($citations as $citation) {
+						// Note that nothing is inserted unless the SELECT returns a row.
+						$link->db_exec('INSERT INTO citations (reply, topic, uid) SELECT %1, %2, `author` FROM replies WHERE replies.id = %3 AND replies.deleted = 0 AND replies.parent_id = %4', $inserted_id, $_GET['reply'], (int) $citation, $_GET['reply']);
 					}
 					
-					
-				}
-				
-				if($inserted_id) {
-					$link->db_exec('SELECT uid FROM watchlists WHERE topic_id = %1', $_GET['reply']);
-					$watchlists_sent = array();
-					while($row = $link->fetch_row()) {
-						if(is_array($citations_sent) && in_array($row[0], $citations_sent)) continue;
+					if($inserted_id && count($citations) > 0) {
+						// Push notifications
+						$link->db_exec('SELECT id, author FROM replies WHERE deleted = 0 AND parent_id = %1 AND id IN(' . implode(",", $citations) . ')', $_GET['reply']);
+						$citations_sent = array();
+						while($row = $link->fetch_row()) {
+							if(in_array($row[1], $citations_sent)) continue;
+							add_notification('citation', $row[1], $inserted_id, array('topic'=>$_GET['reply'], 'reply'=>$inserted_id, 'snippet'=>snippet($body, 90), 'headline'=>$replying_to), $_GET['reply']);
+							$citations_sent[] = $row[1];
+						}
 						
-						if(in_array($row[0], $watchlists_sent)) continue;
-						add_notification('watchlist', $row[0], $inserted_id, array('topic'=>$_GET['reply'], 'reply'=>$inserted_id, 'snippet'=>snippet($body, 90), 'headline'=>$replying_to), $_GET['reply']);
-						$watchlists_sent[] = $row[0];
+						
 					}
 					
-					unset($watchlists_sent);
-					unset($citations_sent);
+					if($inserted_id) {
+						$link->db_exec('SELECT uid FROM watchlists WHERE topic_id = %1', $_GET['reply']);
+						$watchlists_sent = array();
+						while($row = $link->fetch_row()) {
+							if(is_array($citations_sent) && in_array($row[0], $citations_sent)) continue;
+							
+							if(in_array($row[0], $watchlists_sent)) continue;
+							add_notification('watchlist', $row[0], $inserted_id, array('topic'=>$_GET['reply'], 'reply'=>$inserted_id, 'snippet'=>snippet($body, 90), 'headline'=>$replying_to), $_GET['reply']);
+							$watchlists_sent[] = $row[0];
+						}
+						
+						unset($watchlists_sent);
+						unset($citations_sent);
+					}
 				}
 				
 				
@@ -562,9 +565,9 @@ if ($_POST['form_sent']) {
 				// Prepare our query.
 				if(!$erred) {
 					$link->db_exec('
-						INSERT INTO topics (author, author_ip, headline, body, last_post, time, namefag, tripfag, sticky, locked, poll, admin_hyperlink, post_html, flag)
-						VALUES (%1, %2, %3, %4, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), %5, %6, %7, %8, %9, %10, %11, %12)',
-						$author, $_SERVER['REMOTE_ADDR'], $headline, $body, $namefag[0], $namefag[1], $sticky, $locked, (int)$polls_enabled, $admin_hyperlink, $post_html, $flag
+						INSERT INTO topics (author, author_ip, headline, body, last_post, time, namefag, tripfag, sticky, locked, poll, admin_hyperlink, post_html, flag, stealth_ban)
+						VALUES (%1, %2, %3, %4, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), %5, %6, %7, %8, %9, %10, %11, %12, %13)',
+						$author, $_SERVER['REMOTE_ADDR'], $headline, $body, $namefag[0], $namefag[1], $sticky, $locked, (int)$polls_enabled, $admin_hyperlink, $post_html, $flag, $stealth_banned
 					);
 					
 					$inserted_id = $link->insert_id();
@@ -590,9 +593,11 @@ if ($_POST['form_sent']) {
 						$ircname = chr(2) . trim($namefag[0]) . chr(2) . $namefag[1];
 					}
 					
-					topic_notification($headline, $ircname, snippet($body), DOMAIN . 'topic/' . $inserted_id);
+					if(!$stealth_banned) {
+						topic_notification($headline, $ircname, snippet($body), DOMAIN . 'topic/' . $inserted_id);
 					
-					log_irc("Topic \"" . $headline . "\" by " . $ircname . " - " . create_link(DOMAIN . "topic/" . $inserted_id) . " - " . trim(snippet($body, 150, false, false)));
+						log_irc("Topic \"" . $headline . "\" by " . $ircname . " - " . create_link(DOMAIN . "topic/" . $inserted_id) . " - " . trim(snippet($body, 150, false, false)));
+					}
 					
 					//$link->db_exec("INSERT INTO poll_options
 					

@@ -32,9 +32,9 @@ $link->db_exec("SELECT t1.report_allowed, t2.image_viewer, t2.disable_images FRO
 list($allow_user_report, $user_image_viewer, $user_disable_images) = $link->fetch_row();
 
 if (ALLOW_IMAGES || ALLOW_IMGUR) {
-	$stmt = $link->db_exec('SELECT topics.flag, topics.time, topics.author, topics.visits, topics.replies, topics.headline, topics.body, topics.edit_time, topics.edit_mod, images.file_name, topics.namefag, topics.tripfag, topics.sticky, topics.locked, topics.deleted, topics.last_post, images.thumb_width, images.thumb_height, images.img_external, images.thumb_external, topics.poll, topics.post_html, topics.admin_hyperlink, topics.secret_id FROM topics LEFT OUTER JOIN images ON topics.id = images.topic_id WHERE topics.id = %1', $_GET['id']);
+	$stmt = $link->db_exec('SELECT topics.flag, topics.time, topics.author, topics.author_ip, topics.visits, topics.replies, topics.headline, topics.body, topics.edit_time, topics.edit_mod, images.file_name, topics.namefag, topics.tripfag, topics.sticky, topics.locked, topics.deleted, topics.stealth_ban, topics.last_post, images.thumb_width, images.thumb_height, images.img_external, images.thumb_external, topics.poll, topics.post_html, topics.admin_hyperlink, topics.secret_id FROM topics LEFT OUTER JOIN images ON topics.id = images.topic_id WHERE topics.id = %1', $_GET['id']);
 } else {
-	$stmt = $link->db_exec('SELECT flag, time, author, visits, replies, headline, body, edit_time, edit_mod, namefag, tripfag, sticky, locked, deleted, last_post, poll, post_html, admin_hyperlink, secret_id FROM topics WHERE id = %1', $_GET['id']);
+	$stmt = $link->db_exec('SELECT flag, time, author, author_ip, visits, replies, headline, body, edit_time, edit_mod, namefag, tripfag, sticky, locked, deleted, stealth_ban, last_post, poll, post_html, admin_hyperlink, secret_id FROM topics WHERE id = %1', $_GET['id']);
 }
 if ($link->num_rows($stmt) < 1) {
 	$page_title = 'Non-existent topic';
@@ -43,21 +43,25 @@ if ($link->num_rows($stmt) < 1) {
 }
 
 if (ALLOW_IMAGES || ALLOW_IMGUR) {
-	list($topic_flag, $topic_time, $topic_author, $topic_visits, $topic_replies, $topic_headline, $topic_body, $topic_edit_time, $topic_edit_mod, $topic_image_name, $opnamefag, $optripfag, $sticky, $locked, $deleted, $last_reply_time, $thumb_width, $thumb_height, $topic_img_external, $topic_thumb_external, $show_poll, $topic_html, $topic_hyperlink, $secret_id) = $link->fetch_row($stmt);
+	list($topic_flag, $topic_time, $topic_author, $topic_author_ip, $topic_visits, $topic_replies, $topic_headline, $topic_body, $topic_edit_time, $topic_edit_mod, $topic_image_name, $opnamefag, $optripfag, $sticky, $locked, $deleted, $topic_stealth_banned, $last_reply_time, $thumb_width, $thumb_height, $topic_img_external, $topic_thumb_external, $show_poll, $topic_html, $topic_hyperlink, $secret_id) = $link->fetch_row($stmt);
 } else {
-	list($topic_flag, $topic_time, $topic_author, $topic_visits, $topic_replies, $topic_headline, $topic_body, $topic_edit_time, $topic_edit_mod, $opnamefag, $optripfag, $sticky, $locked, $deleted, $last_reply_time, $show_poll, $topic_html, $topic_hyperlink, $secret_id) = $link->fetch_row($stmt);
+	list($topic_flag, $topic_time, $topic_author, $topic_author_ip, $topic_visits, $topic_replies, $topic_headline, $topic_body, $topic_edit_time, $topic_edit_mod, $opnamefag, $optripfag, $sticky, $locked, $deleted, $topic_stealth_banned, $last_reply_time, $show_poll, $topic_html, $topic_hyperlink, $secret_id) = $link->fetch_row($stmt);
 }
 $link->free_result($stmt);
 
 if(!ENABLE_POLLS) $show_poll = false;
 
-if($deleted && !allowed("undelete")){
+if(($deleted && !allowed("undelete")) || ($topic_stealth_banned && !allowed("undelete") && !canSeeStealthBannedPost($topic_author, $topic_author_ip))){
 	add_error('There is no such topic. It may have been deleted.', true);
 }
 
 if($secret_id && !allowed('minecraft'))
 	add_error('There is no such topic. It may have been deleted.', true);
 
+if($topic_stealth_banned && allowed("undelete")) {
+	$deleted = true;
+}
+	
 if(!$locked){
 	if((time()-$last_reply_time)>NECRO_BUMP_TIME && $last_reply_time){
 		$locked = true;
@@ -126,10 +130,18 @@ dummy_form();
 
 if($deleted){
 	echo "<h3>Delete info</h3>";
-	$link->db_exec("SELECT mod_UID, mod_ip, time FROM mod_actions WHERE target = %1 AND action = 'delete_topic' ORDER BY time DESC LIMIT 1", $_GET['id']);
-	list($mod_uid, $mod_ip, $time) = $link->fetch_row();
+	if(!$topic_stealth_banned) {
+		$link->db_exec("SELECT mod_UID, mod_ip, time FROM mod_actions WHERE target = %1 AND action = 'delete_topic' ORDER BY time DESC LIMIT 1", $_GET['id']);
+		list($mod_uid, $mod_ip, $time) = $link->fetch_row();
+		$mod_name = modname($mod_uid);
+	}else{
+		$mod_name = "Stealthban";
+		$mod_uid = $topic_author;
+		$mod_ip = $topic_author_ip;
+		$time = $topic_time;
+	}
 	echo "<div class='body'>";
-	echo "This topic was deleted <a class='help' title='" . format_date($time) . "'>" . calculate_age($time) . "</a> ago by <a href='".DOMAIN."profile/".$mod_uid."'>".modname($mod_uid)."</a> with the ip address <a href='".DOMAIN."IP_address/".$mod_ip."'>".$mod_ip."</a>";
+	echo "This topic was deleted <a class='help' title='" . format_date($time) . "'>" . calculate_age($time) . "</a> ago by <a href='".DOMAIN."profile/".$mod_uid."'>".$mod_name."</a> with the ip address <a href='".DOMAIN."IP_address/".$mod_ip."'>".$mod_ip."</a>";
 	echo "</div>";
 }
 
@@ -453,9 +465,9 @@ $undeleted_replies = 0;
 while (fetchReplyList()) {
 	// Should we even bother?
 	if($reply_deleted && !allowed("undelete")) continue;
-	if($reply_stealth && !$administrator && $reply_author != $_SESSION['UID'] && $reply_ip != $_SERVER['REMOTE_ADDR']) continue;
+	if($reply_stealth && !allowed("undelete") && !canSeeStealthBannedPost($reply_author, $reply_ip)) continue;
 	
-	if($reply_stealth && $administrator) {
+	if($reply_stealth && allowed("undelete")) {
 		$reply_deleted = true;
 	}
 	

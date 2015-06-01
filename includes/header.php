@@ -202,15 +202,18 @@ foreach($hostbans as $hostban) {
 
 // Ban checks, display information, and remove ban if it has expired.
 // Check for UID ban. UID bans expire in 7 days by default, can be changed in config.php.
-$check_uid_ban = $link->db_exec('SELECT filed, expiry, reason FROM uid_bans WHERE uid = %1', $_SESSION['UID']);
+$check_uid_ban = $link->db_exec('SELECT filed, expiry, reason, stealth FROM uid_bans WHERE uid = %1', $_SESSION['UID']);
 if ($link->num_rows($check_uid_ban) > 0 || defined("TEST_BAN")) {
 	$banarr = $link->fetch_assoc($check_uid_ban);
+	if(!$stealth_banned) $stealth_banned = $banarr["stealth"];
+	
 	$ban_expiry = $banarr["expiry"];
 	if(defined("TEST_BAN")) {
 		$ban_expiry = $_SERVER['REQUEST_TIME'] + 5;
 		$banarr["reason"] = "Visiting the test page";
 	}
-		if ($ban_expiry == 0 || $ban_expiry > $_SERVER['REQUEST_TIME'] || defined("TEST_BAN")) {
+	if ($ban_expiry == 0 || $ban_expiry > $_SERVER['REQUEST_TIME'] || defined("TEST_BAN")) {
+		if(!$banarr["stealth"]) {
 			$error_message = 'Your UID is banned. ';
 			if ($ban_expiry > 0) {
 				$error_message .= 'This ban will expire in ' . calculate_age($ban_expiry) . '.';
@@ -221,19 +224,21 @@ if ($link->num_rows($check_uid_ban) > 0 || defined("TEST_BAN")) {
 			if($banarr["reason"])
 				$error_message .= "<br />You have been banned for the following reason:<br />" . $banarr["reason"];
 			die("<html><head></head><body>$error_message" . getRandomYoutube() . "</body></html>");
-		} else {
-			remove_id_ban($_SESSION['UID']);
 		}
+	} else {
+		remove_id_ban($_SESSION['UID']);
+	}
 }
 $link->free_result($check_uid_ban);
 
 // Check for IP address ban.
 $check_ip_ban = $link->db_exec('SELECT expiry, reason, stealth FROM ip_bans WHERE ip_address = %1', $_SERVER['REMOTE_ADDR']);
 if ($link->num_rows($check_ip_ban) > 0) {
-	list($ban_expiry, $ban_reason, $stealth_banned) = $link->fetch_row($check_ip_ban);
+	list($ban_expiry, $ban_reason, $ip_stealth_banned) = $link->fetch_row($check_ip_ban);
+	if(!$stealth_banned) $stealth_banned = $ip_stealth_banned;
 	
 	if ($ban_expiry == 0 || $ban_expiry > $_SERVER['REQUEST_TIME']) {
-		if(!$stealth_banned) {
+		if(!$ip_stealth_banned) {
 			$error_message = 'Your IP address is banned. ';
 			if ($ban_expiry > 0) {
 				$error_message .= 'This ban will expire in ' . calculate_age($ban_expiry) . '.';

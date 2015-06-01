@@ -163,16 +163,18 @@ while(list($sticky_id, $sticky_time, $sticky_replies, $sticky_visits, $sticky_he
 $newPerPage = ($items_per_page - $stickyRows);
 
 if($topics_mode) {
-	$stmt = $link->db_exec('SELECT id, time, replies, visits, headline, body, last_post, locked, poll, secret_id FROM topics WHERE sticky = 0 AND deleted = 0 ORDER BY id DESC LIMIT %1, %2', $start_listing_at, $newPerPage);
+	$stmt = $link->db_exec('SELECT id, time, replies, visits, headline, body, last_post, locked, poll, secret_id, author, author_ip, stealth_ban FROM topics WHERE sticky = 0 AND deleted = 0 ORDER BY id DESC LIMIT %1, %2', $start_listing_at, $newPerPage);
 } else {
-	$stmt = $link->db_exec('SELECT id, time, replies, visits, headline, body, last_post, locked, poll, secret_id FROM topics WHERE sticky = 0 AND deleted = 0 ORDER BY last_post DESC LIMIT %1, %2', $start_listing_at, $newPerPage);
+	$stmt = $link->db_exec('SELECT id, time, replies, visits, headline, body, last_post, locked, poll, secret_id, author, author_ip, stealth_ban FROM topics WHERE sticky = 0 AND deleted = 0 ORDER BY last_post DESC LIMIT %1, %2', $start_listing_at, $newPerPage);
 }
 
-while(list($topic_id, $topic_time, $topic_replies, $topic_visits, $topic_headline, $topic_body, $topic_last_post, $topic_locked, $topic_poll, $secret_id) = $link->fetch_row($stmt)) {
+while(list($topic_id, $topic_time, $topic_replies, $topic_visits, $topic_headline, $topic_body, $topic_last_post, $topic_locked, $topic_poll, $secret_id, $author, $author_ip, $topic_stealth_banned) = $link->fetch_row($stmt)) {
 	if($secret_id && !allowed('minecraft')) {
 		$table->num_rows_fetched++;
 		continue;
 	}
+	
+	if($topic_stealth_banned && !allowed('undelete') && !canSeeStealthBannedPost($author, $author_ip)) continue;
 	
 	// Should we even bother?
 	if($_COOKIE['ostrich_mode'] == 1) {
@@ -197,17 +199,23 @@ while(list($topic_id, $topic_time, $topic_replies, $topic_visits, $topic_headlin
 	
 	//$topic_locked = !$topic_locked;
 	
+	$lockTxt = array();
+	
 	if($topic_locked) {
-		$lockTxt = "<small class='topic_info'>[LOCKED]</a>";
-	}else{
-		$lockTxt = "";
+		$lockTxt[] = "[LOCKED]";
 	}
+	
+	if($topic_stealth_banned && allowed('undelete')) $lockTxt[] = "[STEALTH]";
 		
 	if($topic_poll) {
 		$pollTxt = " (Poll)";
 	}else{
 		$pollTxt = "";
 	}
+	
+	$lockTxt = "<small class='topic_info'>". implode(" ", $lockTxt) . "</a>";
+	
+	
 	
 	// Process the values for this row of our table. 
 	

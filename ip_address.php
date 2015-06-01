@@ -60,6 +60,7 @@ if (!empty($_POST['ban_length']) && allowed("ban_ip")) {
 		$sqldata["reason"] = $banreason;
 		$sqldata["filed"] = "UNIX_TIMESTAMP()";
 		$sqldata["who"] = $_SESSION['UID'];
+		$sqldata["stealth"] = $_POST['stealth_ban'];
 		$ban_ip = $link->insertorupdate("ip_bans", $sqldata);
 		log_mod("ban_ip", $ip_address);
 		$_SESSION['notice'] = 'IP address banned.';
@@ -74,6 +75,7 @@ if (!empty($_POST['ban_length']) && allowed("ban_ip")) {
 				$sqldata["filed"] = "UNIX_TIMESTAMP()";
 				$sqldata["who"] = $_SESSION['UID'];
 				$sqldata["reason"] = $banreason;
+				$sqldata["stealth"] = $_POST['stealth_ban'];
 				$ban_ip = $link->insertorupdate("uid_bans", $sqldata);
 				log_mod("ban_uid", $uid);
 			}
@@ -85,8 +87,8 @@ if (!empty($_POST['ban_length']) && allowed("ban_ip")) {
 }
 
 // Check for ban.
-$check_ban = $link->db_exec('SELECT filed, expiry, reason FROM ip_bans WHERE ip_address = %1', $ip_address);
-list($ban_filed, $ban_expiry, $banreason) = $link->fetch_row($check_ban);
+$check_ban = $link->db_exec('SELECT filed, expiry, reason, stealth FROM ip_bans WHERE ip_address = %1', $ip_address);
+list($ban_filed, $ban_expiry, $banreason, $is_stealth_banned) = $link->fetch_row($check_ban);
 
 $banned = false;
 if (!empty($ban_filed)) {
@@ -141,6 +143,8 @@ if(allowed("ban_ip")) {
 	<div class="row">
 		<label for="ban_length" class="inline">Ban length&nbsp;&nbsp;</label>
 		<input type="text" name="ban_length" id="ban_length" value="<?php if( ! $banned) echo '1 week' ?>" class="inline" />
+		<input type="checkbox" name="stealth_ban" id="stealth_ban" class="inline" value="1" <?php echo $is_stealth_banned ? 'checked="checked"' : '' ?> />
+		<label for="stealth_ban">Stealth ban</label>
 <br />
 		<label for="ban_length" class="inline">Ban reason</label>
 		<input type="text" maxlength="255" name="ban_reason" id="ban_reason" value="<?php if( $banreason) echo htmlspecialchars($banreason); ?>" class="inline" />
