@@ -174,7 +174,10 @@ while(list($topic_id, $topic_time, $topic_replies, $topic_visits, $topic_headlin
 		continue;
 	}
 	
-	if($topic_stealth_banned && !allowed('undelete') && !canSeeStealthBannedPost($author, $author_ip)) continue;
+	if($topic_stealth_banned && !allowed('undelete') && !canSeeStealthBannedPost($author, $author_ip)) {
+		$table->num_rows_fetched++;
+		continue;
+	}
 	
 	// Should we even bother?
 	if($_COOKIE['ostrich_mode'] == 1) {
