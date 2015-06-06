@@ -393,6 +393,29 @@ switch($_GET['action']) {
 		
 	break;
 	
+	case 'stealth_delete_topic':
+
+		if(!allowed('delete') || !allowed('undelete')) {
+			add_error(MESSAGE_PAGE_ACCESS_DENIED, true);
+		}
+		if( ! ctype_digit($_GET['id'])) {
+			add_error('Invalid topic ID.', true);
+		}
+		
+		$id = $_GET['id'];
+		$page_title = 'Stealth Delete topic';
+	
+		if(isset($_POST['id'])) {
+			// CSRF checking.
+			check_token();
+			
+			$link->update("topics", array("stealth_ban"=>1), "id=".$link->escape($id));
+			log_mod("stealth_delete_topic", $id);
+			redirect('Topic stealthbanned.');
+		}
+		
+	break;
+	
 	case 'delete_topic':
 	
 		if(!allowed('delete')) {
@@ -469,6 +492,29 @@ switch($_GET['action']) {
 			$link->db_exec('UPDATE topics SET replies = replies + 1 WHERE id = %1', $parent_id);
 		}
 		redirect('Reply undeleted and pulled out of the archive.', 'topic/' . $parent_id . "#reply_" . $id);
+		
+	break;
+	
+	case 'stealth_delete_reply':
+
+		if(!allowed('delete') || !allowed('undelete')) {
+			add_error(MESSAGE_PAGE_ACCESS_DENIED, true);
+		}
+		if( ! ctype_digit($_GET['id'])) {
+			add_error('Invalid reply ID.', true);
+		}
+		
+		$id = $_GET['id'];
+		$page_title = 'Stealth Delete reply';
+	
+		if(isset($_POST['id'])) {
+			// CSRF checking.
+			check_token();
+			
+			$link->update("replies", array("stealth_ban"=>1), "id=".$link->escape($id));
+			log_mod("stealth_delete_reply", $id);
+			redirect('Reply stealthbanned.');
+		}
 		
 	break;
 		

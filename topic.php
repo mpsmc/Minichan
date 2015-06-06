@@ -261,6 +261,7 @@ if(!$locked && allowed("lock_topic")) echo '<li><a href="'.DOMAIN.'lock_topic/' 
 if($locked && allowed("lock_topic"))  echo '<li><a href="'.DOMAIN.'unlock_topic/' . $_GET['id'] . '" onclick="return submitDummyForm(\''.DOMAIN.'unlock_topic/' . $_GET['id'] . '\', \'id\', ' . $_GET['id'] . ', \'Unlock this topic?\');">Unlock</a></li>';
 if(!$deleted) { 
 	if(allowed("delete")) echo '<li><a href="'.DOMAIN.'delete_topic/' . $_GET['id'] . '" onclick="return submitDummyForm(\''.DOMAIN.'delete_topic/' . $_GET['id'] . '\', \'id\', ' . $_GET['id'] . ', \'Really delete this topic?\');">Delete</a></li>';
+	if(!$topic_stealth_banned && allowed('delete') && allowed('undelete')) echo '<li><a href="'.DOMAIN.'stealth_delete_topic/' . $_GET['id'] . '" onclick="return submitDummyForm(\''.DOMAIN.'stealth_delete_topic/' . $_GET['id'] . '\', \'id\', ' . $_GET['id'] . ', \'Really stealth delete this topic?\');">Stealth</a></li>';
 }else{
 	if(allowed("undelete")) echo '<li><a href="'.DOMAIN.'undelete_topic/' . $_GET['id'] . '" onclick="return submitDummyForm(\''.DOMAIN.'undelete_topic/' . $_GET['id'] . '\', \'id\', ' . $_GET['id'] . ', \'Really undelete this topic?\');">Undelete</a></li>';
 }
@@ -673,6 +674,7 @@ while (fetchReplyList()) {
 	
 	if(!$reply_deleted){
 		if(allowed("delete")) echo '<li><a href="'.DOMAIN.'delete_reply/' . $reply_id . '" onclick="return submitDummyForm(\''.DOMAIN.'delete_reply/' . $reply_id . '\', \'id\', ' . $reply_id . ', \'Really delete this reply?\');">Delete</a></li>';
+		if(!$reply_stealth && allowed('delete') && allowed('undelete')) echo '<li><a href="'.DOMAIN.'stealth_delete_reply/' . $reply_id . '" onclick="return submitDummyForm(\''.DOMAIN.'stealth_delete_reply/' . $reply_id . '\', \'id\', ' . $reply_id . ', \'Really stealth delete this reply?\');">Stealth</a></li>';
 	}else{
 		if(allowed("undelete")) echo '<li><a href="'.DOMAIN.'undelete_reply/' . $reply_id . '" onclick="return submitDummyForm(\''.DOMAIN.'undelete_reply/' . $reply_id . '\', \'id\', ' . $reply_id . ', \'Really undelete this reply?\');">Undelete</a></li>';
 	}
