@@ -414,6 +414,8 @@ if ($_POST['form_sent']) {
 						}
 					}
 				}
+				
+				if($_SESSION['UID'] == $topic_author) $stealth_banned = false;
 
 				if ($namefag != '') {
 				// Uncomment next line for letter assignments.
