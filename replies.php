@@ -16,7 +16,7 @@ if (!ctype_digit($_GET['p']) || $_GET['p'] < 2) {
 $items_per_page           = ITEMS_PER_PAGE;
 $start_listing_replies_at = $items_per_page * ($current_page - 1);
 
-$stmt = $link->db_exec('SELECT replies.id, replies.parent_id, replies.time, replies.body, topics.headline, topics.time FROM replies INNER JOIN topics ON replies.parent_id = topics.id WHERE replies.deleted = 0 AND topics.deleted = 0 AND topics.secret_id IS NULL ORDER BY id DESC LIMIT %1, %2', $start_listing_replies_at, $items_per_page);
+$stmt = $link->db_exec('SELECT replies.id, replies.parent_id, replies.time, replies.body, topics.headline, topics.time FROM replies INNER JOIN topics ON replies.parent_id = topics.id WHERE replies.deleted = 0 AND topics.deleted = 0 AND replies.stealth_ban = 0 AND topics.stealth_ban = 0 AND topics.secret_id IS NULL ORDER BY id DESC LIMIT %1, %2', $start_listing_replies_at, $items_per_page);
 $replies = new table();
 $columns = array(
 	'Snippet',
