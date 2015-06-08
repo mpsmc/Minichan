@@ -488,9 +488,8 @@ switch($_GET['action']) {
 		$fetch_parent = $link->db_exec('SELECT parent_id FROM replies WHERE id = %1', $id);
 		list($parent_id) = $link->fetch_row();
 		
-		if(!$stealth_ban) {
-			$link->db_exec('UPDATE topics SET replies = replies + 1 WHERE id = %1', $parent_id);
-		}
+		$link->db_exec('UPDATE topics SET replies = replies + 1 WHERE id = %1', $parent_id);
+		
 		redirect('Reply undeleted and pulled out of the archive.', 'topic/' . $parent_id . "#reply_" . $id);
 		
 	break;
@@ -506,12 +505,20 @@ switch($_GET['action']) {
 		
 		$id = $_GET['id'];
 		$page_title = 'Stealth Delete reply';
+		
+		$fetch_parent = $link->db_exec('SELECT parent_id FROM replies WHERE id = %1', $id);
+		list($parent_id) = $link->fetch_row();
+		
+		if(!$parent_id) {
+			add_error('No such reply.', true);
+		}
 	
 		if(isset($_POST['id'])) {
 			// CSRF checking.
 			check_token();
 			
 			$link->update("replies", array("stealth_ban"=>1), "id=".$link->escape($id));
+			$link->db_exec('UPDATE topics SET replies = replies - 1 WHERE id = %1', $parent_id);
 			log_mod("stealth_delete_reply", $id);
 			redirect('Reply stealthbanned.');
 		}

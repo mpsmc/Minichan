@@ -653,7 +653,9 @@ if ($_POST['form_sent']) {
 				if ($reply) {
 					// Update last bump.
 					$link->db_exec("UPDATE last_actions SET time = UNIX_TIMESTAMP() WHERE feature = 'last_bump'");
-					$link->db_exec('UPDATE topics SET replies = replies + 1, last_post = UNIX_TIMESTAMP() WHERE id = %1', $_GET['reply']);
+					if(!$stealth_banned) {
+						$link->db_exec('UPDATE topics SET replies = replies + 1, last_post = UNIX_TIMESTAMP() WHERE id = %1', $_GET['reply']);
+					}
 				} else { // If topic.
 					// Do not change the time() below to REQUEST_TIME. The script execution may have taken a second.
 					setcookie('last_topic', time(), $_SERVER['REQUEST_TIME'] + 315569260, '/');
