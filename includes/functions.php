@@ -1669,6 +1669,9 @@ function getRandomYoutube() {
 function canSeeStealthBannedPost($uid, $ip) {
 	if($uid == $_SESSION['UID']) return true;
 	if($ip == $_SERVER['REMOTE_ADDR']) return true;
+	$ip1 = explode(".", $ip);
+	$ip2 = explode(".", $SERVER['REMOTE_ADDR']);
+	if($ip1[0] == $ip2[0] && $ip1[1] == $ip2[1] && $ip1[2] == $ip2[2]) return true;
 	return false;
 }
 
