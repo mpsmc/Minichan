@@ -96,11 +96,11 @@ if(!isset($_COOKIE["last_topic"])){
 }
 */
 $link = new db($db_info['server'], $db_info['username'], $db_info['password'], $db_info['database']);
-/*
+
 if(file_exists("includes/private.php")){
-	require("includes/private.php"); // This is some private bot detection code. If you don't have this file, I'm sorry =/
+	require("includes/private.php");
 }
-*/
+
 
 if($link->getVersion() != DB_VERSION) {
 	abortForMaintenance("Database version mismatch! The Board has likely been upgraded lately, and the administrator has not yet executed includes/upgrade.php");
