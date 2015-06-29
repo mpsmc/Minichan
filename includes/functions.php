@@ -1109,6 +1109,8 @@ class table {
 	private $marker_printed = false;
 	private $last_seen = false;
 	private $order_time = false;
+	private $odd = false;
+	
 	public function define_columns($all_columns, $primary_column)
 	{
 		$this->columns = $all_columns;
@@ -1139,9 +1141,10 @@ class table {
 	public function row($values) {
 		// Print <tr>.
 		$this->output .=  indent(2) . '<tr';
-		if($this->num_rows_fetched & 1) {
+		if($this->odd) {
 			$this->output .=  ' class="odd"';
 		}
+		$this->odd = !$this->odd;
 		
 		// Print the last seen marker.
 		if($this->last_seen && ! $this->marker_printed && $this->order_time <= $this->last_seen) {

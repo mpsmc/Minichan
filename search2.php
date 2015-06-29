@@ -112,6 +112,8 @@ if($search) {
 	
 	$conditions = array();
 	$conditions['deleted'] = "t1.deleted = 0";
+	$conditions['stealth_ban'] = "t1.stealth_ban = 0";
+	
 	if($my_history)
 		$conditions['my_history'] = "t1.author = '" . $link->escape($_SESSION['UID']) . "'";
 	
@@ -157,6 +159,7 @@ if($search) {
 	Console::log("query_topics", $query_topics);
 		
 	$conditions['deleted_topic'] = "t2.deleted = 0";
+	$conditions['stealth_ban_topic'] = "t2.stealth_ban = 0";
 	
 	$conditions['secret_thread'] = "t2.secret_id IS NULL";
 	
