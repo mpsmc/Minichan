@@ -569,7 +569,7 @@ if ($_POST['form_sent']) {
 					$link->db_exec('
 						INSERT INTO topics (author, author_ip, headline, body, last_post, time, namefag, tripfag, sticky, locked, poll, admin_hyperlink, post_html, flag, stealth_ban)
 						VALUES (%1, %2, %3, %4, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), %5, %6, %7, %8, %9, %10, %11, %12, %13)',
-						$author, $_SERVER['REMOTE_ADDR'], $headline, $body, $namefag[0], $namefag[1], $sticky, $locked, (int)$polls_enabled, $admin_hyperlink, $post_html, $flag, $stealth_banned
+						$author, $_SERVER['REMOTE_ADDR'], $headline, $body, $namefag[0], $namefag[1], $sticky, $locked, (int)$polls_enabled, $admin_hyperlink, $post_html, $flag, (int)$stealth_banned
 					);
 					
 					$inserted_id = $link->insert_id();
