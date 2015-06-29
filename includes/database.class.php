@@ -59,13 +59,9 @@ class db{
 						
 		$query = str_replace("\\%", "%", $query);
 		
-		if($_db_args[count($_db_args)-1]===true)
-			return $query;
-		
 		$queryId = mysql_query($query, $this->db_link) or $this->error(mysql_error() . " <br/>Query: ".$query, __FILE__, __LINE__, debug_backtrace());
 		if(is_resource($queryId)) $this->query_id = $queryId;
 		return $queryId;
-		
 	}
 	
 	function num_rows($sql_num=-1){
