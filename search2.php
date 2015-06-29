@@ -112,7 +112,6 @@ if($search) {
 	
 	$conditions = array();
 	$conditions['deleted'] = "t1.deleted = 0";
-	$conditions['stealth_ban'] = "t1.stealth_ban = 0";
 	
 	if($my_history)
 		$conditions['my_history'] = "t1.author = '" . $link->escape($_SESSION['UID']) . "'";
@@ -155,16 +154,15 @@ if($search) {
 	
 	$conditions['secret_thread'] = "t1.secret_id IS NULL";
 	
-	$query_topics = "SELECT t1.id, NULL, thumb_width, thumb_height, file_name, img_external, thumb_external, t1.author, t1.namefag, t1.tripfag, 0, t1.time, t1.replies, t1.visits, t1.headline, t1.body FROM topics AS t1 LEFT OUTER JOIN images ON t1.id = images.topic_id WHERE " . implode(" AND ", $conditions);
-	Console::log("query_topics", $query_topics);
+	$query_topics = "SELECT t1.id, NULL, thumb_width, thumb_height, file_name, img_external, thumb_external, t1.author, t1.author_ip, t1.namefag, t1.tripfag, 0, t1.time, t1.replies, t1.visits, t1.headline, t1.body, t1.stealth_ban FROM topics AS t1 LEFT OUTER JOIN images ON t1.id = images.topic_id WHERE " . implode(" AND ", $conditions);
+	// Console::log("query_topics", $query_topics);
 		
 	$conditions['deleted_topic'] = "t2.deleted = 0";
-	$conditions['stealth_ban_topic'] = "t2.stealth_ban = 0";
 	
 	$conditions['secret_thread'] = "t2.secret_id IS NULL";
 	
-	$query_replies = "SELECT t1.id, t1.parent_id, thumb_width, thumb_height, file_name, img_external, thumb_external, t1.author, t1.namefag, t1.tripfag, t1.poster_number, t1.time, t2.replies, t2.visits, t2.headline, t1.body FROM replies AS t1 LEFT OUTER JOIN images ON t1.id = images.reply_id, topics AS t2 WHERE t1.parent_id = t2.id AND " . implode(" AND ", $conditions);
-	Console::log("query_replies", $query_replies);
+	$query_replies = "SELECT t1.id, t1.parent_id, thumb_width, thumb_height, file_name, img_external, thumb_external, t1.author, t1.author_ip, t1.namefag, t1.tripfag, t1.poster_number, t1.time, t2.replies, t2.visits, t2.headline, t1.body, t1.stealth_ban FROM replies AS t1 LEFT OUTER JOIN images ON t1.id = images.reply_id, topics AS t2 WHERE t1.parent_id = t2.id AND " . implode(" AND ", $conditions);
+	// Console::log("query_replies", $query_replies);
 	
 	$query = "";
 	
@@ -233,7 +231,8 @@ if($search) {
 		echo $navigation_menu;
 	
 	if ($num_rows > 0) {
-		while(list($id, $parent_id, $thumb_width, $thumb_height, $image_name, $img_external, $thumb_external, $author, $name, $trip, $poster_number, $time, $replies, $visits, $headline, $body) = $link->fetch_row($query)) {
+		while(list($id, $parent_id, $thumb_width, $thumb_height, $image_name, $img_external, $thumb_external, $author, $author_ip, $name, $trip, $poster_number, $time, $replies, $visits, $headline, $body, $is_stealth_banned) = $link->fetch_row($query)) {
+			if($is_stealth_banned && !canSeeStealthBannedPost($author, $author_ip)) continue;
 			echo "<h3>";
 			if(!$name && !$trip) {
 				echo "Anonymous <strong>" . number_to_letter($poster_number) . "</strong>";

@@ -16,7 +16,7 @@ if (!ctype_digit($_GET['p']) || $_GET['p'] < 2) {
 $items_per_page           = ITEMS_PER_PAGE;
 $start_listing_replies_at = $items_per_page * ($current_page - 1);
 
-$stmt = $link->db_exec('SELECT replies.id, replies.parent_id, replies.time, replies.body, topics.headline, topics.time FROM replies INNER JOIN topics ON replies.parent_id = topics.id WHERE replies.deleted = 0 AND topics.deleted = 0 AND replies.stealth_ban = 0 AND topics.stealth_ban = 0 AND topics.secret_id IS NULL ORDER BY id DESC LIMIT %1, %2', $start_listing_replies_at, $items_per_page);
+$stmt = $link->db_exec('SELECT replies.id, replies.parent_id, replies.time, replies.body, topics.headline, topics.time, replies.stealth_ban, topics.stealth_ban, replies.author, replies.author_ip, topics.author, topics.author_ip FROM replies INNER JOIN topics ON replies.parent_id = topics.id WHERE replies.deleted = 0 AND topics.deleted = 0 AND topics.secret_id IS NULL ORDER BY id DESC LIMIT %1, %2', $start_listing_replies_at, $items_per_page);
 $replies = new table();
 $columns = array(
 	'Snippet',
@@ -27,7 +27,12 @@ $replies->define_columns($columns, 'Topic');
 $replies->add_td_class('Topic', 'topic_headline');
 $replies->add_td_class('Snippet', 'snippet');
 
-while (list($reply_id, $parent_id, $reply_time, $reply_body, $topic_headline, $topic_time) = $link->fetch_row($stmt)) {
+while (list($reply_id, $parent_id, $reply_time, $reply_body, $topic_headline, $topic_time, $topic_stealth_ban, $reply_stealth_ban, $reply_author, $reply_author_ip, $topic_author, $topic_author_ip) = $link->fetch_row($stmt)) {
+	if(($topic_stealth_ban || $reply_stealth_ban) && !(canSeeStealthBannedPost($reply_author, $reply_author_ip) || canSeeStealthBannedPost($topic_author, $topic_author_ip))) {
+		$replies->num_rows_fetched++;
+		continue;
+	}
+	
 	$values = array(
 		'<a href="'.DOMAIN.'topic/' . $parent_id . '#reply_' . $reply_id . '">' . snippet($reply_body) . '</a>',
 		'<a href="'.DOMAIN.'topic/' . $parent_id . '">' . htmlspecialchars($topic_headline) . '</a> <span class="help unimportant" title="' . format_date($topic_time) . '">(' . calculate_age($topic_time) . ' old)</span>',
