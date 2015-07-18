@@ -287,5 +287,9 @@ class CustomizedBBCodeFormatter extends JBBCode\Parser implements MinichanFormat
 		$this->parse($text, $nl2br, $encode);
 		return strip_tags($this->getAsText());
 	}
+	
+	public function sanitizeQuickQuote($text) {
+		return preg_replace('#\[goodrep(?:=[^\]]*)\].*?\[/goodrep]#m', '', $text);
+	}
 }
 registerFormatter(1, new CustomizedBBCodeFormatter());

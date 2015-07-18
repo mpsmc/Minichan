@@ -244,7 +244,8 @@ edited_message($topic_time, $topic_edit_time, $topic_edit_mod);
 echo '<ul class="menu">';
 
 $reply_body_quickquote = $topic_body;
-detectFormatter($reply_body_quickquote);
+$reply_body_formatter = detectFormatter($reply_body_quickquote);
+$reply_body_quickquote = $reply_body_formatter->sanitizeQuickQuote($reply_body_quickquote);
 $reply_body_quickquote = trim(preg_replace('/^@([0-9,]+|OP)/m', '', $reply_body_quickquote));
 $reply_body_quickquote = preg_replace('/^/m', '> ', $reply_body_quickquote);
 $reply_body_quickquote = urlencode($reply_body_quickquote);
@@ -654,7 +655,8 @@ while (fetchReplyList()) {
 	$reply_body_parsed = preg_replace_callback('/@([0-9,]+)/m', "preg_replace_anchors", $reply_body_parsed);
 	
 	$reply_body_quickquote = $reply_body;
-	detectFormatter($reply_body_quickquote);
+	$reply_body_formatter = detectFormatter($reply_body_quickquote);
+	$reply_body_quickquote = $reply_body_formatter->sanitizeQuickQuote($reply_body_quickquote);
 	$reply_body_quickquote = trim(preg_replace('/^@([0-9,]+|OP)/m', '', $reply_body_quickquote));
 	$reply_body_quickquote = preg_replace('/^/m', '> ', $reply_body_quickquote);
 	$reply_body_quickquote = urlencode($reply_body_quickquote);

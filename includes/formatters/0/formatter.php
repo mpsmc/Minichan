@@ -118,5 +118,9 @@ class LegacyFormatter implements MinichanFormatter {
 		if($nl2br) $text = nl2br($text);
 		return $text;
 	}
+	
+	public function sanitizeQuickQuote($text) {
+		return $text;
+	}
 }
 registerFormatter(0, new LegacyFormatter());

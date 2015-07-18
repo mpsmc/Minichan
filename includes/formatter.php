@@ -2,6 +2,7 @@
 interface MinichanFormatter {
 	public function formatAsHtml($text);
 	public function formatAsText($text, $nl2br, $encode=true);
+	public function sanitizeQuickQuote($text);
 }
 
 class InvalidFormatter implements MinichanFormatter {
@@ -9,6 +10,9 @@ class InvalidFormatter implements MinichanFormatter {
 		return "<strong>Invalid formatter!</strong><br/><br/>" . nl2br(htmlspecialchars($text, ENT_COMPAT | ENT_HTML401, ""));
 	}
 	public function formatAsText($text, $nl2br, $encode=true) {
+		return "<strong>Invalid formatter!</strong><br/><br/>" . nl2br(htmlspecialchars($text, ENT_COMPAT | ENT_HTML401, ""));
+	}
+	public function sanitizeQuickQuote($text) {
 		return "<strong>Invalid formatter!</strong><br/><br/>" . nl2br(htmlspecialchars($text, ENT_COMPAT | ENT_HTML401, ""));
 	}
 }
