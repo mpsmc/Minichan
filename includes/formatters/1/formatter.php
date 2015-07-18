@@ -69,6 +69,25 @@ class CodeTag extends JBBCode\CodeDefinition {
 	}
 }
 
+class GoodRepTag extends JBBCode\CodeDefinition {
+	public function __construct($option) {
+		parent::__construct();
+		$this->setTagName("goodrep");
+		$this->setUseOption($option);
+	}
+	
+	public function asHtml(JBBCode\ElementNode $el) {
+		$content = "";
+		foreach ($el->getChildren() as $child)
+			$content .= $child->getAsBBCode();
+		
+		if(!GOODREP && $this->usesOption() && $this->hasValidInputs($el)) $content = $el->getAttribute()["goodrep"];
+		else if(!GOODREP && !$this->usesOption()) $content = "";
+		
+		return $content;
+	}
+}
+
 class HTMLSafeVisitor extends JBBCode\visitors\HTMLSafeVisitor {
 	public function visitElementNode(\JBBCode\ElementNode $elementNode) {
 		$attrs = $elementNode->getAttribute();
@@ -218,6 +237,8 @@ class CustomizedBBCodeFormatter extends JBBCode\Parser implements MinichanFormat
 		
 		$this->addCodeDefinition(new CodeTag(true));
 		$this->addCodeDefinition(new CodeTag(false));
+		$this->addCodeDefinition(new GoodRepTag(true));
+		$this->addCodeDefinition(new GoodRepTag(false));
 		$this->addCodeDefinition(new ListCodeDefinition());
 		$this->addCodeDefinition(new UrlTagDefinition());
 		
