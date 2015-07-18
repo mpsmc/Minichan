@@ -1,6 +1,7 @@
 <?php
 require_once "JBBCode/Parser.php";
 require_once "JBBCode/CodeDefinition.php";
+require_once "JBBCode/ElementNode.php";
 require_once "JBBCode/CodeDefinitionBuilder.php";
 require_once "JBBCode/NodeVisitor.php";
 require_once "JBBCode/visitors/HTMLSafeVisitor.php";
@@ -70,6 +71,8 @@ class CodeTag extends JBBCode\CodeDefinition {
 }
 
 class GoodRepTag extends JBBCode\CodeDefinition {
+	public $isFormattingAsText = false;
+	
 	public function __construct($option) {
 		parent::__construct();
 		$this->setTagName("goodrep");
@@ -86,6 +89,14 @@ class GoodRepTag extends JBBCode\CodeDefinition {
 		
 		return $content;
 	}
+	
+	public function asText(JBBCode\ElementNode $el) {
+        $text = parent::asText($el);
+		
+		if(GOODREP) return $text;
+		if($this->usesOption()) return $el->getAttribute()["goodrep"];
+		return "";
+    }
 }
 
 class HTMLSafeVisitor extends JBBCode\visitors\HTMLSafeVisitor {
@@ -284,7 +295,13 @@ class CustomizedBBCodeFormatter extends JBBCode\Parser implements MinichanFormat
 	}
 	
 	public function formatAsText($text, $nl2br, $encode=true) {
+		foreach($this->bbcodes as $bbcode) {
+			$bbcode->isFormattingAsText = true;
+		}
 		$this->parse($text, $nl2br, $encode);
+		foreach($this->bbcodes as $bbcode) {
+			$bbcode->isFormattingAsText = false;
+		}
 		return strip_tags($this->getAsText());
 	}
 	
