@@ -1010,6 +1010,7 @@ function fetch_ignore_list() { // For ostrich mode.
 		
 		return $ignored_phrases;
 	}
+	return array();
 }
 
 function show_trash($uid, $silence = false) { // For profile and trash.
