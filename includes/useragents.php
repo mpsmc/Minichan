@@ -6,7 +6,7 @@ function check_user_agent ( $type = NULL ) {
         $user_agent = strtolower ( $_SERVER['HTTP_USER_AGENT'] );
         if ( $type == 'bot' ) {
                 // matches popular bots
-                if ( preg_match ( "/megaindex|linkanalyze|googlebot|adsbot|yandex|feedly|yahooseeker|yahoobot|msnbot|watchmouse|pingdom\.com|feedfetcher-google|ia_archiver|bingbot|mj12bot|ahrefsbot|semrushbot/", $user_agent ) ) {
+                if ( preg_match ( "/megaindex|linkanalyze|googlebot|adsbot|yandex|feedly|yahooseeker|yahoobot|msnbot|watchmouse|pingdom\.com|feedfetcher-google|ia_archiver|bingbot|mj12bot|ahrefsbot|semrushbot|spbot/", $user_agent ) ) {
                         return true;
                         // watchmouse|pingdom\.com are "uptime services"
                 }
