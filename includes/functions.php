@@ -1654,7 +1654,7 @@ function getRandomYoutube() {
 	shuffle($youtubes);
 
 	$html = "<br /><br /><div style='position: relative'>";
-	$html .= "<div style='position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 9999'></div>";
+	if(!MOBILE_MODE) $html .= "<div style='position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 9999'></div>";
 	$html .= '<iframe width="560" height="315" tabindex="-1" src="//www.youtube-nocookie.com/embed/'.$youtubes[0].'?version=3&playlist='.implode(",", array_slice($youtubes, 1)).'&autoplay=1&loop=1&controls=0&disablekb=1&cc_lang_pref=en&cc_load_policy=1&playsinline=1" frameborder="0" allowfullscreen></iframe>';
 	$html .= "</div>";
 
