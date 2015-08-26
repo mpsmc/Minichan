@@ -1650,23 +1650,14 @@ function getRandomYoutube() {
 	$youtubes = array(
 		"rv9zEcispCU", "hAWEaXvezoY", "wmSvzxcD9yw", "1VaHIflPemM", "UxTVYvHbwTs", "fln0QbxiCPk", "9ivVw9v-QZI", "QYeIVWQxcZQ"
 	);
-	
-	$youtube = $youtubes[array_rand($youtubes)];
-	
-	$url = "//www.youtube-nocookie.com/v/" . $youtube . "?fs=1&version=3&controls=0&disablekb=1&cc_lang_pref=en&cc_load_policy=1&autoplay=1&loop=1";
-	
+
+	shuffle($youtubes);
+
 	$html = "<br /><br /><div style='position: relative'>";
 	$html .= "<div style='position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 9999'></div>";
-	// $html .= '<object width="560" height="315">';
-	// $html .= '<param name="movie" value="$url"></param>';
-	// $html .= '<param name="allowFullScreen" value="true"></param>';
-	// $html .= '<param name="allowscriptaccess" value="always"></param>';
-	// $html .= '<embed src="' . $url . '" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="315">';
-	// $html .= '</embed>';
-	// $html .= '</object>';
-	$html .= '<iframe width="560" height="315" tabindex="-1" src="//www.youtube-nocookie.com/embed/'.$youtube.'?version=3&playlist='.$youtube.'&autoplay=1&loop=1&controls=0&disablekb=1&cc_lang_pref=en&cc_load_policy=1&playsinline=1" frameborder="0" allowfullscreen></iframe>';
-	
+	$html .= '<iframe width="560" height="315" tabindex="-1" src="//www.youtube-nocookie.com/embed/'.$youtubes[0].'?version=3&playlist='.implode(",", array_slice($youtubes, 1)).'&autoplay=1&loop=1&controls=0&disablekb=1&cc_lang_pref=en&cc_load_policy=1&playsinline=1" frameborder="0" allowfullscreen></iframe>';
 	$html .= "</div>";
+
 	return $html;
 }
 
