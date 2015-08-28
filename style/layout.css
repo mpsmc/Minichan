@@ -221,7 +221,14 @@ table {
     margin-right:0em;
     width:100%;
     word-wrap: break-word;
+}
+
+#body_wrapper table {
     word-break: break-all;
+}
+
+#body_wrapper table th.headline {
+    min-width: 100px;
 }
 
 table th {
