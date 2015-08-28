@@ -39,6 +39,10 @@ a:focus {
     margin:0 0 0 .5em;
 }
 
+div#body_wrapper h2 {
+    word-break: break-all;
+}
+
 .codebox2 {
     overflow: auto;
     margin: 0;
@@ -217,6 +221,7 @@ table {
     margin-right:0em;
     width:100%;
     word-wrap: break-word;
+    word-break: break-all;
 }
 
 table th {
