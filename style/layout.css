@@ -40,7 +40,8 @@ a:focus {
 }
 
 div#body_wrapper h2 {
-    word-break: break-all;
+    word-break: break-word;
+    word-wrap: break-word;
 }
 
 .codebox2 {
@@ -220,11 +221,8 @@ table {
     margin-left:0em;
     margin-right:0em;
     width:100%;
+    word-break: break-word;
     word-wrap: break-word;
-}
-
-#body_wrapper table {
-    word-break: break-all;
 }
 
 #body_wrapper table th.headline {
