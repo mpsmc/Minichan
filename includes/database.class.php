@@ -1,5 +1,5 @@
 <?php
-define('DB_VERSION', 3); // Version of the database that the code expects
+define('DB_VERSION', 4); // Version of the database that the code expects
 
 class db{
 	protected $db_link			= NULL;
@@ -16,6 +16,7 @@ class db{
 		$this->db_link = @mysql_pconnect($server, $username, $password) or $this->error(mysql_error(), __FILE__, __LINE__, debug_backtrace());
 		$this->prefix = $prefix;
 		if($database) $this->setdb($database);
+        $this->db_exec("SET NAMES utf8mb4");
 	}
 	
 	function show_errors($bool) {
