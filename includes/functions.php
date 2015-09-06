@@ -1603,7 +1603,7 @@ function log_irc($message, $staff = false) {
 	if(!ENABLE_IRC_PING) return;
 	global $disable_errors;
 	$disable_errors = true;
-	$fp = @fsockopen(IRC_PING_DOMAIN, 80, $errno, $errstr, 1);
+	$fp = @fsockopen(IRC_PING_DOMAIN, IRC_PING_PORT, $errno, $errstr, 1);
 	$disable_errors = false;
 	if(!is_resource($fp)) return;
 

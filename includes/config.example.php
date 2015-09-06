@@ -86,6 +86,7 @@ define('HIDDEN_MODS', false); // Hides the hyperlink for mod posts.
 // Miscellaneous stuff.
 define('ENABLE_IRC_PING', false); // If enabled will ping a http server when posts/replies/modlog events happen
 define('IRC_PING_DOMAIN', "");
+define('IRC_PING_PORT', 80);
 define('IRC_PING_SECRET', '');
 
 define('SALT', ''); // Just type some random stuff.
