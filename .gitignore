@@ -4,3 +4,5 @@
 /minecraft/
 /dump/
 db.log
+/composer.phar
+/vendor
