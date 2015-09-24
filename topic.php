@@ -121,7 +121,7 @@ if($_SESSION['UID']) {
 }
 
 // If ostrich mode is enabled, fetch a list of blacklisted phrases.
-$ignored_phrases = fetch_ignore_list();
+$ignore_list = fetch_ignore_list();
 
 // Output dummy form. This is for JavaScript submissions to action.php.
 dummy_form();
@@ -472,13 +472,17 @@ while (fetchReplyList()) {
 	
 	if(!$reply_deleted){ // If it's deleted, yeah... No hidey.
 		if ($user_settings['ostrich_mode'] == 1) {
-			foreach ($ignored_phrases as $ignored_phrase) {
+			foreach ($ignore_list['phrases'] as $ignored_phrase) {
 				if (stripos($reply_body, $ignored_phrase) !== false) {
 					$hidden_replies[]     = $reply_id;
 					$reply_hidden = true;
                     break;
 				}
 			}
+            if(matchIgnoredName($ignore_list['names'], $namefag, $tripfag)) {
+                $hidden_replies[] = $reply_id;
+                $reply_hidden = true;
+            }
 		}
 	}
 	

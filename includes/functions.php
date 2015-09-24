@@ -1001,13 +1001,19 @@ function remove_ip_ban($ip) {
 function fetch_ignore_list() { // For ostrich mode. 
 	global $link, $user_settings;
     
-    if(!$user_settings['ostrich_mode']) return array();
+    if(!$user_settings['ostrich_mode']) return array(
+        "phrases" => array(),
+        "names" => array()
+    );
     
-    $fetch_ignore_list = $link->db_exec('SELECT ignored_phrases FROM ignore_lists WHERE uid = %1', $_COOKIE['UID']);
-    list($ignored_phrases) = $link->fetch_row($fetch_ignore_list);
+    $fetch_ignore_list = $link->db_exec('SELECT ignored_phrases, ignored_names FROM ignore_lists WHERE uid = %1', $_COOKIE['UID']);
+    list($ignored_phrases, $ignored_names) = $link->fetch_row($fetch_ignore_list);
     
     // To make this work with Windows input, we need to strip out the return carriage.
-    return explode("\n", str_replace("\r", '', $ignored_phrases));
+    return array(
+        "phrases" => explode("\n", str_replace("\r", '', $ignored_phrases)),
+        "names" => explode("\n", str_replace("\r", '', $ignored_names))
+    );
 }
 
 function show_trash($uid, $silence = false) { // For profile and trash.
@@ -1667,6 +1673,28 @@ function canSeeStealthBannedPost($uid, $ip) {
 	$ip2 = explode(".", $_SERVER['REMOTE_ADDR']);
 	if($ip1[0] == $ip2[0] && $ip1[1] == $ip2[1] && $ip1[2] == $ip2[2]) return true;
 	return false;
+}
+
+function matchIgnoredName($ignoredNames, $namefag, $tripfag) {
+    if(!$namefag && !$tripfag) return false;
+    
+    foreach($ignoredNames as $ignoredName) {
+        if(preg_match('/^([^!]*)(?: ?!(.*?))?$/', $ignoredName, $bits)) {
+            $ignoredNamefag = trim($bits[1]);
+            $ignoredTripfag = trim($bits[2]);
+            $tripfag = substr(trim($tripfag), 1);
+            $namefag = trim($namefag);
+            
+            $match = true;
+            
+            if($ignoredNamefag && strcasecmp($ignoredNamefag, $namefag) != 0) $match = false;
+            if($ignoredTripfag && strcasecmp($ignoredTripfag, $tripfag) != 0) $match = false;
+            
+            if($match) return true;
+        }
+    }
+    
+    return false;
 }
 
 ?>

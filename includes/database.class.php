@@ -1,5 +1,5 @@
 <?php
-define('DB_VERSION', 4); // Version of the database that the code expects
+define('DB_VERSION', 5); // Version of the database that the code expects
 
 class db{
 	protected $db_link			= NULL;

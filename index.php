@@ -46,7 +46,7 @@ if($_COOKIE['last_topic'] <= $last_actions['last_topic']) {
 }
 
 // If ostrich mode is enabled, fetch a list of blacklisted phrases.
-$ignored_phrases = fetch_ignore_list();
+$ignore_list = fetch_ignore_list();
 
 // Fetch the topics appropriate to this page.
 $items_per_page = ITEMS_PER_PAGE;
@@ -77,7 +77,7 @@ $table->add_td_class('Headline', 'topic_headline');
 $table->add_td_class('Snippet', 'snippet');
 
 function renderTopics($table, $topics) {
-	global $topics_mode, $link, $visited_topics, $last_seen, $user_settings, $ignored_phrases;
+	global $topics_mode, $link, $visited_topics, $last_seen, $user_settings, $ignore_list;
 	
 	while($topic = $link->fetch_assoc($topics)) {
 		if($topic['secret_id'] && !allowed('minecraft')) {
@@ -93,15 +93,18 @@ function renderTopics($table, $topics) {
 			
 			// Should we even bother?
 			if($user_settings['ostrich_mode']) {
-				if($ignored_phrases) {
-					foreach($ignored_phrases as $ignored_phrase) {
-						if(stripos($topic['headline'], $ignored_phrase) !== false || stripos($topic['body'], $ignored_phrase) !== false) {
-							// We've encountered an ignored phrase, so skip the rest of this while() iteration.
-							$table->num_rows_fetched++;
-							continue 2;
-						}
-					}
-				}
+                foreach($ignore_list['phrases'] as $ignored_phrase) {
+                    if(stripos($topic['headline'], $ignored_phrase) !== false || stripos($topic['body'], $ignored_phrase) !== false) {
+                        // We've encountered an ignored phrase, so skip the rest of this while() iteration.
+                        $table->num_rows_fetched++;
+                        continue 2;
+                    }
+                }
+                
+                if(matchIgnoredName($ignore_list['names'], $topic['namefag'], $topic['tripfag'])) {
+                    $table->num_rows_fetched++;
+                    continue;
+                }
 			}
 		}
 		
