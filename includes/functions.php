@@ -1690,7 +1690,7 @@ function matchIgnoredName($ignoredNames, $namefag, $tripfag) {
             if($ignoredNamefag && strcasecmp($ignoredNamefag, $namefag) != 0) $match = false;
             if($ignoredTripfag && strcasecmp($ignoredTripfag, $tripfag) != 0) $match = false;
             
-            if($match) return true;
+            if($match) return false;
         }
     }
     
