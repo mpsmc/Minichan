@@ -421,11 +421,6 @@ function preg_replace_anchors($data){
 		$retval = '<span class="unimportant">(Citing a deleted or non-existent reply.)</span>';
 		$anchor_cache[$formatted_id] = $retval;
 		return $retval;
-	} else if (in_array($pure_id, $hidden_replies)) {
-		//$reply_body_parsed = str_replace($formatted_id, '<span class="unimportant help" title="' . snippet($reply_ids[$pure_id]['body']) . '">@hidden</span>', $reply_body_parsed);
-		$retval = '<span class="unimportant help" title="' . snippet($reply_ids[$pure_id]['body']) . '">@hidden</span>';
-		$anchor_cache[$formatted_id] = $retval;
-		return $retval;
 	} else {
 		if ($pure_id == $previous_id) {
 			$link_text = '@previous';
@@ -433,9 +428,11 @@ function preg_replace_anchors($data){
 			$link_text = $formatted_id;
 		}
 		
+        $hidden = "";
+        if(in_array($pure_id, $hidden_replies)) $hidden = ", hidden";
 		
 		if ($reply_ids[$pure_id]['author'] == $_SESSION['UID']) {
-			$you = '<span class="unimportant"> (you)</span>';
+			$you = "<span class='unimportant'> (you$hidden)</span>";
 		}else{
 			$you = '<span class="unimportant"> (';
 			extract($reply_ids[$pure_id]);
@@ -449,7 +446,7 @@ function preg_replace_anchors($data){
 				if($namefag=="") $tripfag = trim($tripfag);
 				$you .= '<strong>' . htmlspecialchars(trim($namefag)) . '</strong>' . $tripfag;
 			}
-			$you .= ')</span>';
+			$you .= "$hidden)</span>";
 		}
 	
 		if ($reply_ids[$pure_id]['deleted']) {
@@ -470,27 +467,22 @@ while (fetchReplyList()) {
 	if($reply_stealth && allowed("undelete")) {
 		$reply_deleted = true;
 	}
+    
+    $reply_hidden = false;
 	
 	if(!$reply_deleted){ // If it's deleted, yeah... No hidey.
 		if ($user_settings['ostrich_mode'] == 1) {
 			foreach ($ignored_phrases as $ignored_phrase) {
 				if (stripos($reply_body, $ignored_phrase) !== false) {
 					$hidden_replies[]     = $reply_id;
-					$reply_ids[$reply_id] = array(
-						'body' => $reply_body,
-						'author' => $reply_author,
-						'namefag' => $namefag,
-						'tripfag' => $tripfag,
-						'reply_poster_number' => $reply_poster_number
-					);
-					// We've encountered an ignored phrase, so skip the rest of this while() iteration.
-					continue 2;
+					$reply_hidden = true;
+                    break;
 				}
 			}
 		}
 	}
 	
-	if($administrator && !$reply_deleted && $last_was_delete){
+	if(!($reply_deleted || $reply_hidden) && $last_was_delete){
 		echo "<br />";
 	}
 	
@@ -580,7 +572,10 @@ while (fetchReplyList()) {
 		}
 		$styleHidden = 'style="display:none" ';
 		echo '<h3 id="reply_'.$reply_id.'_info" class="highlighted"><center>Reply #' . $reply_id . ' from ' . $out['author'] . ' deleted by <b><a href="' . DOMAIN . 'profile/' . $deleter . '">' . $deleter_name . '</a></b>, <strong><span class="help" title="' . format_date($delete_time) . '">' . calculate_age($delete_time) . ' ago</span></strong> <a href="#reply_' . $reply_id . '" onClick="showDeleted('.$reply_id.', this);return false;" id="reply_button_'.$reply_id.'">[show]</a></center></h3>';
-	}
+	}elseif($reply_hidden) {
+        $styleHidden = 'style="display:none" ';
+		echo '<h3 id="reply_'.$reply_id.'_info" class="highlighted"><center>Reply #' . $reply_id . ' from ' . $out['author'] . ' was hidden <a href="#reply_' . $reply_id . '" onClick="showDeleted('.$reply_id.', this);return false;" id="reply_button_'.$reply_id.'">[show]</a></center></h3>';
+    }
 	
 	// Now, output the reply.
 	echo '<h3 class="c" '. $styleHidden .'name="reply_' . $reply_id . '" id="reply_' . $reply_id . '">';
@@ -703,7 +698,7 @@ while (fetchReplyList()) {
 	if(!$reply_deleted)
 		$undeleted_replies++;
 	
-	$last_was_delete = $reply_deleted;
+	$last_was_delete = $reply_deleted || $reply_hidden;
 	
 	$posters[]            = $reply_author;
 	$previous_poster      = $reply_author;

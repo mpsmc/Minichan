@@ -281,7 +281,7 @@ function highlightReply(id) {
 		$("#reply_"+id).show();
 		$("#reply_box_"+id).show();
 		$("#reply_button_"+id).text("[hide]");
-		document.location.hash = 'reply_' + id + '_info';
+		document.location.hash = 'reply_' + id;
 		return false;
 	}
 	return true;
