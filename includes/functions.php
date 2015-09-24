@@ -1682,15 +1682,18 @@ function matchIgnoredName($ignoredNames, $namefag, $tripfag) {
         if(preg_match('/^([^!]*)(?: ?!(.*?))?$/', $ignoredName, $bits)) {
             $ignoredNamefag = trim($bits[1]);
             $ignoredTripfag = trim($bits[2]);
+            if(!$ignoredNamefag && !$ignoredTripfag) continue;
             $tripfag = substr(trim($tripfag), 1);
             $namefag = trim($namefag);
             
-            $match = true;
+            $needMatches = 0;
+            if($ignoredNamefag) $needMatches++;
+            if($ignoredTripfag) $needMatches++;
             
-            if($ignoredNamefag && strcasecmp($ignoredNamefag, $namefag) != 0) $match = false;
-            if($ignoredTripfag && strcasecmp($ignoredTripfag, $tripfag) != 0) $match = false;
+            if($ignoredNamefag && $namefag && strcasecmp($ignoredNamefag, $namefag) == 0) $needMatches--;
+            if($ignoredTripfag && $tripfag && strcasecmp($ignoredTripfag, $tripfag) == 0) $needMatches--;
             
-            if($match) return false;
+            if($needMatches==0) return true;
         }
     }
     
