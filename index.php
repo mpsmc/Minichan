@@ -63,7 +63,7 @@ $columns = array
 	$order_name . ' ▼'
 );
 			
-if($_COOKIE['spoiler_mode'] != 1) {
+if(!$user_settings['spoiler_mode'] || MOBILE_MODE) {
 	// If spoiler mode is disabled, remove the snippet column.	
 	array_splice($columns, 1, 1);
 }
@@ -77,7 +77,7 @@ $table->add_td_class('Headline', 'topic_headline');
 $table->add_td_class('Snippet', 'snippet');
 
 function renderTopics($table, $topics) {
-	global $topics_mode, $link, $visited_topics, $last_seen;
+	global $topics_mode, $link, $visited_topics, $last_seen, $user_settings, $ignored_phrases;
 	
 	while($topic = $link->fetch_assoc($topics)) {
 		if($topic['secret_id'] && !allowed('minecraft')) {
@@ -92,7 +92,7 @@ function renderTopics($table, $topics) {
 			}
 			
 			// Should we even bother?
-			if($_COOKIE['ostrich_mode'] == 1) {
+			if($user_settings['ostrich_mode']) {
 				if($ignored_phrases) {
 					foreach($ignored_phrases as $ignored_phrase) {
 						if(stripos($topic['headline'], $ignored_phrase) !== false || stripos($topic['body'], $ignored_phrase) !== false) {
@@ -138,7 +138,7 @@ function renderTopics($table, $topics) {
 							format_number($topic['visits']),
 							'<span class="help" title="' . format_date($order_time) . '">' . calculate_age($order_time) . '</span>'
 						);
-		if($_COOKIE['spoiler_mode'] != 1) {	
+		if(!$user_settings['spoiler_mode'] || MOBILE_MODE) {	
 			array_splice($values, 1, 1);
 		}
 		if(MOBILE_MODE){

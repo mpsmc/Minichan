@@ -44,8 +44,9 @@ $valid_settings = array
 );
 
 // Get our user's settings from the database.
-$stmt = $link->db_exec('SELECT memorable_name, memorable_password, email, spoiler_mode, topics_mode, ostrich_mode, snippet_length, style, custom_style, image_viewer, disable_images, rounded_corners FROM user_settings WHERE uid = %1', $_SESSION['UID']);
-$user_config_db = $link->fetch_assoc($stmt);
+$user_config_db = $link->fetch_assoc(
+    $link->db_exec('SELECT memorable_name, memorable_password, email, spoiler_mode, topics_mode, ostrich_mode, snippet_length, style, custom_style, image_viewer, disable_images, rounded_corners FROM user_settings WHERE uid = %1', $_SESSION['UID'])
+);
 if(!$user_config_db) $user_config_db = array();
 
 // If the values were set in the database, overwrite the defaults.
@@ -105,11 +106,6 @@ if($_POST['form_sent']) {
 				// echo $key . " = " . $value . "\n";
 				// Reset the value so it displays correctly on this page load.
 				$user_config[$key] = $value;
-				
-				// Text inputs never need to be set as cookies.
-				if(!in_array($key, $text_inputs)) {
-					setcookie($key, $value, $_SERVER['REQUEST_TIME'] + 315569260, '/', COOKIE_DOMAIN);
-				}
 			}
 		}
 	}

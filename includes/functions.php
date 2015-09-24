@@ -999,18 +999,15 @@ function remove_ip_ban($ip) {
 }
 
 function fetch_ignore_list() { // For ostrich mode. 
-	global $link;
-
-	if($_COOKIE['ostrich_mode'] == 1) {
-		$fetch_ignore_list = $link->db_exec('SELECT ignored_phrases FROM ignore_lists WHERE uid = %1', $_COOKIE['UID']);
-		list($ignored_phrases) = $link->fetch_row($fetch_ignore_list);
-		
-		// To make this work with Windows input, we need to strip out the return carriage.
-		$ignored_phrases = explode("\n", str_replace("\r", '', $ignored_phrases));
-		
-		return $ignored_phrases;
-	}
-	return array();
+	global $link, $user_settings;
+    
+    if(!$user_settings['ostrich_mode']) return array();
+    
+    $fetch_ignore_list = $link->db_exec('SELECT ignored_phrases FROM ignore_lists WHERE uid = %1', $_COOKIE['UID']);
+    list($ignored_phrases) = $link->fetch_row($fetch_ignore_list);
+    
+    // To make this work with Windows input, we need to strip out the return carriage.
+    return explode("\n", str_replace("\r", '', $ignored_phrases));
 }
 
 function show_trash($uid, $silence = false) { // For profile and trash.

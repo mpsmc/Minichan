@@ -84,10 +84,8 @@ update_activity('topic', $_GET['id']);
 $page_title = 'Topic: ' . htmlspecialchars($topic_headline, ENT_COMPAT | ENT_HTML401, "");
 
 // Increment visit count.
-if (!isset($_SESSION['visited_topics'][$_GET['id']]) && isset($_COOKIE['SID'])) {
-	$_SESSION['visited_topics'][$_GET['id']] = 1;
-	
-	$increment_visits = $link->db_exec('UPDATE topics SET visits = visits + 1 WHERE id = "%1"', $_GET['id']);
+if(!isset($visited_topics[$_GET['id']])) {
+	$link->db_exec('UPDATE topics SET visits = visits + 1 WHERE id = "%1"', $_GET['id']);
 }
 
 $last_read_post = $visited_topics[$_GET['id']];
@@ -474,7 +472,7 @@ while (fetchReplyList()) {
 	}
 	
 	if(!$reply_deleted){ // If it's deleted, yeah... No hidey.
-		if ($_COOKIE['ostrich_mode'] == 1) {
+		if ($user_settings['ostrich_mode'] == 1) {
 			foreach ($ignored_phrases as $ignored_phrase) {
 				if (stripos($reply_body, $ignored_phrase) !== false) {
 					$hidden_replies[]     = $reply_id;

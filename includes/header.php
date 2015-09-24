@@ -349,7 +349,7 @@ foreach($visited_cookie as $topic_info) {
 	$visited_topics[$cur_topic_id] = $num_replies;
 }
 */
-setcookie('topic_visits', null, -1, '/', COOKIE_DOMAIN);
+
 $link->db_exec('SELECT topic, replies FROM read_topics WHERE uid = %1 AND time > UNIX_TIMESTAMP() - 2592000', $_SESSION['UID']);
 while($row = $link->fetch_row()) {
 	$visited_topics[$row[0]] = (int)$row[1];
@@ -375,7 +375,7 @@ function stripslashes_from_array(&$array) {
 if ( get_magic_quotes_gpc ( ) ) {
 	stripslashes_from_array($_GET);
 	stripslashes_from_array($_POST);
-	}
+}
 if ( get_magic_quotes_runtime ( ) ) {
 	set_magic_quotes_runtime ( 0 ); 
 	}
@@ -430,6 +430,10 @@ if(allowed("manage_reports")){
 	if($NUM_REPORTS > 0 && strpos($_SERVER['REQUEST_URI'], 'report')===false)
 		$_SESSION['notice'] = "There " . ($NUM_REPORTS == 1 ? "is" : "are") ." <a href='" . DOMAIN . "reports'>" . $NUM_REPORTS . " unhandled report" . ($NUM_REPORTS == 1 ? "" : "s") . "</a>.";
 }
+
+$stmt = $link->db_exec('SELECT * FROM user_settings WHERE uid = %1', $_SESSION['UID']);
+$user_settings = $link->fetch_assoc($stmt);
+if(!$user_settings) $user_settings = array();
 
 $citation_check = $link->db_exec('SELECT COUNT(*) FROM citations WHERE uid = %1', $_SESSION['UID']);
 list($new_citations) = $link->fetch_row($citation_check);
