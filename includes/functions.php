@@ -1142,16 +1142,22 @@ class table {
 		$this->order_time = $order_time;
 	}
 	
-	public function row($values) {
+	public function row($values, $ignored = false) {
 		// Print <tr>.
 		$this->output .=  indent(2) . '<tr';
+        $classes = array();
+        
 		if($this->odd) {
-			$this->output .=  ' class="odd"';
+            $classes[] = "odd";
 		}
+        
+        if($ignored) $classes[] = "ignored";
+        
+        $this->output .=  ' class="' . implode(" ", $classes) . '"';
 		$this->odd = !$this->odd;
 		
 		// Print the last seen marker.
-		if($this->last_seen && ! $this->marker_printed && $this->order_time <= $this->last_seen) {
+		if($this->last_seen && ! $this->marker_printed && $this->order_time <= $this->last_seen && !$ignored) {
 			$this->marker_printed = true;
 			if($this->num_rows_fetched != 0) {
 				$this->output .=  ' id="last_seen_marker"';

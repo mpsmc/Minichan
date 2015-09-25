@@ -228,6 +228,15 @@ body.page-index table {
     word-break: break-word;
 }
 
+body.page-index table tr.ignored {
+    display: none;
+}
+
+.show_ignored_link {
+    font-size: 10px;
+    font-weight: normal;
+}
+
 #body_wrapper table th.headline {
     min-width: 100px;
 }

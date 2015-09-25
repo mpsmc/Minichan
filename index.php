@@ -85,6 +85,8 @@ function renderTopics($table, $topics) {
 			continue;
 		}
 		
+        $topic_ignored = false;
+        
 		if(!$topic['sticky']) {
 			if($topic['stealth_ban'] && !allowed('undelete') && !canSeeStealthBannedPost($author, $author_ip)) {
 				$table->num_rows_fetched++;
@@ -95,15 +97,12 @@ function renderTopics($table, $topics) {
 			if($user_settings['ostrich_mode']) {
                 foreach($ignore_list['phrases'] as $ignored_phrase) {
                     if(stripos($topic['headline'], $ignored_phrase) !== false || stripos($topic['body'], $ignored_phrase) !== false) {
-                        // We've encountered an ignored phrase, so skip the rest of this while() iteration.
-                        $table->num_rows_fetched++;
-                        continue 2;
+                        $topic_ignored = true;
                     }
                 }
                 
                 if(matchIgnoredName($ignore_list['names'], $topic['namefag'], $topic['tripfag'])) {
-                    $table->num_rows_fetched++;
-                    continue;
+                    $topic_ignored = true;
                 }
 			}
 		}
@@ -121,6 +120,10 @@ function renderTopics($table, $topics) {
 		if($topic['sticky']) {
 			$lockTxt[] = "[STICKY]";
 		}
+        
+        if($topic_ignored) {
+            $lockTxt[] = "[IGNORED]";
+        }
 		
 		if($topic['stealth_ban'] && allowed('undelete')) $lockTxt[] = "[STEALTH]";
 			
@@ -152,7 +155,7 @@ function renderTopics($table, $topics) {
 		}else{
 			$table->last_seen_marker($last_seen, $order_time);
 		}
-		$table->row($values);
+		$table->row($values, $topic_ignored);
 	}
 }
 

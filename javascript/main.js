@@ -448,6 +448,22 @@ function init() {
 			$inputs.prop("disabled", false);
 		}, 3000);
 	});
+    
+    if($("body").hasClass("page-index") && $("tr.ignored").length > 0) {
+        $toggleIgnoredLink = $("<a href='#' class='show_ignored_link'>(show ignored)</a>");
+        $("#body_title").append($toggleIgnoredLink);
+        
+        $toggleIgnoredLink.click(function(e) {
+           e.preventDefault(); 
+           if($toggleIgnoredLink.text() == "(show ignored)") {
+               $toggleIgnoredLink.text("(hide ignored)");
+               $("tr.ignored").show();
+           }else{
+               $toggleIgnoredLink.text("(show ignored)");
+               $("tr.ignored").hide();
+           }
+        });
+    }
 }
 
 $(init);
