@@ -454,6 +454,7 @@ $(init);
 
 function submitSetTime(el) {
         var time = prompt("New last bump time?");
+        if(!time) time = "now";
         var form = document.getElementById('dummy_form');
         form.action = el.href;
         form.some_var.name = "time";
