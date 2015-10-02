@@ -463,6 +463,16 @@ function init() {
                $("tr.ignored").hide();
            }
         });
+    }else if($("body").hasClass("page-post") || $("body").hasClass("page-topic")) {
+        $(window).off("beforeunload").on("beforeunload", function() {
+            if($("#body").val() || $("#qr_text").val()) {
+                return "Your changes be lost if you leave this page."; 
+            }
+        });
+        
+        $("form").submit(function() {
+           $(window).off("beforeunload"); 
+        });
     }
 }
 
