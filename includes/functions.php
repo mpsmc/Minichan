@@ -844,7 +844,7 @@ function nameAndTripcode($name) {
 }
 
 function create_id() {
-	global $link, $DEFCON, $proxy;
+	global $link, $DEFCON, $proxy, $async;
 	if(DEFCON<5 || $proxy) return false; // DEFCON 4.
 	
 	/*if(ENABLE_RECAPTCHA_ON_BOT){
@@ -871,6 +871,8 @@ function create_id() {
 	setcookie('password', $password, $_SERVER['REQUEST_TIME'] + 315569260, '/', COOKIE_DOMAIN);
 	$_COOKIE['password']  = $password;
 	$_SESSION['UID'] = $user_id;
+    
+    $async->checkUID($user_id, $_SERVER['REMOTE_ADDR']);
 }
 
 function generate_password() {

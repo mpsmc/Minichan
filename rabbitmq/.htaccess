@@ -1,0 +1,4 @@
+Options -Indexes -ExecCGI
+
+Order Allow,Deny
+Deny from all

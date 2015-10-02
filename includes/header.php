@@ -38,9 +38,11 @@ if(isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && isset($_SERVER["HTTP_CF_IPCOUNTRY
 }
 
 $_start_time = microtime(); //Prepare our neat xx seconds to load thingy at the bottom of the page.
+require_once('vendor/autoload.php');
 require_once('includes/config.php');
 require_once('includes/database.class.php');
 require_once('includes/functions.php');
+require_once('includes/async_functions.php');
 require_once('includes/unicode.php');
 
 /*
@@ -101,9 +103,14 @@ if(file_exists("includes/private.php")){
 	require("includes/private.php");
 }
 
-
 if($link->getVersion() != DB_VERSION) {
 	abortForMaintenance("Database version mismatch! The Board has likely been upgraded lately, and the administrator has not yet executed includes/upgrade.php");
+}
+
+if(RABBITMQ_SERVER) {
+    $async = new AsyncToRabbitMQ();
+}else{
+    $async = new AsyncImplementation();
 }
 
 date_default_timezone_set('UTC');

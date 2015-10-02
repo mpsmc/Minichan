@@ -18,6 +18,13 @@ define("LOG_DIR", "../");
 define('GOOGLE_ANALYTICS_ID', '');
 define('GOOGLE_ANALYTICS_DOMAIN', '');
 
+// RabbitMQ settings can be left blank but performance will suffer
+define('RABBITMQ_SERVER', '');
+define('RABBITMQ_PORT', 5672);
+define('RABBITMQ_VHOST', '');
+define('RABBITMQ_USER', '');
+define('RABBITMQ_PASS', '');
+
 //define('GOOGLE_TOKEN', ''); // Used for android notifications. You likely can't use it without a custom app
 define('ENABLE_PROFILER', false);
 define('ADMIN_PROFILER', true); // require administrator for profiler to activate
