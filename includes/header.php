@@ -191,78 +191,37 @@ if(DEFCON<2&&!$administrator) { // DEFCON 1.
 	die();
 }
 
-
-/*
-$hostbans = array(".lft.bellsouth.net");
-$user_hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-
-
-foreach($hostbans as $hostban) {
-	$lenhostban = strlen($hostban);
-	$lenhostname = strlen($user_hostname);
-	
-	if($lenhostname > $lenhostban && substr($user_hostname, $lenhostname-$lenhostban)==$hostban) {
-		die("Your IP address is banned. This ban is not set to expire.<br />You have been banned for the following reason:<br />If you're not DM, we apologize and request that you dispatch an email to r04r@tinybbs.org");
-	}
+function performBanCheck($table, $column, $value, $template) {
+    global $link, $stealth_banned;
+    $check = $link->db_exec("SELECT * FROM $table WHERE $column = %1", $value);
+    
+    if ($link->num_rows($check) == 0 && !defined("TEST_BAN")) return;
+    $ban = $link->fetch_assoc($check);
+    $link->free_result($check);
+    
+    if(!$stealth_banned) $stealth_banned = $banarr['stealth'];
+    if(defined("TEST_BAN")) {
+        $ban = array(
+            $column => $value,
+            'expiry' => $_SERVER['REQUEST_TIME'] + 1,
+            'reason' => 'Visiting the test page.',
+            'stealth' => false
+        );
+    }
+    
+    if($ban['expiry'] != 0 && $ban['expiry'] <= $_SERVER['REQUEST_TIME'] && !defined('TEST_BAN')) {
+        $link->db_exec("DELETE FROM $table where $column = %1", $value);
+        return;
+    }
+    
+    if($stealth_banned) return;
+    
+    require template($template);
+    die();
 }
-*/
 
-// Ban checks, display information, and remove ban if it has expired.
-// Check for UID ban. UID bans expire in 7 days by default, can be changed in config.php.
-$check_uid_ban = $link->db_exec('SELECT filed, expiry, reason, stealth FROM uid_bans WHERE uid = %1', $_SESSION['UID']);
-if ($link->num_rows($check_uid_ban) > 0 || defined("TEST_BAN")) {
-	$banarr = $link->fetch_assoc($check_uid_ban);
-	if(!$stealth_banned) $stealth_banned = $banarr["stealth"];
-	
-	$ban_expiry = $banarr["expiry"];
-	if(defined("TEST_BAN")) {
-		$ban_expiry = $_SERVER['REQUEST_TIME'] + 5;
-		$banarr["reason"] = "Visiting the test page";
-	}
-	if ($ban_expiry == 0 || $ban_expiry > $_SERVER['REQUEST_TIME'] || defined("TEST_BAN")) {
-		if(!$banarr["stealth"]) {
-			$error_message = 'Your UID is banned. ';
-			if ($ban_expiry > 0) {
-				$error_message .= 'This ban will expire in ' . calculate_age($ban_expiry) . '.';
-			} else {
-				$error_message .= 'This ban is not set to expire.';
-				//if(file_exists("includes/specialban.php")) require("includes/specialban.php");
-			}
-			if($banarr["reason"])
-				$error_message .= "<br />You have been banned for the following reason:<br />" . $banarr["reason"];
-			die("<html><head></head><body>$error_message" . getRandomYoutube() . "</body></html>");
-		}
-	} else {
-		remove_id_ban($_SESSION['UID']);
-	}
-}
-$link->free_result($check_uid_ban);
-
-// Check for IP address ban.
-$check_ip_ban = $link->db_exec('SELECT expiry, reason, stealth FROM ip_bans WHERE ip_address = %1', $_SERVER['REMOTE_ADDR']);
-if ($link->num_rows($check_ip_ban) > 0) {
-	list($ban_expiry, $ban_reason, $ip_stealth_banned) = $link->fetch_row($check_ip_ban);
-	if(!$stealth_banned) $stealth_banned = $ip_stealth_banned;
-	
-	if ($ban_expiry == 0 || $ban_expiry > $_SERVER['REQUEST_TIME']) {
-		if(!$ip_stealth_banned) {
-			$error_message = 'Your IP address is banned. ';
-			if ($ban_expiry > 0) {
-				$error_message .= 'This ban will expire in ' . calculate_age($ban_expiry) . '.';
-			} else {
-				$error_message .= 'This ban is not set to expire.';
-			}
-			
-			if($ban_reason)
-				$error_message .= "<br />You have been banned for the following reason:<br />" . $ban_reason;
-			
-			die("<html><head></head><body>$error_message" . getRandomYoutube() . "</body></html>");
-		}
-	} else {
-		remove_ip_ban($_SERVER['REMOTE_ADDR']);
-	}
-}
-$link->free_result($check_ip_ban);
+performBanCheck('uid_bans', 'uid', $_SESSION['UID'], 'uid_ban');
+performBanCheck('ip_bans', 'ip_address', $_SERVER['REMOTE_ADDR'], 'ip_ban');
 
 if($_SESSION['last_posts_check'] < time() - 120 || !ENABLE_CACHING){
 	// Panic mode check, this can prolly be done more efficient.
