@@ -1,5 +1,5 @@
 <?php
-header("Location: http://imgur.com/memegen");
+header("Location: https://imgur.com/memegen");
 die();
 chdir("..");
 require("includes/header.php");
