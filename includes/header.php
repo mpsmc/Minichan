@@ -199,7 +199,7 @@ function performBanCheck($table, $column, $value, $template) {
     $ban = $link->fetch_assoc($check);
     $link->free_result($check);
     
-    if(!$stealth_banned) $stealth_banned = $banarr['stealth'];
+    if(!$stealth_banned) $stealth_banned = $ban['stealth'];
     if(defined("TEST_BAN")) {
         $ban = array(
             $column => $value,
