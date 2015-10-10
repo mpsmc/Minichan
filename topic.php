@@ -348,6 +348,7 @@ if($show_poll) {
 	}
 }
 
+require template('banner');
 	
 // Output replies.
 if (ALLOW_IMAGES || ALLOW_IMGUR) {
