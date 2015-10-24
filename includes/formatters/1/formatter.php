@@ -306,7 +306,7 @@ class CustomizedBBCodeFormatter extends JBBCode\Parser implements MinichanFormat
 	}
 	
 	public function sanitizeQuickQuote($text) {
-		return preg_replace('#\[goodrep(?:=[^\]]*)\].*?\[/goodrep]#m', '', $text);
+		return preg_replace('#\[goodrep(?:=[^\]]*)?\].*?\[/goodrep]#m', '', $text);
 	}
 }
 registerFormatter(1, new CustomizedBBCodeFormatter());

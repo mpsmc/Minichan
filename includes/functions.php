@@ -1708,4 +1708,9 @@ function matchIgnoredName($ignoredNames, $namefag, $tripfag) {
     return false;
 }
 
+function template($name) {
+    if(file_exists("includes/templates/override/$name.php")) return "includes/templates/override/$name.php";
+    return "includes/templates/$name.php";
+}
+
 ?>

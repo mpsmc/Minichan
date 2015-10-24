@@ -1,4 +1,6 @@
 <?php
+header("Location: https://imgur.com/memegen");
+die();
 chdir("..");
 require("includes/header.php");
 update_activity('image_macro');
