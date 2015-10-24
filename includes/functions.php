@@ -1708,6 +1708,22 @@ function matchIgnoredName($ignoredNames, $namefag, $tripfag) {
     return false;
 }
 
+function dashboardDefaults() {
+    return array(
+        'memorable_name' => '',
+        'memorable_password' => '',
+        'email' => '',
+        'topics_mode' => 0,
+        'spoiler_mode' => 0,
+        'ostrich_mode' => 0,
+        'disable_images' => 0,
+        'snippet_length' => 80,
+        'image_viewer' => 1,
+        'rounded_corners' => 0,
+        'style' => DEFAULT_STYLESHEET
+    );
+}
+
 function template($name) {
     if(file_exists("includes/templates/override/$name.php")) return "includes/templates/override/$name.php";
     return "includes/templates/$name.php";

@@ -399,7 +399,7 @@ if(allowed("manage_reports")){
 
 $stmt = $link->db_exec('SELECT * FROM user_settings WHERE uid = %1', $_SESSION['UID']);
 $user_settings = $link->fetch_assoc($stmt);
-if(!$user_settings) $user_settings = array();
+if(!$user_settings) $user_settings = dashboardDefaults();
 
 $citation_check = $link->db_exec('SELECT COUNT(*) FROM citations WHERE uid = %1', $_SESSION['UID']);
 list($new_citations) = $link->fetch_row($citation_check);

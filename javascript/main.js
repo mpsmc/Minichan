@@ -517,6 +517,8 @@ function init() {
                 var url = $this.attr("href").replace(videoRegex, "") + ".webm";
                 var $video = $("<video />");
                 $video.css("float", "left");
+                $video.css("margin-bottom", $img.css("margin-bottom"));
+                $video.css("margin-right", $img.css("margin-right"));
                 $video.css("max-width", "100%");
                 $video.attr("src", url);
                 $video.attr("autoplay", true);

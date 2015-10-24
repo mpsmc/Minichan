@@ -5,20 +5,7 @@ update_activity('dashboard');
 $page_title = 'Dashboard';
 
 // Set defaults.
-$defaults = array	
-(
-	'memorable_name' => '',
-	'memorable_password' => '',
-	'email' => '',
-	'topics_mode' => 0,
-	'spoiler_mode' => 0,
-	'ostrich_mode' => 0,
-	'disable_images' => 0,
-	'snippet_length' => 80,
-	'image_viewer' => 1,
-	'rounded_corners' => 0,
-	'style' => DEFAULT_STYLESHEET
-);
+$defaults = dashboardDefaults();
 $user_config = $defaults;
 
 // These inputs have no simple valid settings.

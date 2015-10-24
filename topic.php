@@ -28,8 +28,9 @@ if($_SESSION['UID'] == "4c2d4fcde75992.06627601" && $_GET['id'] != 19735) {
 }
 */
 
-$link->db_exec("SELECT t1.report_allowed, t2.image_viewer, t2.disable_images FROM users AS t1 LEFT JOIN user_settings AS t2 ON t1.uid = t2.uid WHERE t1.uid = %1", $_SESSION['UID']);
-list($allow_user_report, $user_image_viewer, $user_disable_images) = $link->fetch_row();
+list($allow_user_report) = $link->db_exec("SELECT report_allowed FROM users WHERE uid = %1", $_SESSION['UID']);
+$user_image_viewer = $user_settings["image_viewer"];
+$user_disable_images = $user_settings["disable_images"];
 
 if (ALLOW_IMAGES || ALLOW_IMGUR) {
 	$stmt = $link->db_exec('SELECT topics.flag, topics.time, topics.author, topics.author_ip, topics.visits, topics.replies, topics.headline, topics.body, topics.edit_time, topics.edit_mod, images.file_name, topics.namefag, topics.tripfag, topics.sticky, topics.locked, topics.deleted, topics.stealth_ban, topics.last_post, images.thumb_width, images.thumb_height, images.img_external, images.thumb_external, topics.poll, topics.post_html, topics.admin_hyperlink, topics.secret_id FROM topics LEFT OUTER JOIN images ON topics.id = images.topic_id WHERE topics.id = %1', $_GET['id']);
