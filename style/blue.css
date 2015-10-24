@@ -103,7 +103,7 @@ em.marked {
     border-top:2px solid #70a9ff;
 }
 
-.video,video,a.video {
+.video,a.video {
     background-color:#bce0ff;
     -webkit-box-shadow:inset 0px 1px 3px rgba(0,0,0,0.35);
     box-shadow:inset 0px 1px 3px rgba(0,0,0,0.35);

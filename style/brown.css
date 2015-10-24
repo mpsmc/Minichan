@@ -330,7 +330,7 @@ p.caption {
 		top:50%;
 }
 
-.video,video,a.video {
+.video,a.video {
 		margin-top:0em;
 		width:500px;
 		margin-left:auto;

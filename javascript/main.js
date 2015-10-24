@@ -474,6 +474,57 @@ function init() {
            $(window).off("beforeunload"); 
         });
     }
+    
+    $("a.thickbox").click(function(e) {
+        if(e.button != 0) return;
+        e.preventDefault();
+        var $this = $(this);
+        var $img = $("img", this);
+        
+        if($img.hasClass("img-loading")) return;
+        
+        if($img.hasClass("img-expanded")) {
+            $img.attr("width", $img.data("width"));
+            $img.attr("height", $img.data("height"));
+            $img.css("max-width", "");
+            $img.attr("src", $img.data("src"));
+            $img.removeClass("img-expanded");
+            $("video", $this).remove();
+            $img.show();
+        }else{
+            var videoRegex = /\.(webm|gifv)$/;
+            var isVideo = $this.attr("href").match(videoRegex);
+            
+            $img.data("width", $img.attr("width"));
+            $img.data("height", $img.attr("height"));
+            $img.data("src", $img.attr("src"));
+            $img.addClass("img-expanded");
+            
+            if(!isVideo) {
+                $img.attr("width", "");
+                $img.attr("height", "");
+                $img.css("max-width", "100%");
+                $img.addClass("img-loading");
+                
+                $img.on("load error", function() {
+                    $img.off("load error");
+                    $img.removeClass("img-loading");
+                });
+                
+                $img.attr("src", $this.attr("href"));
+            }else{
+                $img.hide();
+                var url = $this.attr("href").replace(videoRegex, "") + ".webm";
+                var $video = $("<video />");
+                $video.css("float", "left");
+                $video.css("max-width", "100%");
+                $video.attr("src", url);
+                $video.attr("autoplay", true);
+                $video.attr("loop", true);
+                $img.after($video);
+            }
+        }
+    });
 }
 
 $(init);

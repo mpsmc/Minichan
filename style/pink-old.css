@@ -211,7 +211,7 @@ left:2px;
 position:fixed;
 top:50%;
 }
-.video, video, a.video {
+.video, a.video {
 clear:both;
 margin:10px 0;
 }

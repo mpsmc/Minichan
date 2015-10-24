@@ -29,6 +29,10 @@ a:focus {
     margin-right:7px;
 }
 
+.body img.img-loading {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
 .body ul.menu {
     clear:both;
     margin:.5em 0 0;
@@ -304,7 +308,7 @@ p.caption {
     margin-left: 0.6em;
 }
 
-.video,video,a.video {
+.video,a.video {
     margin-top:0em;
     width:500px;
     margin-left:auto;
@@ -361,7 +365,6 @@ a.video {
 body.rounded #notice,
 body.rounded .body img,
 body.rounded .video,
-body.rounded video,
 body.rounded a.video,
 body.rounded #main_menu,
 body.rounded table,
