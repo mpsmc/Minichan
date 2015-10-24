@@ -42,7 +42,7 @@
 		<?php /* <link rel="stylesheet" type="text/css" href="<?php echo STATIC_DOMAIN; ?>style/april.css?13"> */ ?>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript">var IMGUR_CLIENT_ID = "<?php echo IMGUR_CLIENT_ID; ?>";</script>
-		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/main.js?x9"></script>
+		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/main.js?x10"></script>
 		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/extras.js?x9"></script>
 		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/highlight.pack.js"></script>
 		<script>hljs.initHighlightingOnLoad();</script>

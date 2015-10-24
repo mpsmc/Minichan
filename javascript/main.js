@@ -487,6 +487,8 @@ function init() {
             $img.attr("width", $img.data("width"));
             $img.attr("height", $img.data("height"));
             $img.css("max-width", "");
+            $img.css("float", "left");
+            $img.css("display", "");
             $img.attr("src", $img.data("src"));
             $img.removeClass("img-expanded");
             $("video", $this).remove();
@@ -504,6 +506,8 @@ function init() {
                 $img.attr("width", "");
                 $img.attr("height", "");
                 $img.css("max-width", "100%");
+                $img.css("float", "none");
+                $img.css("display", "block");
                 $img.addClass("img-loading");
                 
                 $img.on("load error", function() {
@@ -516,10 +520,11 @@ function init() {
                 $img.hide();
                 var url = $this.attr("href").replace(videoRegex, "") + ".webm";
                 var $video = $("<video />");
-                $video.css("float", "left");
                 $video.css("margin-bottom", $img.css("margin-bottom"));
                 $video.css("margin-right", $img.css("margin-right"));
                 $video.css("max-width", "100%");
+                $video.css("float", "none");
+                $video.css("display", "block");
                 $video.attr("src", url);
                 $video.attr("autoplay", true);
                 $video.attr("loop", true);
