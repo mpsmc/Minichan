@@ -529,12 +529,11 @@ function init() {
                     
                     $img.css("max-width", "100%");
                     $img.css("width", $img.data("width")+"px");
+                    $img.removeClass("img-loading");
                     
                     $img.animate({
                         'width': preload.width+"px"
-                    }, 100, function() {
-                        $img.removeClass("img-loading");
-                    });
+                    }, 150);
                 });
                 
                 $(preload).on("error", function() {
