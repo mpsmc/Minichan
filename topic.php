@@ -28,7 +28,9 @@ if($_SESSION['UID'] == "4c2d4fcde75992.06627601" && $_GET['id'] != 19735) {
 }
 */
 
-list($allow_user_report) = $link->db_exec("SELECT report_allowed FROM users WHERE uid = %1", $_SESSION['UID']);
+$link->db_exec("SELECT report_allowed FROM users WHERE uid = %1", $_SESSION['UID']);
+list($allow_user_report) = $link->fetch_row();
+
 $user_image_viewer = $user_settings["image_viewer"];
 $user_disable_images = $user_settings["disable_images"];
 
