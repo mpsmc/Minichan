@@ -46,7 +46,7 @@ class AsyncImplementation {
                 "expiry" => 0,
                 "filed" => "UNIX_TIMESTAMP()",
                 "who" => "",
-                "stealth" => 0,
+                "stealth" => 1,
                 "reason" => $reason
             ));
             
@@ -57,7 +57,7 @@ class AsyncImplementation {
                 "expiry" => 0,
                 "filed" => "UNIX_TIMESTAMP()",
                 "who" => "",
-                "stealth" => 0,
+                "stealth" => 1,
                 "reason" => $reason
             ));
             
