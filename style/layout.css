@@ -30,7 +30,7 @@ a:focus {
 }
 
 .body img {
-	transition: width 100ms linear;
+	transition: width 50ms linear;
 }
 
 .body img.img-expanded {
