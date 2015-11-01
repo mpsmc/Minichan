@@ -81,7 +81,7 @@ define('MAX_IMAGE_DIMENSIONS', 180); // Maximum thumbnail height/width.
 define('FANCY_IMAGE', true); // Use a fancy image viewer or not.
 define('EMBED_VIDEOS', true); // Enable video (Youtube/Vimeo) embedding.
 define('USE_GIFSICLE', false); // Use `gifsicle` command to resize gifs
-define('USE_IMAGICK', true); // Use `convert` (imagick) command to resize png/jpg
+define('USE_IMAGICK', false); // Use `convert` (imagick) command to resize png/jpg
 
 // Styles
 define('DEFAULT_STYLESHEET', 'violet'); // Default style, don't include the .css. extention, use the name only.
