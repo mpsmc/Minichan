@@ -2,7 +2,7 @@
 
 namespace JBBCode;
 
-require_once "CodeDefinition.php";
+require_once 'CodeDefinition.php';
 
 /**
  * Implements the builder pattern for the CodeDefinition class. A builder
@@ -12,7 +12,6 @@ require_once "CodeDefinition.php";
  */
 class CodeDefinitionBuilder
 {
-
     protected $tagName;
     protected $useOption = false;
     protected $replacementText;
@@ -41,6 +40,7 @@ class CodeDefinitionBuilder
     public function setTagName($tagName)
     {
         $this->tagName = $tagName;
+
         return $this;
     }
 
@@ -53,6 +53,7 @@ class CodeDefinitionBuilder
     public function setReplacementText($replacementText)
     {
         $this->replacementText = $replacementText;
+
         return $this;
     }
 
@@ -65,6 +66,7 @@ class CodeDefinitionBuilder
     public function setUseOption($option)
     {
         $this->useOption = $option;
+
         return $this;
     }
 
@@ -77,6 +79,7 @@ class CodeDefinitionBuilder
     public function setParseContent($parseContent)
     {
         $this->parseContent = $parseContent;
+
         return $this;
     }
 
@@ -84,15 +87,17 @@ class CodeDefinitionBuilder
      * Sets the nest limit for this code definition.
      *
      * @param $nestLimit a positive integer, or -1 if there is no limit.
-     * @throws \InvalidArgumentException  if the nest limit is invalid
+     *
+     * @throws \InvalidArgumentException if the nest limit is invalid
      */
     public function setNestLimit($limit)
     {
-        if(!is_int($limit) || ($limit <= 0 && -1 != $limit)) {
-            throw new \InvalidArgumentException("A nest limit must be a positive integer " .
-                                               "or -1.");
+        if (!is_int($limit) || ($limit <= 0 && -1 != $limit)) {
+            throw new \InvalidArgumentException('A nest limit must be a positive integer '.
+                                               'or -1.');
         }
         $this->nestLimit = $limit;
+
         return $this;
     }
 
@@ -101,12 +106,13 @@ class CodeDefinitionBuilder
      *
      * @param $validator  the InputValidator instance to use
      */
-    public function setOptionValidator(\JBBCode\InputValidator $validator, $option=null)
+    public function setOptionValidator(\JBBCode\InputValidator $validator, $option = null)
     {
-        if(empty($option)){
+        if (empty($option)) {
             $option = $this->tagName;
         }
         $this->optionValidator[$option] = $validator;
+
         return $this;
     }
 
@@ -118,6 +124,7 @@ class CodeDefinitionBuilder
     public function setBodyValidator(\JBBCode\InputValidator $validator)
     {
         $this->bodyValidator = $validator;
+
         return $this;
     }
 
@@ -127,6 +134,7 @@ class CodeDefinitionBuilder
     public function removeOptionValidator()
     {
         $this->optionValidator = array();
+
         return $this;
     }
 
@@ -136,6 +144,7 @@ class CodeDefinitionBuilder
     public function removeBodyValidator()
     {
         $this->bodyValidator = null;
+
         return $this;
     }
 
@@ -153,8 +162,7 @@ class CodeDefinitionBuilder
                                                 $this->nestLimit,
                                                 $this->optionValidator,
                                                 $this->bodyValidator);
+
         return $definition;
     }
-
-
 }

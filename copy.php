@@ -1,5 +1,5 @@
 <?php
-require("includes/header.php");
+require 'includes/header.php';
 $additional_head = <<<EOF
 <script language="javascript">
 function CopyPaste() {
@@ -127,5 +127,5 @@ EOF;
 ?>
 Copy me.
 <?php
-require("includes/footer.php");
+require 'includes/footer.php';
 ?>

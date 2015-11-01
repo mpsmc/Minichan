@@ -1,10 +1,9 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Parser.php');
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'Parser.php';
 
 class SimpleEvaluationTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * A utility method for these tests that will evaluate
      * its arguments as bbcode with a fresh parser loaded
@@ -16,6 +15,7 @@ class SimpleEvaluationTest extends PHPUnit_Framework_TestCase
         $parser = new JBBCode\Parser();
         $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
         $parser->parse($bbcode);
+
         return $parser->getAsHtml();
     }
 
@@ -27,7 +27,6 @@ class SimpleEvaluationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals($html, $this->defaultParse($bbcode));
     }
-
 
     public function testEmptyString()
     {
@@ -127,5 +126,4 @@ EOD;
     {
         $this->assertProduces('[b]:-[ [fo[o[bar[/b]', '<strong>:-[ [fo[o[bar</strong>');
     }
-
 }

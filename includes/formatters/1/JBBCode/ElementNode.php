@@ -29,7 +29,7 @@ class ElementNode extends Node
     protected $nestDepth;
 
     /**
-     * Constructs the element node
+     * Constructs the element node.
      */
     public function __construct()
     {
@@ -100,7 +100,8 @@ class ElementNode extends Node
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see JBBCode.Node::getAsText()
      *
      * Returns the element as text (not including any bbcode markup)
@@ -112,15 +113,18 @@ class ElementNode extends Node
         if ($this->codeDefinition) {
             return $this->codeDefinition->asText($this);
         } else {
-            $s = "";
-            foreach ($this->getChildren() as $child)
+            $s = '';
+            foreach ($this->getChildren() as $child) {
                 $s .= $child->getAsText();
+            }
+
             return $s;
         }
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see JBBCode.Node::getAsBBCode()
      *
      * Returns the element as bbcode (with all unclosed tags closed)
@@ -129,29 +133,28 @@ class ElementNode extends Node
      */
     public function getAsBBCode()
     {
-        $str = "[".$this->tagName;
+        $str = '['.$this->tagName;
         if (!empty($this->attribute)) {
-
-            foreach($this->attribute as $key => $value){
-                if($key == $this->tagName){
-                    $str .= "=".$value;
-                }
-                else{
-                    $str .= " ".$key."=" . $value;
+            foreach ($this->attribute as $key => $value) {
+                if ($key == $this->tagName) {
+                    $str .= '='.$value;
+                } else {
+                    $str .= ' '.$key.'='.$value;
                 }
             }
         }
-        $str .= "]";
+        $str .= ']';
         foreach ($this->getChildren() as $child) {
             $str .= $child->getAsBBCode();
         }
-        $str .= "[/".$this->tagName."]";
+        $str .= '[/'.$this->tagName.']';
 
         return $str;
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see JBBCode.Node::getAsHTML()
      *
      * Returns the element as html with all replacements made
@@ -160,10 +163,10 @@ class ElementNode extends Node
      */
     public function getAsHTML()
     {
-        if($this->codeDefinition) {
+        if ($this->codeDefinition) {
             return $this->codeDefinition->asHtml($this);
         } else {
-            return "";
+            return '';
         }
     }
 
@@ -188,8 +191,9 @@ class ElementNode extends Node
     public function removeChild(Node $child)
     {
         foreach ($this->children as $key => $value) {
-            if ($value == $child)
+            if ($value == $child) {
                 unset($this->children[$key]);
+            }
         }
     }
 
@@ -232,10 +236,9 @@ class ElementNode extends Node
         }
 
         if (strtolower($currentEl->getTagName()) != $str) {
-            return null;
+            return;
         } else {
             return $currentEl;
         }
     }
-
 }

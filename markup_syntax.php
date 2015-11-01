@@ -1,15 +1,16 @@
 <?php
-require('includes/header.php');
-$page_title = "Markup Syntax";
+require 'includes/header.php';
+$page_title = 'Markup Syntax';
 
-function printDemonstration($message) {
-	static $odd;
-	$odd = !$odd;
+function printDemonstration($message)
+{
+    static $odd;
+    $odd = !$odd;
 
-	echo "<tr".($odd ? ' class="odd"' : '').">";
-	echo '<td class="minimal">' . parse('1:'.$message) . '</td>';
-	echo '<td><kbd>' . parse('1:[code]'.$message.'[/code]') . '</kbd></td>';
-	echo "</tr>";
+    echo '<tr'.($odd ? ' class="odd"' : '').'>';
+    echo '<td class="minimal">'.parse('1:'.$message).'</td>';
+    echo '<td><kbd>'.parse('1:[code]'.$message.'[/code]').'</kbd></td>';
+    echo '</tr>';
 }
 
 ?>
@@ -27,24 +28,26 @@ Below are examples of which formatting is available, and how it looks once appli
 </thead>
 <tbody>
 <?php
-foreach(array(
-	"[i]Emphasis[/i]",
-	"[b]Strong emphasis[/b]",
-	"[sp]Spoiler #1[/sp] / [spoiler]Spoiler #2[/spoiler]",
-	"[u]Underline[/u]",
-	"[s]Strikethrough[/s]",
-	"[hl]Highlight[/hl]",
-	"[h]Header[/h]",
-	"[url=http://example.com/]Link text[/url]",
-	"[border]Bordered Text[/border]",
-	"[sup]Superscript[/sup]",
-	"[sub]Subscript[/sub]",
-	"[colour=red]Colours[/colour]",
-	"[list]\n* Entry 1\n* Entry 2\n[/list]",
-	"[code]General purpose code[/code]",
-	"[code=auto]// auto for autodetect, or language name\n<?php\n  echo 'Syntax highlighted code';\n[/code]",
-	"[raw]Disable formatter without [code] style[/raw]"
-) as $row) printDemonstration($row);
+foreach (array(
+    '[i]Emphasis[/i]',
+    '[b]Strong emphasis[/b]',
+    '[sp]Spoiler #1[/sp] / [spoiler]Spoiler #2[/spoiler]',
+    '[u]Underline[/u]',
+    '[s]Strikethrough[/s]',
+    '[hl]Highlight[/hl]',
+    '[h]Header[/h]',
+    '[url=http://example.com/]Link text[/url]',
+    '[border]Bordered Text[/border]',
+    '[sup]Superscript[/sup]',
+    '[sub]Subscript[/sub]',
+    '[colour=red]Colours[/colour]',
+    "[list]\n* Entry 1\n* Entry 2\n[/list]",
+    '[code]General purpose code[/code]',
+    "[code=auto]// auto for autodetect, or language name\n<?php\n  echo 'Syntax highlighted code';\n[/code]",
+    '[raw]Disable formatter without [code] style[/raw]',
+) as $row) {
+    printDemonstration($row);
+}
 ?>
 </tbody>
 </table>
@@ -58,17 +61,19 @@ foreach(array(
 </thead>
 <tbody>
 <?php
-foreach(array(
-	"> Quote",
-	"''Emphasis''",
-	"'''Strong emphasis'''",
-	"**Spoiler**",
-	"__Underline__",
-	"--Strikethrough--",
-	"%%Highlight%%",
-	"==Header==",
-	"[http://example.com/ Link text]"
-) as $row) printDemonstration($row);
+foreach (array(
+    '> Quote',
+    "''Emphasis''",
+    "'''Strong emphasis'''",
+    '**Spoiler**',
+    '__Underline__',
+    '--Strikethrough--',
+    '%%Highlight%%',
+    '==Header==',
+    '[http://example.com/ Link text]',
+) as $row) {
+    printDemonstration($row);
+}
 ?>
 </tbody>
 </table>
@@ -86,4 +91,4 @@ The following languages are supported by the [code] tags:<br/>
 </p>
 
 <?php
-require('includes/footer.php');
+require 'includes/footer.php';

@@ -1,27 +1,27 @@
 <?php
-require('includes/header.php');
+require 'includes/header.php';
 force_id();
 
-if(isset($_POST['action'])) {
-	$action = $_POST['action'];
-	if($action === "subscribe") {
-		$link->insert('chrome_tokens', array(
-			'uid' => $_SESSION['UID'],
-			'subscription_id' => $_POST['subscription_id'],
-			'endpoint' => $_POST['endpoint']
-		));
-	}elseif($action === "unsubscribe") {
-		$link->db_exec('DELETE FROM chrome_tokens WHERE uid = %1 AND subscription_id = %2', $_SESSION['UID'], $_POST['subscription_id']);
-	}elseif($action ==="test") {
-		sendMessageToChrome($_SESSION['UID'], 'subscribed', null);
-	}
-	die();
+if (isset($_POST['action'])) {
+    $action = $_POST['action'];
+    if ($action === 'subscribe') {
+        $link->insert('chrome_tokens', array(
+            'uid' => $_SESSION['UID'],
+            'subscription_id' => $_POST['subscription_id'],
+            'endpoint' => $_POST['endpoint'],
+        ));
+    } elseif ($action === 'unsubscribe') {
+        $link->db_exec('DELETE FROM chrome_tokens WHERE uid = %1 AND subscription_id = %2', $_SESSION['UID'], $_POST['subscription_id']);
+    } elseif ($action === 'test') {
+        sendMessageToChrome($_SESSION['UID'], 'subscribed', null);
+    }
+    die();
 }
 
-if($_SERVER['HTTPS']!="on") {
-	echo "Push notifications are only availble when using HTTPS";
-	require('includes/footer.php');
-	die();
+if ($_SERVER['HTTPS'] != 'on') {
+    echo 'Push notifications are only availble when using HTTPS';
+    require 'includes/footer.php';
+    die();
 }
 
 $additional_head = '<link rel="manifest" href="'.DOMAIN.'/chrome-push/manifest.json">';
@@ -209,4 +209,4 @@ function sendSubscriptionToServer(subscription) {
 </button>
 <?php
 
-require('includes/footer.php');
+require 'includes/footer.php';

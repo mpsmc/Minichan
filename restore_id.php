@@ -1,72 +1,70 @@
 <?php
-require('includes/header.php');
+require 'includes/header.php';
 update_activity('restore_id');
-$page_title        = 'Restore ID';
+$page_title = 'Restore ID';
 $onload_javascript = 'focusId(\'memorable_name\')';
 
 // If an ID card was uploaded.
 if (isset($_POST['do_upload'])) {
-	list($uid, $password) = file($_FILES['id_card']['tmp_name'], FILE_IGNORE_NEW_LINES);
+    list($uid, $password) = file($_FILES['id_card']['tmp_name'], FILE_IGNORE_NEW_LINES);
 }
 // ...or an ID and password was inputted.
-else if (!empty($_POST['UID']) && !empty($_POST['password'])) {
-	$uid      = $_POST['UID'];
-	$password = $_POST['password'];
+elseif (!empty($_POST['UID']) && !empty($_POST['password'])) {
+    $uid = $_POST['UID'];
+    $password = $_POST['password'];
 }
 // ...or a link from a recovery e-mail is being used.
-else if (!empty($_GET['UID']) && !empty($_GET['password'])) {
-	$uid      = $_GET['UID'];
-	$password = $_GET['password'];
+elseif (!empty($_GET['UID']) && !empty($_GET['password'])) {
+    $uid = $_GET['UID'];
+    $password = $_GET['password'];
 }
 // ...or a memorable name was inputted.
-else if (!empty($_POST['memorable_name'])) {
-	$stmt = $link->db_exec('SELECT user_settings.uid, users.password FROM user_settings INNER JOIN users ON user_settings.uid = users.uid WHERE LOWER(user_settings.memorable_name) = LOWER(%1) AND user_settings.memorable_password = %2', $_POST['memorable_name'], strtolower(md5($_POST['memorable_password'])));
-	list($uid, $password) = $link->fetch_row();
-		if (empty($uid)) {
-			add_error('Your memorable information was incorrect.');
-		}
-	}
-	
+elseif (!empty($_POST['memorable_name'])) {
+    $stmt = $link->db_exec('SELECT user_settings.uid, users.password FROM user_settings INNER JOIN users ON user_settings.uid = users.uid WHERE LOWER(user_settings.memorable_name) = LOWER(%1) AND user_settings.memorable_password = %2', $_POST['memorable_name'], strtolower(md5($_POST['memorable_password'])));
+    list($uid, $password) = $link->fetch_row();
+    if (empty($uid)) {
+        add_error('Your memorable information was incorrect.');
+    }
+}
+
 if (!empty($uid)) {
-	$stmt = $link->db_exec('SELECT password FROM users WHERE uid = %1', $uid);
-	list($db_password) = $link->fetch_row($stmt);
-	if (empty($db_password)) {
-		add_error('There is no such UID.');
-	} else if ($password != $db_password) {
-		add_error('Incorrect password.');
-	} else {
-		if (check_proxy()){
-			$send = $link->db_exec("SELECT count(id) as count FROM replies WHERE deleted = 0 AND author=%1", $uid);
-			list($num_topics) = $link->fetch_row();
-			$send = $link->db_exec("SELECT count(id) as count FROM topics WHERE deleted = 0 AND author=%1", $uid);
-			list($num_replies) = $link->fetch_row();
-			if(($num_topics+$num_replies) < POSTS_NEEDED_FOR_PROXY_RESTORE) {
-				add_error("This UID needs more posts to be restored from a proxy.");
-			}
-		}
-		
-		if(!$erred) {
-		
-			$_SESSION['UID']          = $uid;
-			$_SESSION['ID_activated'] = true;
-			setcookie('UID', $uid, time() + 157784630, '/', COOKIE_DOMAIN);
-			setcookie('password', $password, time() + 157784630, '/', COOKIE_DOMAIN);
-			
-			$stmt = $link->db_exec('SELECT spoiler_mode, topics_mode, ostrich_mode, snippet_length FROM user_settings WHERE uid = %1', $uid);
-			list($user_config['spoiler_mode'], $user_config['topics_mode'], $user_config['ostrich_mode'], $user_config['snippet_length']) = $link->fetch_row($stmt);
-			
-			foreach ($user_config as $key => $value) {
-				if ($value != 0) {
-					setcookie($key, $value, time() + 157784630, '/', COOKIE_DOMAIN);
-				}
-			}
-			$_SESSION['last_user_style_check'] = 0;
-			$_SESSION['notice'] = 'Welcome back.';
-			header('Location: ' . DOMAIN);
-			exit;
-		
-		}
-	}
+    $stmt = $link->db_exec('SELECT password FROM users WHERE uid = %1', $uid);
+    list($db_password) = $link->fetch_row($stmt);
+    if (empty($db_password)) {
+        add_error('There is no such UID.');
+    } elseif ($password != $db_password) {
+        add_error('Incorrect password.');
+    } else {
+        if (check_proxy()) {
+            $send = $link->db_exec('SELECT count(id) as count FROM replies WHERE deleted = 0 AND author=%1', $uid);
+            list($num_topics) = $link->fetch_row();
+            $send = $link->db_exec('SELECT count(id) as count FROM topics WHERE deleted = 0 AND author=%1', $uid);
+            list($num_replies) = $link->fetch_row();
+            if (($num_topics + $num_replies) < POSTS_NEEDED_FOR_PROXY_RESTORE) {
+                add_error('This UID needs more posts to be restored from a proxy.');
+            }
+        }
+
+        if (!$erred) {
+            $_SESSION['UID'] = $uid;
+            $_SESSION['ID_activated'] = true;
+            setcookie('UID', $uid, time() + 157784630, '/', COOKIE_DOMAIN);
+            setcookie('password', $password, time() + 157784630, '/', COOKIE_DOMAIN);
+
+            $stmt = $link->db_exec('SELECT spoiler_mode, topics_mode, ostrich_mode, snippet_length FROM user_settings WHERE uid = %1', $uid);
+            list($user_config['spoiler_mode'], $user_config['topics_mode'], $user_config['ostrich_mode'], $user_config['snippet_length']) = $link->fetch_row($stmt);
+
+            foreach ($user_config as $key => $value) {
+                if ($value != 0) {
+                    setcookie($key, $value, time() + 157784630, '/', COOKIE_DOMAIN);
+                }
+            }
+            $_SESSION['last_user_style_check'] = 0;
+            $_SESSION['notice'] = 'Welcome back.';
+            header('Location: '.DOMAIN);
+            exit;
+        }
+    }
 }
 print_errors();
 ?>
@@ -119,5 +117,5 @@ print_errors();
 	</form>
 </fieldset>
 <?php
-require('includes/footer.php');
+require 'includes/footer.php';
 ?>

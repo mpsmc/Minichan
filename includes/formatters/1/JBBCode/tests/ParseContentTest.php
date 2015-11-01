@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Parser.php';
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'Parser.php';
 
 /**
  * Test cases for the code definition parameter that disallows parsing
@@ -10,14 +10,12 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Parser.php';
  */
 class ParseContentTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * Tests that when a bbcode is created with parseContent = false, 
      * its contents actually are not parsed.
      */
     public function testSimpleNoParsing()
     {
-
         $parser = new JBBCode\Parser();
         $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
         $parser->addBBCode('verbatim', '{param}', false, false);
@@ -27,12 +25,10 @@ class ParseContentTest extends PHPUnit_Framework_TestCase
 
         $parser->parse('[verbatim][b]bold[/b][/verbatim]');
         $this->assertEquals('[b]bold[/b]', $parser->getAsHtml());
-
     }
 
     public function testNoParsingWithBufferText()
     {
-        
         $parser = new JBBCode\Parser();
         $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
         $parser->addBBCode('verbatim', '{param}', false, false);
@@ -48,7 +44,6 @@ class ParseContentTest extends PHPUnit_Framework_TestCase
      */
     public function testUnclosedTag()
     {
-    
         $parser = new JBBCode\Parser();
         $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
         $parser->addBBCode('verbatim', '{param}', false, false);
@@ -93,5 +88,4 @@ class ParseContentTest extends PHPUnit_Framework_TestCase
         $parser->parse('[verbatim]');
         $this->assertEquals('', $parser->getAsHtml());
     }
-
 }

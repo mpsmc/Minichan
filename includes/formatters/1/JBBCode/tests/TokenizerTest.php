@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Tokenizer.php');
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'Tokenizer.php';
 
 /**
  * Test cases testing the functionality of the Tokenizer. The tokenizer
@@ -10,7 +10,6 @@ require_once(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Tokenizer.php')
  */
 class TokenizerTest extends PHPUnit_Framework_TestCase
 {
-
     public function testEmptyString()
     {
         $tokenizer = new JBBCode\Tokenizer('');
@@ -70,5 +69,4 @@ class TokenizerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('[', $tokenizer->next());
         $this->assertFalse($tokenizer->hasNext());
     }
-
 }

@@ -1,18 +1,18 @@
 <?php
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Parser.php';
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'validators' . DIRECTORY_SEPARATOR . 'UrlValidator.php';
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'validators' . DIRECTORY_SEPARATOR . 'CssColorValidator.php';
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'Parser.php';
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'validators'.DIRECTORY_SEPARATOR.'UrlValidator.php';
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'validators'.DIRECTORY_SEPARATOR.'CssColorValidator.php';
 
 /**
  * Test cases for InputValidators.
  *
  * @author jbowens
+ *
  * @since May 2013
  */
 class ValidatorTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * Tests an invalid url directly on the UrlValidator.
      */
@@ -147,5 +147,4 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('[color=" onclick="alert(\'hey ya!\');]click me[/color]',
                 $parser->getAsHtml());
     }
-
 }

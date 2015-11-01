@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Parser.php');
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'Parser.php';
 
 /**
  * Test cases testing the functionality of parsing bbcode and
@@ -10,7 +10,6 @@ require_once(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Parser.php');
  */
 class BBCodeToBBCodeTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * A utility method for these tests that will evaluate its arguments as bbcode with
      * a fresh parser loaded with only the default bbcodes. It returns the
@@ -21,12 +20,13 @@ class BBCodeToBBCodeTest extends PHPUnit_Framework_TestCase
         $parser = new JBBCode\Parser();
         $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
         $parser->parse($bbcode);
+
         return $parser->getAsBBCode();
     }
 
     /**
      * Asserts that the given bbcode matches the given text when
-     * the bbcode is run through defaultBBCodeParse
+     * the bbcode is run through defaultBBCodeParse.
      */
     private function assertBBCodeOutput($bbcode, $text)
     {
@@ -51,9 +51,9 @@ class BBCodeToBBCodeTest extends PHPUnit_Framework_TestCase
 
     public function testMultipleTags()
     {
-        $bbcode = 'this is some text with [b]bold tags[/b] and [i]italics[/i] and ' .
+        $bbcode = 'this is some text with [b]bold tags[/b] and [i]italics[/i] and '.
                   'things like [u]that[/u].';
-        $bbcodeOutput = 'this is some text with [b]bold tags[/b] and [i]italics[/i] and ' .
+        $bbcodeOutput = 'this is some text with [b]bold tags[/b] and [i]italics[/i] and '.
                         'things like [u]that[/u].';
         $this->assertBBCodeOutput($bbcode, $bbcodeOutput);
     }
@@ -81,5 +81,4 @@ class BBCodeToBBCodeTest extends PHPUnit_Framework_TestCase
         $codeOutput = '[b]bold[/b]';
         $this->assertBBCodeOutput($code, $codeOutput);
     }
-
 }

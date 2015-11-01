@@ -15,8 +15,6 @@ require_once 'Tokenizer.php';
 require_once 'visitors/NestLimitVisitor.php';
 require_once 'InputValidator.php';
 
-use JBBCode\CodeDefinition;
-
 /**
  * BBCodeParser is the main parser class that constructs and stores the parse tree. Through this class
  * new bbcode definitions can be added, and documents may be parsed and converted to html/bbcode/plaintext, etc.
@@ -25,7 +23,6 @@ use JBBCode\CodeDefinition;
  */
 class Parser
 {
-
     const OPTION_STATE_DEFAULT = 0;
     const OPTION_STATE_TAGNAME = 1;
     const OPTION_STATE_KEY = 2;
@@ -43,7 +40,7 @@ class Parser
     protected $nextNodeid;
 
     /**
-     * Constructs an instance of the BBCode parser
+     * Constructs an instance of the BBCode parser.
      */
     public function __construct()
     {
@@ -52,16 +49,16 @@ class Parser
     }
 
     /**
-     * Adds a simple (text-replacement only) bbcode definition
+     * Adds a simple (text-replacement only) bbcode definition.
      *
-     * @param string  $tagName      the tag name of the code (for example the b in [b])
-     * @param string  $replace      the html to use, with {param} and optionally {option} for replacements
-     * @param boolean $useOption    whether or not this bbcode uses the secondary {option} replacement
-     * @param boolean $parseContent whether or not to parse the content within these elements
-     * @param integer $nestLimit    an optional limit of the number of elements of this kind that can be nested within
-     *                              each other before the parser stops parsing them.
-     * @param InputValidator $optionValidator   the validator to run {option} through
-     * @param BodyValidator  $bodyValidator     the validator to run {param} through (only used if $parseContent == false)
+     * @param string         $tagName         the tag name of the code (for example the b in [b])
+     * @param string         $replace         the html to use, with {param} and optionally {option} for replacements
+     * @param bool           $useOption       whether or not this bbcode uses the secondary {option} replacement
+     * @param bool           $parseContent    whether or not to parse the content within these elements
+     * @param int            $nestLimit       an optional limit of the number of elements of this kind that can be nested within
+     *                                        each other before the parser stops parsing them.
+     * @param InputValidator $optionValidator the validator to run {option} through
+     * @param BodyValidator  $bodyValidator   the validator to run {param} through (only used if $parseContent == false)
      *
      * @return Parser
      */
@@ -105,11 +102,12 @@ class Parser
     /**
      * Adds a set of CodeDefinitions.
      *
-     * @param CodeDefinitionSet $set  the set of definitions to add
+     * @param CodeDefinitionSet $set the set of definitions to add
      *
      * @return Parser
      */
-    public function addCodeDefinitionSet(CodeDefinitionSet $set) {
+    public function addCodeDefinitionSet(CodeDefinitionSet $set)
+    {
         foreach ($set->getCodeDefinitions() as $def) {
             $this->addCodeDefinition($def);
         }
@@ -219,10 +217,10 @@ class Parser
     }
 
     /**
-     * Determines whether a bbcode exists based on its tag name and whether or not it uses an option
+     * Determines whether a bbcode exists based on its tag name and whether or not it uses an option.
      *
-     * @param string  $tagName    the bbcode tag name to check
-     * @param boolean $usesOption whether or not the bbcode accepts an option
+     * @param string $tagName    the bbcode tag name to check
+     * @param bool   $usesOption whether or not the bbcode accepts an option
      *
      * @return bool true if the code exists, false otherwise
      */
@@ -238,10 +236,10 @@ class Parser
     }
 
     /**
-     * Returns the CodeDefinition of a bbcode with the matching tag name and usesOption parameter
+     * Returns the CodeDefinition of a bbcode with the matching tag name and usesOption parameter.
      *
-     * @param string  $tagName    the tag name of the bbcode being searched for
-     * @param boolean $usesOption whether or not the bbcode accepts an option
+     * @param string $tagName    the tag name of the bbcode being searched for
+     * @param bool   $usesOption whether or not the bbcode accepts an option
      *
      * @return CodeDefinition if the bbcode exists, null otherwise
      */
@@ -253,7 +251,7 @@ class Parser
             }
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -286,7 +284,8 @@ class Parser
             reset($children);
 
             if ($lastElement->isTextNode()) {
-                $lastElement->setValue($lastElement->getValue() . $string);
+                $lastElement->setValue($lastElement->getValue().$string);
+
                 return $lastElement;
             }
         }
@@ -294,6 +293,7 @@ class Parser
         $textNode = new TextNode($string);
         $textNode->setNodeId(++$this->nextNodeid);
         $parent->addChild($textNode);
+
         return $textNode;
     }
 
@@ -303,8 +303,8 @@ class Parser
      * This function handles the beginning parse state when we're not currently in a tag
      * name.
      *
-     * @param ElementNode  $parent the current parent node we're under
-     * @param Tokenizer    $tokenizer the tokenizer we're using
+     * @param ElementNode $parent    the current parent node we're under
+     * @param Tokenizer   $tokenizer the tokenizer we're using
      *
      * @return ElementNode the new parent we should use for the next iteration.
      */
@@ -314,8 +314,7 @@ class Parser
 
         if ('[' == $next) {
             return $this->parseTagOpen($parent, $tokenizer);
-        }
-        else {
+        } else {
             $this->createTextNode($parent, $next);
             /* Drop back into the main parse loop which will call this
              * same method again. */
@@ -327,18 +326,18 @@ class Parser
      * This function handles parsing the beginnings of an open tag. When we see a [
      * at an appropriate time, this function is entered.
      *
-     * @param ElementNode $parent  the current parent node
-     * @param Tokenizer   $tokenizer  the tokenizer we're using
+     * @param ElementNode $parent    the current parent node
+     * @param Tokenizer   $tokenizer the tokenizer we're using
      *
      * @return ElementNode the new parent node
      */
     protected function parseTagOpen(ElementNode $parent, Tokenizer $tokenizer)
     {
-
         if (!$tokenizer->hasNext()) {
             /* The [ that sent us to this state was just a trailing [, not the
              * opening for a new tag. Treat it as such. */
             $this->createTextNode($parent, '[');
+
             return $parent;
         }
 
@@ -354,6 +353,7 @@ class Parser
             $this->createTextNode($parent, '[');
             if (!$tokenizer->hasNext()) {
                 $this->createTextNode($parent, '[');
+
                 return $parent;
             }
             $next = $tokenizer->next();
@@ -361,15 +361,16 @@ class Parser
 
         if (!$tokenizer->hasNext()) {
             $this->createTextNode($parent, '['.$next);
+
             return $parent;
         }
 
         $after_next = $tokenizer->next();
         $tokenizer->stepBack();
 
-        if ($after_next != ']')
-        {
+        if ($after_next != ']') {
             $this->createTextNode($parent, '['.$next);
+
             return $parent;
         }
 
@@ -377,6 +378,7 @@ class Parser
         if (']' == $next) {
             $this->createTextNode($parent, '[');
             $this->createTextNode($parent, ']');
+
             return $parent;
         } else {
             /* $next is plain text... likely a tag name. */
@@ -386,8 +388,8 @@ class Parser
 
     protected function parseOptions($tagContent)
     {
-        $buffer = "";
-        $tagName = "";
+        $buffer = '';
+        $tagName = '';
         $state = static::OPTION_STATE_TAGNAME;
         $keys = array();
         $values = array();
@@ -397,17 +399,17 @@ class Parser
         $done = false;
         $idx = 0;
 
-        try{
-            while(!$done){
-                $char = $idx < $len ? $tagContent[$idx]:null;
-                switch($state){
+        try {
+            while (!$done) {
+                $char = $idx < $len ? $tagContent[$idx] : null;
+                switch ($state) {
                     case static::OPTION_STATE_TAGNAME:
-                        switch($char){
+                        switch ($char) {
                             case '=':
                                 $state = static::OPTION_STATE_VALUE;
                                 $tagName = $buffer;
                                 $keys[] = $tagName;
-                                $buffer = "";
+                                $buffer = '';
                                 break;
                             case ' ':
                                 $state = static::OPTION_STATE_DEFAULT;
@@ -427,7 +429,7 @@ class Parser
                         break;
 
                     case static::OPTION_STATE_DEFAULT:
-                        switch($char){
+                        switch ($char) {
                             case ' ':
                                 // do nothing
                             default:
@@ -437,18 +439,18 @@ class Parser
                         break;
 
                     case static::OPTION_STATE_VALUE:
-                        switch($char){
+                        switch ($char) {
                             case '"':
                                 $state = static::OPTION_STATE_QUOTED_VALUE;
                                 break;
                             case null: // intentional fall-through
                             case ' ': // key=value<space> delimits to next key
                                 $values[] = $buffer;
-                                $buffer = "";
+                                $buffer = '';
                                 $state = static::OPTION_STATE_KEY;
                                 break;
-                            case ":":
-                                if($buffer=="javascript"){
+                            case ':':
+                                if ($buffer == 'javascript') {
                                     $state = static::OPTION_STATE_JAVASCRIPT;
                                 }
                                 $buffer .= $char;
@@ -460,11 +462,11 @@ class Parser
                         break;
 
                     case static::OPTION_STATE_JAVASCRIPT:
-                        switch($char){
-                            case ";":
+                        switch ($char) {
+                            case ';':
                                 $buffer .= $char;
                                 $values[] = $buffer;
-                                $buffer = "";
+                                $buffer = '';
                                 $state = static::OPTION_STATE_KEY;
 
                                 break;
@@ -474,7 +476,7 @@ class Parser
                         break;
 
                     case static::OPTION_STATE_KEY:
-                        switch($char){
+                        switch ($char) {
                             case '=':
                                 $state = static::OPTION_STATE_VALUE;
                                 $keys[] = $buffer;
@@ -489,7 +491,7 @@ class Parser
                         break;
 
                     case static::OPTION_STATE_QUOTED_VALUE:
-                        switch($char){
+                        switch ($char) {
                             case null:
                             case '"':
                                 $state = static::OPTION_STATE_KEY;
@@ -497,7 +499,7 @@ class Parser
                                 $buffer = '';
 
                                 // peek ahead. If the next character is not a space or a closing brace, we have a bad tag and need to abort
-                                if(isset($tagContent[$idx+1]) && $tagContent[$idx+1]!=" " && $tagContent[$idx+1]!="]" ){
+                                if (isset($tagContent[$idx + 1]) && $tagContent[$idx + 1] != ' ' && $tagContent[$idx + 1] != ']') {
                                     throw new ParserException("Badly formed attribute: $tagContent");
                                 }
                                 break;
@@ -507,29 +509,29 @@ class Parser
                         }
                         break;
                     default:
-                        if(!empty($char)){
+                        if (!empty($char)) {
                             $state = static::OPTION_STATE_KEY;
                         }
 
                 }
-                if($idx >= $len){
+                if ($idx >= $len) {
                     $done = true;
                 }
-                $idx++;
+                ++$idx;
             }
 
-            if(count($keys) && count($values)){
-                if(count($keys)==(count($values)+1)){
-                    array_unshift($values, "");
+            if (count($keys) && count($values)) {
+                if (count($keys) == (count($values) + 1)) {
+                    array_unshift($values, '');
                 }
 
                 $options = array_combine($keys, $values);
             }
-        }
-        catch(ParserException $e){
+        } catch (ParserException $e) {
             // if we're in this state, then something evidently went wrong. We'll consider everything that came after the tagname to be the attribute for that keyname
-            $options[$tagName]= substr($tagContent, strpos($tagContent, "=")+1);
+            $options[$tagName] = substr($tagContent, strpos($tagContent, '=') + 1);
         }
+
         return array($tagName, $options);
     }
 
@@ -537,21 +539,21 @@ class Parser
      * This is the next step in parsing a tag. It's possible for it to still be invalid at this
      * point but many of the basic invalid tag name conditions have already been handled.
      *
-     * @param ElementNode $parent  the current parent element
+     * @param ElementNode $parent     the current parent element
      * @param Tokenizer   $tokenizer  the tokenizer we're using
-     * @param string      $tagContent  the text between the [ and the ], assuming there is actually a ]
+     * @param string      $tagContent the text between the [ and the ], assuming there is actually a ]
      *
      * @return ElementNode the new parent element
      */
     protected function parseTag(ElementNode $parent, Tokenizer $tokenizer, $tagContent)
     {
-
         $next;
         if (!$tokenizer->hasNext() || ($next = $tokenizer->next()) != ']') {
             /* This is a malformed tag. Both the previous [ and the tagContent
              * is really just plain text. */
             $this->createTextNode($parent, '[');
             $this->createTextNode($parent, $tagContent);
+
             return $parent;
         }
 
@@ -584,6 +586,7 @@ class Parser
                 $this->createTextNode($parent, '[');
                 $this->createTextNode($parent, $tagContent);
                 $this->createTextNode($parent, ']');
+
                 return $parent;
             } else {
                 /* We're closing $elToClose. In order to do that, we just need to return
@@ -599,6 +602,7 @@ class Parser
             $this->createTextNode($parent, '[');
             $this->createTextNode($parent, $tagContent);
             $this->createTextNode($parent, ']');
+
             return $parent;
         }
 
@@ -612,6 +616,7 @@ class Parser
             $el->setAttribute($options);
         }
         $parent->addChild($el);
+
         return $el;
     }
 
@@ -620,8 +625,8 @@ class Parser
      * contents. This function uses a rolling window of 3 tokens until it finds the
      * appropriate closing tag or reaches the end of the token stream.
      *
-     * @param ElementNode $parent  the current parent element
-     * @param Tokenizer   $tokenizer  the tokenizer we're using
+     * @param ElementNode $parent    the current parent element
+     * @param Tokenizer   $tokenizer the tokenizer we're using
      *
      * @return ElementNode the new parent element
      */
@@ -636,12 +641,14 @@ class Parser
         $prevPrev = $tokenizer->next();
         if (!$tokenizer->hasNext()) {
             $this->createTextNode($parent, $prevPrev);
+
             return $parent;
         }
         $prev = $tokenizer->next();
         if (!$tokenizer->hasNext()) {
             $this->createTextNode($parent, $prevPrev);
             $this->createTextNode($parent, $prev);
+
             return $parent;
         }
         $curr = $tokenizer->next();
@@ -653,10 +660,10 @@ class Parser
             if (!$tokenizer->hasNext()) {
                 $this->createTextNode($parent, $prevPrev);
                 $this->createTextNode($parent, $prev);
+
                 return $parent;
             }
             $curr = $tokenizer->next();
         }
     }
-
 }

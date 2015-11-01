@@ -1,16 +1,16 @@
 <?php
-header("Location: https://imgur.com/memegen");
+header('Location: https://imgur.com/memegen');
 die();
-chdir("..");
-require("includes/header.php");
+chdir('..');
+require 'includes/header.php';
 update_activity('image_macro');
-$additional_head .= '<script type="text/javascript" src="' . DOMAIN . 'javascript/macro/BlobBuilder.js"></script>';
-$additional_head .= '<script type="text/javascript" src="' . DOMAIN . 'javascript/macro/canvas-toBlob.js"></script>';
-$additional_head .= '<script type="text/javascript" src="' . DOMAIN . 'javascript/macro/FileSaver.js"></script>';
-$additional_head .= '<script type="text/javascript" src="' . DOMAIN . 'javascript/macro/getimagedata.min.js"></script>';
-$additional_head .= '<script type="text/javascript" src="' . DOMAIN . 'javascript/macro/macro-main.js?2"></script>';
+$additional_head .= '<script type="text/javascript" src="'.DOMAIN.'javascript/macro/BlobBuilder.js"></script>';
+$additional_head .= '<script type="text/javascript" src="'.DOMAIN.'javascript/macro/canvas-toBlob.js"></script>';
+$additional_head .= '<script type="text/javascript" src="'.DOMAIN.'javascript/macro/FileSaver.js"></script>';
+$additional_head .= '<script type="text/javascript" src="'.DOMAIN.'javascript/macro/getimagedata.min.js"></script>';
+$additional_head .= '<script type="text/javascript" src="'.DOMAIN.'javascript/macro/macro-main.js?2"></script>';
 
-$page_title = "Image macro generator";
+$page_title = 'Image macro generator';
 ?>
 <div id="nosupport">
 	<b>Your browser does not support this! It lacks the javascript functionality required.</b><br />
@@ -30,4 +30,4 @@ $page_title = "Image macro generator";
 	</div>
 </div>
 <?php
-require("includes/footer.php");
+require 'includes/footer.php';

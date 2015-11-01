@@ -7,6 +7,7 @@ namespace JBBCode\visitors;
  * tag name occurs.
  *
  * @author jbowens
+ *
  * @since January 2013
  */
 class TagCountingVisitor implements \JBBcode\NodeVisitor
@@ -31,7 +32,7 @@ class TagCountingVisitor implements \JBBcode\NodeVisitor
 
         // Update this tag name's frequency
         if (isset($this->frequencies[$tagName])) {
-            $this->frequencies[$tagName]++;
+            ++$this->frequencies[$tagName];
         } else {
             $this->frequencies[$tagName] = 1;
         }
@@ -40,7 +41,6 @@ class TagCountingVisitor implements \JBBcode\NodeVisitor
         foreach ($elementNode->getChildren() as $child) {
             $child->accept($this);
         }
-
     }
 
     /**
@@ -56,5 +56,4 @@ class TagCountingVisitor implements \JBBcode\NodeVisitor
             return $this->frequencies[$tagName];
         }
     }
-
 }

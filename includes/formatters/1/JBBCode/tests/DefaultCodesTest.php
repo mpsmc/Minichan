@@ -1,16 +1,16 @@
 <?php
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Parser.php';
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'Parser.php';
 
 /**
  * Test cases for the default bbcode set.
  *
  * @author jbowens
+ *
  * @since May 2013
  */
 class DefaultCodesTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * Asserts that the given bbcode string produces the given html string
      * when parsed with the default bbcodes.
@@ -44,11 +44,10 @@ class DefaultCodesTest extends PHPUnit_Framework_TestCase
      */
     public function testExample()
     {
-        $text = "The default codes include: [b]bold[/b], [i]italics[/i], [u]underlining[/u], ";
-        $text .= "[url=http://jbbcode.com]links[/url], [color=red]color![/color] and more.";
+        $text = 'The default codes include: [b]bold[/b], [i]italics[/i], [u]underlining[/u], ';
+        $text .= '[url=http://jbbcode.com]links[/url], [color=red]color![/color] and more.';
         $html = 'The default codes include: <strong>bold</strong>, <em>italics</em>, <u>underlining</u>, ';
         $html .= '<a href="http://jbbcode.com">links</a>, <span style="color: red">color!</span> and more.';
         $this->assertProduces($text, $html);
     }
-
 }

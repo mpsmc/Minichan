@@ -3,17 +3,16 @@
 // Also don't forget to edit /includes/template.php to suit your needs.
 
 // Database config.
-$db_info = array
-(
+$db_info = array(
         'server' => 'localhost', // Usually "localhost". If you don't know, consult your host's FAQ.
         'username' => '', // Your database user/login name.
         'password' => '', // Your database password.
-        'database' => '' // The name you chose for the database.
+        'database' => '', // The name you chose for the database.
 );
 
 $spam_phrases = array();
 
-define("LOG_DIR", "../");
+define('LOG_DIR', '../');
 
 define('GOOGLE_ANALYTICS_ID', '');
 define('GOOGLE_ANALYTICS_DOMAIN', '');
@@ -32,14 +31,14 @@ define('NODE_SECRET', ''); // Not really in use anymore. Can leave empty.
 define('NODE_SERVER', ''); // Not really in use anymore. Can leave empty.
 define('NODE_ERROR_RECIPIENT', 'admins');
 
-define("POSTS_NEEDED_FOR_PROXY_RESTORE", 10);
+define('POSTS_NEEDED_FOR_PROXY_RESTORE', 10);
 
 // Main site configuration.
-define("SITE_ROOT", realpath(dirname(__FILE__) . "/..")); // Do not change, things will break.
+define('SITE_ROOT', realpath(dirname(__FILE__).'/..')); // Do not change, things will break.
 define('SITE_TITLE', ''); // The title of your site, shown in the main header among other places.
 
-define('DOMAIN', ($_SERVER['HTTPS']=="on" ? "https" : "http") . '://localhost/'); // Your site's domain -- INCLUDE TRAILING SLASH!
-define('STATIC_DOMAIN', ($_SERVER['HTTPS']=="on" ? "https" : "http") . "://localhost/");
+define('DOMAIN', ($_SERVER['HTTPS'] == 'on' ? 'https' : 'http').'://localhost/'); // Your site's domain -- INCLUDE TRAILING SLASH!
+define('STATIC_DOMAIN', ($_SERVER['HTTPS'] == 'on' ? 'https' : 'http').'://localhost/');
 define('SESSION_NAME', 'tinybbs');
 define('COOKIE_DOMAIN', '');
 
@@ -50,10 +49,10 @@ define('BREAK_OUT_FRAME', false); // Break out of frames, if needed.
 define('ENABLE_NAMES', true); // Burp.
 
 // Gold account shit. Lulz.
-define("ENABLE_GOLD_ACCOUNTS", false);
-define("PAYPAL_EMAIL", "");
-define("GOLDACCOUNT_PRICE", "10.00");
-define("GOLD_ACCOUNT_TIME", "31556926"); // In seconds. 31556926 = 1 year
+define('ENABLE_GOLD_ACCOUNTS', false);
+define('PAYPAL_EMAIL', '');
+define('GOLDACCOUNT_PRICE', '10.00');
+define('GOLD_ACCOUNT_TIME', '31556926'); // In seconds. 31556926 = 1 year
 
 // Bot detection
 // Changing recaptcha to first post on every UID
@@ -85,7 +84,7 @@ define('USE_GIFSICLE', false); // Use `gifsicle` command to resize gifs
 
 // Styles
 define('DEFAULT_STYLESHEET', 'violet'); // Default style, don't include the .css. extention, use the name only.
-define('AVAILABLE_STYLES', "blue;lime;mint;mono;pallet;pink;purple;sand;sim;turquoise;viridian;violet;yotsuba"); // List of avaiable styles seperated with semicolumns. Styles must be located in the style folder.
+define('AVAILABLE_STYLES', 'blue;lime;mint;mono;pallet;pink;purple;sand;sim;turquoise;viridian;violet;yotsuba'); // List of avaiable styles seperated with semicolumns. Styles must be located in the style folder.
 
 // Hiding of admins and/or moderator posts, can be quite useful to prevent drama.
 define('HIDDEN_ADMINS', false); // Hides the hyperlink for admin posts.
@@ -93,7 +92,7 @@ define('HIDDEN_MODS', false); // Hides the hyperlink for mod posts.
 
 // Miscellaneous stuff.
 define('ENABLE_IRC_PING', false); // If enabled will ping a http server when posts/replies/modlog events happen
-define('IRC_PING_DOMAIN', "");
+define('IRC_PING_DOMAIN', '');
 define('IRC_PING_PORT', 80);
 define('IRC_PING_SECRET', '');
 
@@ -143,29 +142,24 @@ define('TIME_EVENTS', 600); // How many seconds between each bulletin for normal
 define('PRE_MODERATE_EVENTS', true); // Do we pre-moderate bulletins?
 
 // Poll settings:
-define("ENABLE_POLLS", true);
+define('ENABLE_POLLS', true);
 
 // Not really used that much anymore. Administrators now hand out permissions through user profiles.
-$moderators = array
-(
+$moderators = array(
                 'name' => 'UID',
 );
 
-$administrators = array
-(
+$administrators = array(
                 'name' => 'UID',
 );
 
 // Not really used that much anymore. Administrators now hand out permissions through user profiles.
-$janitors = array
-(
+$janitors = array(
                 'name' => 'UID',
 );
 
 // Usage:
 // name###key => name !value
-$vanity_trips = array
-(
-                
+$vanity_trips = array(
+
 );
-?>

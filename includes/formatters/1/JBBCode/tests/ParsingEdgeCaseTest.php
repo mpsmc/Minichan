@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Parser.php');
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'Parser.php';
 
 /**
  * A series of test cases for various potential parsing edge cases. This
@@ -8,11 +8,9 @@ require_once(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Parser.php');
  * names.
  *
  * @author jbowens
- *
  */
 class ParsingEdgeCaseTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * A utility method for these tests that will evaluate
      * its arguments as bbcode with a fresh parser loaded
@@ -24,6 +22,7 @@ class ParsingEdgeCaseTest extends PHPUnit_Framework_TestCase
         $parser = new JBBCode\Parser();
         $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
         $parser->parse($bbcode);
+
         return $parser->getAsHtml();
     }
 
@@ -110,7 +109,7 @@ class ParsingEdgeCaseTest extends PHPUnit_Framework_TestCase
 
     /**
      * Tests lots of left brackets before the actual tag. For example:
-     * [[[[[[[[b]bold![/b]
+     * [[[[[[[[b]bold![/b].
      */
     public function testLeftBracketsThenTag()
     {
@@ -126,5 +125,4 @@ class ParsingEdgeCaseTest extends PHPUnit_Framework_TestCase
         $this->assertProduces('[ ABC ] ',
                               '[ ABC ] ');
     }
-
 }

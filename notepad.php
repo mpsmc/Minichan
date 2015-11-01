@@ -1,19 +1,19 @@
 <?php
-require('includes/header.php');
+require 'includes/header.php';
 force_id();
 $page_title = 'Notepad';
 update_activity('notepad', 1);
 $onload_javascript = 'focusId(\'notepad_list\'); init();';
 if ($_POST['form_sent']) {
-	// CSRF checking.
-	check_token();
-	check_length($_POST['notepad_list'], 'notepad list', 0, 4000);
-	if (!$erred) {
-		$update_notepad_list = $link->db_exec('INSERT INTO notepad (uid, notepad_content) VALUES (%1, %2) ON DUPLICATE KEY UPDATE notepad_content = %3', $_SESSION['UID'], $_POST['notepad_list'], $_POST['notepad_list']);
-		$_SESSION['notice'] = 'Notepad updated';
-	} else {
-		$notepad_content = $_POST['notepad_list'];
-	}
+    // CSRF checking.
+    check_token();
+    check_length($_POST['notepad_list'], 'notepad list', 0, 4000);
+    if (!$erred) {
+        $update_notepad_list = $link->db_exec('INSERT INTO notepad (uid, notepad_content) VALUES (%1, %2) ON DUPLICATE KEY UPDATE notepad_content = %3', $_SESSION['UID'], $_POST['notepad_list'], $_POST['notepad_list']);
+        $_SESSION['notice'] = 'Notepad updated';
+    } else {
+        $notepad_content = $_POST['notepad_list'];
+    }
 }
 $fetch_notepad_list = $link->db_exec('SELECT notepad_content FROM notepad WHERE uid = %1', $_SESSION['UID']);
 list($notepad_content) = $link->fetch_row($fetch_notepad_list);
@@ -30,5 +30,5 @@ print_errors();
 	</div>
 </form>
 <?php
-require('includes/footer.php');
+require 'includes/footer.php';
 ?>

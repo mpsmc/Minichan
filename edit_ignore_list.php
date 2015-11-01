@@ -1,17 +1,17 @@
 <?php
-require('includes/header.php');
+require 'includes/header.php';
 force_id();
 $page_title = 'Edit ignored phrases';
 update_activity('ignore_list', 1);
 $onload_javascript = 'focusId(\'ignore_list\'); init();';
 
 if ($_POST['form_sent']) {
-	// CSRF checking.
-	check_token();
-	check_length($_POST['ignore_list'], 'ignore list', 0, 4000);
+    // CSRF checking.
+    check_token();
+    check_length($_POST['ignore_list'], 'ignore list', 0, 4000);
     check_length($_POST['ignore_names'], 'ignorename list', 0, 4000);
-	if (!$erred) {
-		$update_ignore_list = $link->db_exec('INSERT INTO ignore_lists (uid, ignored_phrases, ignored_names) VALUES (%1, %2, %3) ON DUPLICATE KEY UPDATE ignored_phrases = %4, ignored_names = %5', $_SESSION['UID'], $_POST['ignore_list'], $_POST['ignore_names'], $_POST['ignore_list'], $_POST['ignore_names']);
+    if (!$erred) {
+        $update_ignore_list = $link->db_exec('INSERT INTO ignore_lists (uid, ignored_phrases, ignored_names) VALUES (%1, %2, %3) ON DUPLICATE KEY UPDATE ignored_phrases = %4, ignored_names = %5', $_SESSION['UID'], $_POST['ignore_list'], $_POST['ignore_names'], $_POST['ignore_list'], $_POST['ignore_names']);
         $_SESSION['notice'] = 'Ignore list updated.';
         if (!$user_settings['ostrich_mode']) {
             $_SESSION['notice'] .= ' You must <a href="'.DOMAIN.'dashboard">enable ostrich mode</a> for this to have any effect.';
@@ -40,5 +40,5 @@ print_errors();
 	</div>
 </form>
 <?php
-require('includes/footer.php');
+require 'includes/footer.php';
 ?>

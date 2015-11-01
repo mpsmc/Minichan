@@ -1,7 +1,7 @@
 <?php
-chdir("..");
-require("includes/header.php");
-$page_title = "MinichanNotifier (".htmlspecialchars($_GET['version']).") has been updated!";
+chdir('..');
+require 'includes/header.php';
+$page_title = 'MinichanNotifier ('.htmlspecialchars($_GET['version']).') has been updated!';
 ?>
 <h2>0.1.16</h2>
 <ul><li>Added popup notifications</li></ul>
@@ -49,4 +49,4 @@ $page_title = "MinichanNotifier (".htmlspecialchars($_GET['version']).") has bee
 </li>
 </ul>
 <?php
-require("includes/footer.php");
+require 'includes/footer.php';

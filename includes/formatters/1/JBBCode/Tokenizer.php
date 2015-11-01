@@ -11,7 +11,6 @@ namespace JBBCode;
  */
 class Tokenizer
 {
-
     protected $tokens = array();
     protected $i = -1;
 
@@ -34,7 +33,7 @@ class Tokenizer
 
                 /* Add the [ or ] to the tokens array. */
                 array_push($this->tokens, $str[$index]);
-                $strStart = $index+1;
+                $strStart = $index + 1;
             }
         }
 
@@ -58,7 +57,7 @@ class Tokenizer
     public function next()
     {
         if (!$this->hasNext()) {
-            return null;
+            return;
         } else {
             return $this->tokens[++$this->i];
         }
@@ -70,7 +69,7 @@ class Tokenizer
     public function current()
     {
         if ($this->i < 0) {
-            return null;
+            return;
         } else {
             return $this->tokens[$this->i];
         }
@@ -82,7 +81,7 @@ class Tokenizer
     public function stepBack()
     {
         if ($this->i > -1) {
-            $this->i--;
+            --$this->i;
         }
     }
 
@@ -101,5 +100,4 @@ class Tokenizer
     {
         return implode('', array_slice($this->tokens, $this->i + 1));
     }
-
 }

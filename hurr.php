@@ -1,5 +1,5 @@
 <?php
-require('includes/header.php');
+require 'includes/header.php';
 ?>
 <script>
 $(document).ready(function() {
@@ -19,4 +19,4 @@ $(document).ready(function() {
 });
 </script>
 <?php
-require('includes/footer.php');
+require 'includes/footer.php';

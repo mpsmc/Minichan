@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011 Craig Campbell
+ * Copyright 2011 Craig Campbell.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,8 @@
  */
 
 /**
- * Server Side Chrome PHP debugger class
+ * Server Side Chrome PHP debugger class.
  *
- * @package ChromePhp
  * @author Craig Campbell <iamcraigcampbell@gmail.com>
  */
 class ChromePhp
@@ -114,7 +113,7 @@ class ChromePhp
     protected $_json = array(
         'version' => self::VERSION,
         'columns' => array('label', 'log', 'backtrace', 'type'),
-        'rows' => array()
+        'rows' => array(),
     );
 
     /**
@@ -132,10 +131,10 @@ class ChromePhp
      */
     protected $_settings = array(
         self::LOG_PATH => null,
-        self::URL_PATH=> null,
+        self::URL_PATH => null,
         self::STORE_LOGS => false,
         self::BACKTRACE_LEVEL => 1,
-        self::MAX_TRANSFER => 3000
+        self::MAX_TRANSFER => 3000,
     );
 
     /**
@@ -144,14 +143,14 @@ class ChromePhp
     protected static $_instance;
 
     /**
-     * Prevent recursion when working with objects referring to each other
+     * Prevent recursion when working with objects referring to each other.
      *
      * @var array
      */
     protected $_processed = array();
 
     /**
-     * constructor
+     * constructor.
      */
     private function __construct()
     {
@@ -162,25 +161,25 @@ class ChromePhp
     }
 
     /**
-     * gets instance of this class
+     * gets instance of this class.
      *
      * @return ChromePhp
      */
     public static function getInstance()
     {
         if (self::$_instance === null) {
-            self::$_instance = new ChromePhp();
+            self::$_instance = new self();
         }
+
         return self::$_instance;
     }
 
     /**
-     * logs a variable to the console
+     * logs a variable to the console.
      *
      * @param string label
      * @param mixed value
      * @param string severity ChromePhp::LOG || ChromePhp::WARN || ChromePhp::ERROR
-     * @return void
      */
     public static function log()
     {
@@ -196,11 +195,10 @@ class ChromePhp
     }
 
     /**
-     * logs a warning to the console
+     * logs a warning to the console.
      *
      * @param string label
      * @param mixed value
-     * @return void
      */
     public static function warn()
     {
@@ -208,11 +206,10 @@ class ChromePhp
     }
 
     /**
-     * logs an error to the console
+     * logs an error to the console.
      *
      * @param string label
      * @param mixed value
-     * @return void
      */
     public static function error()
     {
@@ -220,7 +217,7 @@ class ChromePhp
     }
 
     /**
-     * sends a group log
+     * sends a group log.
      *
      * @param string value
      */
@@ -230,7 +227,7 @@ class ChromePhp
     }
 
     /**
-     * sends an info log
+     * sends an info log.
      *
      * @param string value
      */
@@ -240,7 +237,7 @@ class ChromePhp
     }
 
     /**
-     * sends a collapsed group log
+     * sends a collapsed group log.
      *
      * @param string value
      */
@@ -250,7 +247,7 @@ class ChromePhp
     }
 
     /**
-     * ends a group log
+     * ends a group log.
      *
      * @param string value
      */
@@ -260,10 +257,9 @@ class ChromePhp
     }
 
     /**
-     * internal logging call
+     * internal logging call.
      *
      * @param string $type
-     * @return void
      */
     protected static function _log(array $args)
     {
@@ -299,16 +295,17 @@ class ChromePhp
 
         $backtrace_message = 'unknown';
         if (isset($backtrace[$level]['file']) && isset($backtrace[$level]['line'])) {
-            $backtrace_message = $backtrace[$level]['file'] . ' : ' . $backtrace[$level]['line'];
+            $backtrace_message = $backtrace[$level]['file'].' : '.$backtrace[$level]['line'];
         }
 
         $logger->_addRow($label, $value, $backtrace_message, $type);
     }
 
     /**
-     * converts an object to a better format for logging
+     * converts an object to a better format for logging.
      *
      * @param Object
+     *
      * @return array
      */
     protected function _convert($object)
@@ -333,7 +330,7 @@ class ChromePhp
 
             // same instance as parent object
             if ($value === $object || in_array($value, $this->_processed, true)) {
-                $value = 'recursion - parent object [' . get_class($value) . ']';
+                $value = 'recursion - parent object ['.get_class($value).']';
             }
             $object_as_array[$key] = $this->_convert($value);
         }
@@ -361,41 +358,42 @@ class ChromePhp
 
             // same instance as parent object
             if ($value === $object || in_array($value, $this->_processed, true)) {
-                $value = 'recursion - parent object [' . get_class($value) . ']';
+                $value = 'recursion - parent object ['.get_class($value).']';
             }
 
             $object_as_array[$type] = $this->_convert($value);
         }
+
         return $object_as_array;
     }
 
     /**
-     * takes a reflection property and returns a nicely formatted key of the property name
+     * takes a reflection property and returns a nicely formatted key of the property name.
      *
      * @param ReflectionProperty
+     *
      * @return string
      */
     protected function _getPropertyKey(ReflectionProperty $property)
     {
         $static = $property->isStatic() ? ' static' : '';
         if ($property->isPublic()) {
-            return 'public' . $static . ' ' . $property->getName();
+            return 'public'.$static.' '.$property->getName();
         }
 
         if ($property->isProtected()) {
-            return 'protected' . $static . ' ' . $property->getName();
+            return 'protected'.$static.' '.$property->getName();
         }
 
         if ($property->isPrivate()) {
-            return 'private' . $static . ' ' . $property->getName();
+            return 'private'.$static.' '.$property->getName();
         }
     }
 
     /**
-     * adds a value to the cookie
+     * adds a value to the cookie.
      *
      * @var mixed
-     * @return void
      */
     protected function _addRow($label, $log, $backtrace, $type)
     {
@@ -421,12 +419,10 @@ class ChromePhp
     }
 
     /**
-     * clears existing rows in special cases
+     * clears existing rows in special cases.
      *
      * for ajax requests chrome will be listening for cookie changes
      * this means we can send the cookie data one row at a time as it comes in
-     *
-     * @return void
      */
     protected function _clearRows()
     {
@@ -448,9 +444,10 @@ class ChromePhp
     }
 
     /**
-     * determines if this row will fit in the cookie
+     * determines if this row will fit in the cookie.
      *
      * @param array $row
+     *
      * @return bool
      */
     protected function _willFit($row)
@@ -473,7 +470,7 @@ class ChromePhp
     }
 
     /**
-     * writes the cookie
+     * writes the cookie.
      *
      * @return bool
      */
@@ -489,7 +486,7 @@ class ChromePhp
     }
 
     /**
-     * deletes the main cookie
+     * deletes the main cookie.
      *
      * @return bool
      */
@@ -499,9 +496,10 @@ class ChromePhp
     }
 
     /**
-     * encodes the data to be sent along with the request
+     * encodes the data to be sent along with the request.
      *
      * @param array $data
+     *
      * @return string
      */
     protected function _encode($data)
@@ -510,9 +508,10 @@ class ChromePhp
     }
 
     /**
-     * sets the main cookie
+     * sets the main cookie.
      *
      * @param array
+     *
      * @return bool
      */
     protected function _setCookie($data)
@@ -521,11 +520,10 @@ class ChromePhp
     }
 
     /**
-     * adds a setting
+     * adds a setting.
      *
      * @param string key
      * @param mixed value
-     * @return void
      */
     public function addSetting($key, $value)
     {
@@ -533,10 +531,9 @@ class ChromePhp
     }
 
     /**
-     * add ability to set multiple settings in one call
+     * add ability to set multiple settings in one call.
      *
      * @param array $settings
-     * @return void
      */
     public function addSettings(array $settings)
     {
@@ -546,21 +543,23 @@ class ChromePhp
     }
 
     /**
-     * gets a setting
+     * gets a setting.
      *
      * @param string key
+     *
      * @return mixed
      */
     public function getSetting($key)
     {
         if (!isset($this->_settings[$key])) {
-            return null;
+            return;
         }
+
         return $this->_settings[$key];
     }
 
     /**
-     * this will allow you to specify a path on disk and a uri to access a static file that can store json
+     * this will allow you to specify a path on disk and a uri to access a static file that can store json.
      *
      * this allows you to log data that is more than 4k
      *
@@ -575,10 +574,9 @@ class ChromePhp
     }
 
     /**
-     * handles cases when there is too much data
+     * handles cases when there is too much data.
      *
      * @param string
-     * @return void
      */
     protected function _cookieMonster()
     {
@@ -590,10 +588,9 @@ class ChromePhp
     }
 
     /**
-     * writes data to a file
+     * writes data to a file.
      *
      * @param string
-     * @return void
      */
     protected function _writeToFile($json)
     {
@@ -604,16 +601,16 @@ class ChromePhp
 
         $file_name = 'last_run.json';
         if ($this->getSetting(self::STORE_LOGS)) {
-            $file_name = 'run_' . $this->_timestamp . '.json';
+            $file_name = 'run_'.$this->_timestamp.'.json';
         }
 
-        file_put_contents($this->getSetting(self::LOG_PATH) . '/' . $file_name, $json);
+        file_put_contents($this->getSetting(self::LOG_PATH).'/'.$file_name, $json);
 
         $data = array(
-            'uri' => $this->getSetting(self::URL_PATH) . '/' . $file_name,
+            'uri' => $this->getSetting(self::URL_PATH).'/'.$file_name,
             'request_uri' => $_SERVER['REQUEST_URI'],
             'time' => $this->_timestamp,
-            'version' => self::VERSION
+            'version' => self::VERSION,
         );
 
         return $this->_setCookie($data);

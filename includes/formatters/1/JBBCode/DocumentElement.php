@@ -13,17 +13,18 @@ require_once 'ElementNode.php';
 class DocumentElement extends ElementNode
 {
     /**
-     * Constructs the document element node
+     * Constructs the document element node.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->setTagName("Document");
+        $this->setTagName('Document');
         $this->setNodeId(0);
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see JBBCode.ElementNode::getAsBBCode()
      *
      * Returns the BBCode representation of this document
@@ -32,8 +33,8 @@ class DocumentElement extends ElementNode
      */
     public function getAsBBCode()
     {
-        $s = "";
-        foreach($this->getChildren() as $child){
+        $s = '';
+        foreach ($this->getChildren() as $child) {
             $s .= $child->getAsBBCode();
         }
 
@@ -41,7 +42,8 @@ class DocumentElement extends ElementNode
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see JBBCode.ElementNode::getAsHTML()
      *
      * Documents don't add any html. They only exist as a container for their
@@ -52,9 +54,10 @@ class DocumentElement extends ElementNode
      */
     public function getAsHTML()
     {
-        $s = "";
-        foreach($this->getChildren() as $child)
+        $s = '';
+        foreach ($this->getChildren() as $child) {
             $s .= $child->getAsHTML();
+        }
 
         return $s;
     }
@@ -63,5 +66,4 @@ class DocumentElement extends ElementNode
     {
         $visitor->visitDocumentElement($this);
     }
-
 }

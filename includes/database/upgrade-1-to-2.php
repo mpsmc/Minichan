@@ -1,4 +1,8 @@
-<?php if(!$upgrade) die();
+<?php
+
+if (!$upgrade) {
+    die();
+}
 multi_query(<<<SQL
 CREATE TABLE IF NOT EXISTS `chrome_tokens` (
   `uid` varchar(23) NOT NULL,

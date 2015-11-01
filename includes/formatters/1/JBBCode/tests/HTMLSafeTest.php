@@ -1,9 +1,9 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Parser.php');
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'Parser.php';
 
 /**
- * Test cases testing the HTMLSafe visitor, which escapes all html characters in the source text
+ * Test cases testing the HTMLSafe visitor, which escapes all html characters in the source text.
  *
  * @author astax-t
  */
@@ -19,14 +19,14 @@ class HTMLSafeTest extends PHPUnit_Framework_TestCase
         $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
         $parser->parse($bbcode);
 
-		$htmlsafer = new JBBCode\visitors\HTMLSafeVisitor();
-		$parser->accept($htmlsafer);
+        $htmlsafer = new JBBCode\visitors\HTMLSafeVisitor();
+        $parser->accept($htmlsafer);
 
         $this->assertEquals($html, $parser->getAsHtml());
     }
-	
+
     /**
-     * Tests escaping quotes and ampersands in simple text
+     * Tests escaping quotes and ampersands in simple text.
      */
     public function testQuoteAndAmp()
     {
@@ -34,7 +34,7 @@ class HTMLSafeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests escaping quotes and ampersands inside a BBCode tag
+     * Tests escaping quotes and ampersands inside a BBCode tag.
      */
     public function testQuoteAndAmpInTag()
     {
@@ -42,7 +42,7 @@ class HTMLSafeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests escaping HTML tags
+     * Tests escaping HTML tags.
      */
     public function testHtmlTag()
     {
@@ -51,7 +51,7 @@ class HTMLSafeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests escaping ampersands in URL using [url]...[/url]
+     * Tests escaping ampersands in URL using [url]...[/url].
      */
     public function testUrlParam()
     {
@@ -59,7 +59,7 @@ class HTMLSafeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests escaping ampersands in URL using [url=...] tag
+     * Tests escaping ampersands in URL using [url=...] tag.
      */
     public function testUrlOption()
     {
@@ -67,11 +67,10 @@ class HTMLSafeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests escaping ampersands in URL using [url=...] tag when URL is in quotes
+     * Tests escaping ampersands in URL using [url=...] tag when URL is in quotes.
      */
     public function testUrlOptionQuotes()
     {
         $this->assertProduces('text [url="http://example.com/?a=b&c=d"]this is a "link"[/url]', 'text <a href="http://example.com/?a=b&amp;c=d">this is a &quot;link&quot;</a>');
     }
-
 }

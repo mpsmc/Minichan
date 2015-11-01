@@ -1,61 +1,61 @@
 <?php
-require('includes/header.php');
+require 'includes/header.php';
 
-if (!allowed("exterminate")) {
-	add_error(MESSAGE_PAGE_ACCESS_DENIED, true);
+if (!allowed('exterminate')) {
+    add_error(MESSAGE_PAGE_ACCESS_DENIED, true);
 }
 
 $page_title = 'Exterminate trolls by phrase';
 
 if ($_POST['exterminate']) {
-	// CSRF checking.
-	check_token();
-	$_POST['phrase'] = str_replace("\r", '', $_POST['phrase']);
-	
-	// Prevent CSRF.
-	if (empty($_POST['start_time']) || $_POST['start_time'] != $_SESSION['exterminate_start_time']) {
-		add_error('Session error.', true);
-	}
-	
-	if (strlen($_POST['phrase']) < 4) {
-		add_error('That phrase is too short.', true);
-	}
-	
-	$phrase = '%' . $_POST['phrase'] . '%';
-	
-	if (ctype_digit($_POST['range'])) {
-		$affect_posts_after = $_SERVER['REQUEST_TIME'] - $_POST['range'];
-		
-		// Delete replies.
-		$fetch_parents = $link->db_exec('SELECT author, id, parent_id FROM replies WHERE body LIKE %1 AND time > %2', $phrase, $affect_posts_after);
-		
-		$victim_parents = array();
-		while (list($author_id, $reply_id, $parent_id) = $link->fetch_row($fetch_parents)) {
-			$link->db_exec('UPDATE topics SET replies = replies - 1 WHERE id = %1', $parent_id);
-			deleteImage("reply", $reply_id);
-		}
-		$link->free($fetch_parents);
-		
-		$link->db_exec('DELETE FROM replies WHERE body LIKE %1 AND time > %2', $phrase, $affect_posts_after);
-		
-		$fetch_topics = $link->db_exec('SELECT author, id FROM topics WHERE body LIKE %1 OR headline LIKE %1 AND time > %2', $phrase, $affect_posts_after);
-		while (list($author_id, $topic_id) = $link->fetch_row($fetch_topics)){
-			deleteImage("topic", $topic_id);
-			$fetch_replies = $link->db_exec('SELECT author, id FROM replies WHERE parent_id = %1', $topic_id);
-			while(list($author_id, $reply_id) = $link->fetch_row($fetch_replies)){
-				deleteImage("reply", $reply_id);
-			}
-			$link->free($fetch_replies);
-			$link->db_exec("DELETE FROM replies WHERE parent_id = %1", $topic_id);
-		}
-		
-		// Delete topics.
-		$link->db_exec('DELETE FROM topics WHERE body LIKE %1 OR headline LIKE %1 AND time > %2', $phrase, $affect_posts_after);
-		$_SESSION['notice'] = 'Finished';
-	}
+    // CSRF checking.
+    check_token();
+    $_POST['phrase'] = str_replace("\r", '', $_POST['phrase']);
+
+    // Prevent CSRF.
+    if (empty($_POST['start_time']) || $_POST['start_time'] != $_SESSION['exterminate_start_time']) {
+        add_error('Session error.', true);
+    }
+
+    if (strlen($_POST['phrase']) < 4) {
+        add_error('That phrase is too short.', true);
+    }
+
+    $phrase = '%'.$_POST['phrase'].'%';
+
+    if (ctype_digit($_POST['range'])) {
+        $affect_posts_after = $_SERVER['REQUEST_TIME'] - $_POST['range'];
+
+        // Delete replies.
+        $fetch_parents = $link->db_exec('SELECT author, id, parent_id FROM replies WHERE body LIKE %1 AND time > %2', $phrase, $affect_posts_after);
+
+        $victim_parents = array();
+        while (list($author_id, $reply_id, $parent_id) = $link->fetch_row($fetch_parents)) {
+            $link->db_exec('UPDATE topics SET replies = replies - 1 WHERE id = %1', $parent_id);
+            deleteImage('reply', $reply_id);
+        }
+        $link->free($fetch_parents);
+
+        $link->db_exec('DELETE FROM replies WHERE body LIKE %1 AND time > %2', $phrase, $affect_posts_after);
+
+        $fetch_topics = $link->db_exec('SELECT author, id FROM topics WHERE body LIKE %1 OR headline LIKE %1 AND time > %2', $phrase, $affect_posts_after);
+        while (list($author_id, $topic_id) = $link->fetch_row($fetch_topics)) {
+            deleteImage('topic', $topic_id);
+            $fetch_replies = $link->db_exec('SELECT author, id FROM replies WHERE parent_id = %1', $topic_id);
+            while (list($author_id, $reply_id) = $link->fetch_row($fetch_replies)) {
+                deleteImage('reply', $reply_id);
+            }
+            $link->free($fetch_replies);
+            $link->db_exec('DELETE FROM replies WHERE parent_id = %1', $topic_id);
+        }
+
+        // Delete topics.
+        $link->db_exec('DELETE FROM topics WHERE body LIKE %1 OR headline LIKE %1 AND time > %2', $phrase, $affect_posts_after);
+        $_SESSION['notice'] = 'Finished';
+    }
 }
 
-$start_time                         = $_SERVER['REQUEST_TIME'];
+$start_time = $_SERVER['REQUEST_TIME'];
 $_SESSION['exterminate_start_time'] = $start_time;
 ?>
 <p>This features removes all posts that contain anywhere in the body or headline the exact phrase that you specify.</p>
@@ -83,5 +83,5 @@ $_SESSION['exterminate_start_time'] = $start_time;
 		</div>
 </form>
 <?php
-require('includes/footer.php');
+require 'includes/footer.php';
 ?>

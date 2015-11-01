@@ -1,24 +1,24 @@
 <?php
-chdir("..");
-require("includes/header.php");
+chdir('..');
+require 'includes/header.php';
 force_id();
 
-if($_GET['link'] == 1 && check_token()) {
-	$device_token = strtoupper($_POST['device_token']);
-	$link->db_exec("SELECT 1 FROM android_tokens WHERE rand_token = %1", $device_token);
-	if($link->num_rows() > 0) {
-		$link->db_exec("DELETE FROM android_tokens WHERE uid = %1", $_SESSION['UID']); // Purge all old links
-		$link->db_exec("UPDATE android_tokens SET uid = %1 WHERE rand_token = %2", $_SESSION['UID'], $device_token);
-		header("Location: " . DOMAIN);
-		$_SESSION['notice'] = "Device linked";
-		add_notification('linked', $_SESSION['UID'], 'linked', array());
-		die();
-	}else{
-		add_error("Unkown device token");
-	}
+if ($_GET['link'] == 1 && check_token()) {
+    $device_token = strtoupper($_POST['device_token']);
+    $link->db_exec('SELECT 1 FROM android_tokens WHERE rand_token = %1', $device_token);
+    if ($link->num_rows() > 0) {
+        $link->db_exec('DELETE FROM android_tokens WHERE uid = %1', $_SESSION['UID']); // Purge all old links
+        $link->db_exec('UPDATE android_tokens SET uid = %1 WHERE rand_token = %2', $_SESSION['UID'], $device_token);
+        header('Location: '.DOMAIN);
+        $_SESSION['notice'] = 'Device linked';
+        add_notification('linked', $_SESSION['UID'], 'linked', array());
+        die();
+    } else {
+        add_error('Unkown device token');
+    }
 }
 
-$page_title = "Link android device";
+$page_title = 'Link android device';
 print_errors();
 ?>
 <form method="post" action="<?php echo DOMAIN; ?>android/link">
@@ -29,4 +29,4 @@ Once the application is installed it will give you a device token which you need
 <?php csrf_token() ?>
 </form>
 <?php
-require("includes/footer.php");
+require 'includes/footer.php';

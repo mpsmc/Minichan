@@ -18,7 +18,7 @@ abstract class Node
     protected $nodeid;
 
     /**
-     * Returns the node id of this node. (Not really ever used. Dependent upon the parse tree the node exists within.)
+     * Returns the node id of this node. (Not really ever used. Dependent upon the parse tree the node exists within.).
      *
      * @return this node's id
      */
@@ -49,7 +49,7 @@ abstract class Node
 
     /**
      * Returns true if this is a text node. Returns false otherwise.
-     * (Overridden by TextNode to return true)
+     * (Overridden by TextNode to return true).
      *
      * @return true if this node is a text node
      */
@@ -59,28 +59,28 @@ abstract class Node
     }
 
     /**
-     * Accepts a NodeVisitor
+     * Accepts a NodeVisitor.
      *
      * @param nodeVisitor  the NodeVisitor traversing the graph
      */
     abstract public function accept(NodeVisitor $nodeVisitor);
 
     /**
-     * Returns this node as text (without any bbcode markup)
+     * Returns this node as text (without any bbcode markup).
      *
      * @return the plain text representation of this node
      */
     abstract public function getAsText();
 
     /**
-     * Returns this node as bbcode
+     * Returns this node as bbcode.
      *
      * @return the bbcode representation of this node
      */
     abstract public function getAsBBCode();
 
     /**
-     * Returns this node as HTML
+     * Returns this node as HTML.
      *
      * @return the html representation of this node
      */
@@ -97,7 +97,7 @@ abstract class Node
     }
 
     /**
-     * Sets this node's nodeid
+     * Sets this node's nodeid.
      *
      * @param nodeid this node's node id
      */
@@ -105,5 +105,4 @@ abstract class Node
     {
         $this->nodeid = $nodeid;
     }
-
 }

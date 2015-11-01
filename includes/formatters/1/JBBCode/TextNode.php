@@ -15,7 +15,7 @@ class TextNode extends Node
     protected $value;
 
     /**
-     * Constructs a text node from its text string
+     * Constructs a text node from its text string.
      *
      * @param string $val
      */
@@ -30,7 +30,8 @@ class TextNode extends Node
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see JBBCode.Node::isTextNode()
      *
      * returns true
@@ -51,7 +52,8 @@ class TextNode extends Node
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see JBBCode.Node::getAsText()
      *
      * Returns the text representation of this node.
@@ -64,7 +66,8 @@ class TextNode extends Node
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see JBBCode.Node::getAsBBCode()
      *
      * Returns the bbcode representation of this node. (Just its value)
@@ -77,7 +80,8 @@ class TextNode extends Node
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see JBBCode.Node::getAsHTML()
      *
      * Returns the html representation of this node. (Just its value)
@@ -98,5 +102,4 @@ class TextNode extends Node
     {
         $this->value = $newValue;
     }
-
 }

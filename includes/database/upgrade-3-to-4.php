@@ -1,4 +1,8 @@
-<?php if(!$upgrade) die();
+<?php
+
+if (!$upgrade) {
+    die();
+}
 multi_query(<<<SQL
 ALTER TABLE activity CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE bulletins CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

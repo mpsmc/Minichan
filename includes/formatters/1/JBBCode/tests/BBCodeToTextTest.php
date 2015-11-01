@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Parser.php');
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'Parser.php';
 
 /**
  * Test cases testing the ability to parse bbcode and retrieve a
@@ -10,7 +10,6 @@ require_once(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Parser.php');
  */
 class BBCodeToTextTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * A utility method for these tests that will evaluate
      * its arguments as bbcode with a fresh parser loaded
@@ -22,12 +21,13 @@ class BBCodeToTextTest extends PHPUnit_Framework_TestCase
         $parser = new JBBCode\Parser();
         $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
         $parser->parse($bbcode);
+
         return $parser->getAsText();
     }
 
     /**
      * Asserts that the given bbcode matches the given text when
-     * the bbcode is run through defaultTextParse
+     * the bbcode is run through defaultTextParse.
      */
     private function assertTextOutput($bbcode, $text)
     {
@@ -52,7 +52,7 @@ class BBCodeToTextTest extends PHPUnit_Framework_TestCase
 
     public function testMultipleTags()
     {
-        $bbcode = 'this is some text with [b]bold tags[/b] and [i]italics[/i] and ' .
+        $bbcode = 'this is some text with [b]bold tags[/b] and [i]italics[/i] and '.
                   'things like [u]that[/u].';
         $text = 'this is some text with bold tags and italics and things like that.';
         $this->assertTextOutput($bbcode, $text);
@@ -74,5 +74,4 @@ class BBCodeToTextTest extends PHPUnit_Framework_TestCase
         $text = 'This doesn\'t use the url option http://jbbcode.com.';
         $this->assertTextOutput($code, $text);
     }
-
 }

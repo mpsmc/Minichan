@@ -1,9 +1,10 @@
 <?php
-require('settings.php');
-chdir("./../..");
-require('includes/config.php');
-require('includes/database.class.php');
-require('includes/functions.php');
+
+require 'settings.php';
+chdir('./../..');
+require 'includes/config.php';
+require 'includes/database.class.php';
+require 'includes/functions.php';
 
 header('Cache-Control: no-cache');
 header('Pragma: no-cache');
@@ -16,14 +17,15 @@ $moderator = false;
 $administrator = false;
 $janitor = false;
 
-function check_permissions($uid) {
-	global $moderator, $administrator, $janitor, $moderators, $administrators, $janitors;
-	
-	if(in_array($uid, $moderators)) {
-		$moderator = true;
-	} else if(in_array($uid, $administrators)) {
-		$administrator = true;
-	} else if(in_array($uid, $janitors)) {
-		$janitor = true;
-	}
+function check_permissions($uid)
+{
+    global $moderator, $administrator, $janitor, $moderators, $administrators, $janitors;
+
+    if (in_array($uid, $moderators)) {
+        $moderator = true;
+    } elseif (in_array($uid, $administrators)) {
+        $administrator = true;
+    } elseif (in_array($uid, $janitors)) {
+        $janitor = true;
+    }
 }

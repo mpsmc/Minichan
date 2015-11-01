@@ -42,7 +42,7 @@ class CodeDefinition
             $parseContent = true, $nestLimit = -1, $optionValidator = array(),
             $bodyValidator = null)
     {
-        $def = new CodeDefinition();                            
+        $def = new self();
         $def->elCounter = 0;
         $def->setTagName($tagName);
         $def->setReplacementText($replacementText);
@@ -51,8 +51,9 @@ class CodeDefinition
         $def->nestLimit = $nestLimit;
         $def->optionValidator = $optionValidator;
         $def->bodyValidator = $bodyValidator;
+
         return $def;
-     }
+    }
 
     /**
      * Constructs a new CodeDefinition. 
@@ -79,6 +80,7 @@ class CodeDefinition
      * any validators attached to this CodeDefinition.
      *
      * @param $el  the ElementNode to validate
+     *
      * @return true if the ElementNode's {option} and {param} are OK, false if they're not
      */
     public function hasValidInputs(ElementNode $el)
@@ -86,8 +88,8 @@ class CodeDefinition
         if ($this->usesOption() && $this->optionValidator) {
             $att = $el->getAttribute();
 
-            foreach($att as $name => $value){
-                if(isset($this->optionValidator[$name]) && !$this->optionValidator[$name]->validate($value)){
+            foreach ($att as $name => $value) {
+                if (isset($this->optionValidator[$name]) && !$this->optionValidator[$name]->validate($value)) {
                     return false;
                 }
             }
@@ -95,7 +97,7 @@ class CodeDefinition
 
         if (!$this->parseContent() && $this->bodyValidator) {
             /* We only evaluate the content if we're not parsing the content. */
-            $content = "";
+            $content = '';
             foreach ($el->getChildren() as $child) {
                 $content .= $child->getAsBBCode();
             }
@@ -103,7 +105,7 @@ class CodeDefinition
                 /* The content of the element is not valid. */
                 return false;
             }
-        } 
+        }
 
         return true;
     }
@@ -127,13 +129,12 @@ class CodeDefinition
 
         if ($this->usesOption()) {
             $options = $el->getAttribute();
-            if(count($options)==1){
+            if (count($options) == 1) {
                 $vals = array_values($options);
                 $html = str_ireplace('{option}', reset($vals), $html);
-            }
-            else{
-                foreach($options as $key => $val){
-                    $html = str_ireplace('{' . $key . '}', $val, $html);
+            } else {
+                foreach ($options as $key => $val) {
+                    $html = str_ireplace('{'.$key.'}', $val, $html);
                 }
             }
         }
@@ -145,16 +146,20 @@ class CodeDefinition
         return $html;
     }
 
-    protected function getContent(ElementNode $el){
+    protected function getContent(ElementNode $el)
+    {
         if ($this->parseContent()) {
-            $content = "";
-            foreach ($el->getChildren() as $child)
+            $content = '';
+            foreach ($el->getChildren() as $child) {
                 $content .= $child->getAsHTML();
+            }
         } else {
-            $content = "";
-            foreach ($el->getChildren() as $child)
+            $content = '';
+            foreach ($el->getChildren() as $child) {
                 $content .= $child->getAsBBCode();
+            }
         }
+
         return $content;
     }
 
@@ -164,7 +169,7 @@ class CodeDefinition
      *
      * @param $el  the element to return a text representation of
      *
-     * @return  the text representation of $el
+     * @return the text representation of $el
      */
     public function asText(ElementNode $el)
     {
@@ -172,14 +177,16 @@ class CodeDefinition
             return $el->getAsBBCode();
         }
 
-        $s = "";
-        foreach ($el->getChildren() as $child)
+        $s = '';
+        foreach ($el->getChildren() as $child) {
             $s .= $child->getAsText();
+        }
+
         return $s;
     }
 
     /**
-     * Returns the tag name of this code definition
+     * Returns the tag name of this code definition.
      *
      * @return this definition's associated tag name
      */
@@ -201,7 +208,7 @@ class CodeDefinition
     }
 
     /**
-     * Returns whether or not this CodeDefinition uses the optional {option}
+     * Returns whether or not this CodeDefinition uses the optional {option}.
      *
      * @return true if this CodeDefinition uses the option, false otherwise
      */
@@ -233,7 +240,7 @@ class CodeDefinition
     }
 
     /**
-     * Sets the tag name of this CodeDefinition
+     * Sets the tag name of this CodeDefinition.
      *
      * @deprecated
      *
@@ -245,7 +252,7 @@ class CodeDefinition
     }
 
     /**
-     * Sets the html replacement text of this CodeDefinition
+     * Sets the html replacement text of this CodeDefinition.
      *
      * @deprecated
      *
@@ -257,11 +264,11 @@ class CodeDefinition
     }
 
     /**
-     * Sets whether or not this CodeDefinition uses the {option}
+     * Sets whether or not this CodeDefinition uses the {option}.
      *
      * @deprecated
      *
-     * @param boolean $bool
+     * @param bool $bool
      */
     public function setUseOption($bool)
     {
@@ -269,11 +276,11 @@ class CodeDefinition
     }
 
     /**
-     * Sets whether or not this CodeDefinition allows its children to be parsed as html
+     * Sets whether or not this CodeDefinition allows its children to be parsed as html.
      *
      * @deprecated
      *
-     * @param boolean $bool
+     * @param bool $bool
      */
     public function setParseContent($bool)
     {
@@ -284,24 +291,20 @@ class CodeDefinition
      * Increments the element counter. This is used for tracking depth of elements of the same type for next limits.
      *
      * @deprecated
-     *
-     * @return void
      */
     public function incrementCounter()
     {
-        $this->elCounter++;
+        ++$this->elCounter;
     }
 
     /**
      * Decrements the element counter.
      *
      * @deprecated
-     *
-     * @return void
      */
     public function decrementCounter()
     {
-        $this->elCounter--;
+        --$this->elCounter;
     }
 
     /**
