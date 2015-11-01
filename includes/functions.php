@@ -1676,7 +1676,7 @@ function thumbnailNative($source, $dest_name, $type, $width, $height)
         if ($type == 'gif') {
             shell_exec('gifsicle --no-warnings --colors 256 --resize '.$new_width.'x'.$new_height." \"$source\" > \"thumbs/$dest_name\"");
         } else {
-            shell_exec('convert -resize '.$new_width.'x'.$new_height." \"$source\" \"thumbs/$dest_name\"");
+            shell_exec('convert -quiet -resize '.$new_width.'x'.$new_height." \"$source\" \"thumbs/$dest_name\"");
         }
 
         if (!file_exists("thumbs/$dest_name") || $dest_filesize = filesize("thumbs/$dest_name") == 0) {
