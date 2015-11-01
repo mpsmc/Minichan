@@ -1533,8 +1533,8 @@ function thumbnailGifsicle($source, $dest_name) {
 	if($width > MAX_IMAGE_DIMENSIONS || $height > MAX_IMAGE_DIMENSIONS) {
 		$percent = MAX_IMAGE_DIMENSIONS / ( ($width > $height) ? $width : $height );
 								
-		$new_width = $width * $percent;
-		$new_height = $height * $percent;
+		$new_width = round($width * $percent);
+		$new_height = round($height * $percent);
 		
 		exec("gifsicle --resize " . $new_width."x".$new_height . " \"$source\" > \"thumbs/$dest_name\"");
 		$dest_filesize = filesize("thumbs/$dest_name");
@@ -1583,8 +1583,8 @@ function thumbnail($source, $dest_name, $type, $force_internal = false) {
 	if($width > MAX_IMAGE_DIMENSIONS || $height > MAX_IMAGE_DIMENSIONS) {
 		$percent = MAX_IMAGE_DIMENSIONS / ( ($width > $height) ? $width : $height );
 								
-		$new_width = $width * $percent;
-		$new_height = $height * $percent;
+		$new_width = round($width * $percent);
+		$new_height = round($height * $percent);
 								
 		$thumbnail = imagecreatetruecolor($new_width, $new_height) ; 
 		imagecopyresampled($thumbnail, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
