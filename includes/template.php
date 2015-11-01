@@ -150,7 +150,7 @@ window.onload=function(){
             echo 'rounded ';
         }
         echo 'page-'.preg_replace('%^/|\.php$%i', '', $_SERVER['SCRIPT_NAME']);
-        echo ' ' . (MOBILE_MODE?'mobile':'desktop').'-mode';
+        echo ' '.(MOBILE_MODE ? 'mobile' : 'desktop').'-mode';
         echo '"';
         echo '>';
         if ($administrator && false) {

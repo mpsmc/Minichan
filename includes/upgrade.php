@@ -20,7 +20,7 @@ $link = new db($db_info['server'], $db_info['username'], $db_info['password'], $
 $link->db_exec('show tables');
 $tableCount = 0;
 while ($link->fetch_row()) {
-    $tableCount++;
+    ++$tableCount;
 }
 
 function doDatabaseUpgrade($old, $new)

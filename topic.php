@@ -769,7 +769,7 @@ while (fetchReplyList()) {
     );
 
     if (!$reply_deleted) {
-        $undeleted_replies++;
+        ++$undeleted_replies;
     }
 
     $last_was_delete = $reply_deleted || $reply_hidden;

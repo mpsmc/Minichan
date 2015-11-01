@@ -47,8 +47,8 @@ $send = send($sql);
 
 // Display the events menu and events.
 echo '<ul class="menu">'; if (ALLOW_USER_EVENTS || allowed('manage_events')) {
-    echo '<li><a href="'.DOMAIN.'new_event">New event</a></li><li>';
-}
+     echo '<li><a href="'.DOMAIN.'new_event">New event</a></li><li>';
+ }
 echo'<a href="'.DOMAIN.'about_events">About</a></li>'; if (allowed('manage_events')) {
      if (PRE_MODERATE_BULLETINS && ALLOW_USER_EVENTS) {
          echo '<li><a href="'.DOMAIN.'moderate_events">Moderate events</li></a>';

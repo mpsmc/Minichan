@@ -1661,16 +1661,11 @@ function replies($topic_id, $topic_replies)
     return $output;
 }
 
-function thumbnailGifsicle($source, $dest_name)
+function thumbnailNative($source, $dest_name, $type, $width, $height)
 {
     $copy_original = false;
 
     $source_filesize = filesize($source);
-
-    $image = imagecreatefromgif($source);
-    $width = imagesx($image);
-    $height = imagesy($image);
-    imagedestroy($image);
 
     if ($width > MAX_IMAGE_DIMENSIONS || $height > MAX_IMAGE_DIMENSIONS) {
         $percent = MAX_IMAGE_DIMENSIONS / (($width > $height) ? $width : $height);
@@ -1678,11 +1673,14 @@ function thumbnailGifsicle($source, $dest_name)
         $new_width = round($width * $percent);
         $new_height = round($height * $percent);
 
-        shell_exec('gifsicle --no-warnings --colors 256 --resize '.$new_width.'x'.$new_height." \"$source\" > \"thumbs/$dest_name\"");
-        $dest_filesize = filesize("thumbs/$dest_name");
+        if ($type == 'gif') {
+            shell_exec('gifsicle --no-warnings --colors 256 --resize '.$new_width.'x'.$new_height." \"$source\" > \"thumbs/$dest_name\"");
+        } else {
+            shell_exec('convert -resize '.$new_width.'x'.$new_height." \"$source\" \"thumbs/$dest_name\"");
+        }
 
-        if (!file_exists("thumbs/$dest_name") || $dest_filesize == 0) {
-            return thumbnail($source, $dest_name, 'gif', true);
+        if (!file_exists("thumbs/$dest_name") || $dest_filesize = filesize("thumbs/$dest_name") == 0) {
+            return thumbnail($source, $dest_name, $type, true);
         }
     } else {
         $new_width = $width;
@@ -1703,26 +1701,27 @@ function thumbnail($source, $dest_name, $type, $force_internal = false)
     $type = strtolower($type);
 
     switch ($type) {
-        case 'jpg':
-            $image = imagecreatefromjpeg($source);
+        case 'gif':
+            $image = imagecreatefromgif($source);
         break;
 
-        case 'gif':
-            if (defined('USE_GIFSICLE') && !$force_internal) {
-                return thumbnailGifsicle($source, $dest_name);
-            } else {
-                $image = imagecreatefromgif($source);
-            }
+        case 'jpg':
+            $image = imagecreatefromjpeg($source);
         break;
 
         case 'png':
             $image = imagecreatefrompng($source);
         break;
-
     }
 
     $width = imagesx($image);
     $height = imagesy($image);
+
+    if (!$force_internal && (($type == 'gif' && USE_GIFSICLE) || ($type != 'gif' && USE_IMAGICK))) {
+        imagedestroy($image);
+
+        return thumbnailNative($source, $dest_name, $type, $width, $height);
+    }
 
     if ($width > MAX_IMAGE_DIMENSIONS || $height > MAX_IMAGE_DIMENSIONS) {
         $percent = MAX_IMAGE_DIMENSIONS / (($width > $height) ? $width : $height);
@@ -1927,17 +1926,17 @@ function matchIgnoredName($ignoredNames, $namefag, $tripfag)
 
             $needMatches = 0;
             if ($ignoredNamefag) {
-                $needMatches++;
+                ++$needMatches;
             }
             if ($ignoredTripfag) {
-                $needMatches++;
+                ++$needMatches;
             }
 
             if ($ignoredNamefag && $namefag && strcasecmp($ignoredNamefag, $namefag) == 0) {
-                $needMatches--;
+                --$needMatches;
             }
             if ($ignoredTripfag && $tripfag && strcasecmp($ignoredTripfag, $tripfag) == 0) {
-                $needMatches--;
+                --$needMatches;
             }
 
             if ($needMatches == 0) {
