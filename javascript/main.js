@@ -521,7 +521,8 @@ function init() {
 					$img.css({
 						'width': preload.width+'px',
 						'float': 'none',
-						'display': 'block'
+						'display': 'block',
+                        'max-width': '100%'
 					});
                     $img.removeClass("img-loading");
                 });
