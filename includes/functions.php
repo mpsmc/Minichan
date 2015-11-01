@@ -1520,15 +1520,55 @@ function replies($topic_id, $topic_replies) {
 	return $output;
 }
 
-function thumbnail($source, $dest_name, $type) {
+function thumbnailGifsicle($source, $dest_name) {
+	$copy_original = false;
+	
+	$source_filesize = filesize($source);
+	
+	$image = imagecreatefromgif($source);
+	$width = imagesx($image);
+	$height = imagesy($image);
+	imagedestroy($image);
+	
+	if($width > MAX_IMAGE_DIMENSIONS || $height > MAX_IMAGE_DIMENSIONS) {
+		$percent = MAX_IMAGE_DIMENSIONS / ( ($width > $height) ? $width : $height );
+								
+		$new_width = $width * $percent;
+		$new_height = $height * $percent;
+		
+		system("gifsicle --resize " . $new_width."x".$new_height . " \"$source\" > \"thumbs/$dest_name\"");
+		$dest_filesize = filesize("thumbs/$dest_name");
+		
+		if(!file_exists("thumbs/$dest_name") || $dest_filesize == 0) {
+			return thumbnail($source, $dest_name, 'gif', true);
+		}
+	} else {
+		$new_width = $width;
+		$new_height = $height;
+		
+		$copy_original = true;
+	}
+	
+	if($copy_original || $source_filesize < $dest_filesize) {
+		copy($source, "thumbs/$dest_name");
+	}
+	
+	return array($new_width, $new_height);
+}
+
+function thumbnail($source, $dest_name, $type, $force_internal = false) {
 	$type = strtolower($type);
+
 	switch($type) {
 		case 'jpg':
 			$image = imagecreatefromjpeg($source);
 		break;
 									
 		case 'gif':
-			$image = imagecreatefromgif($source);
+			if(defined('USE_GIFSICLE') && !$force_internal)
+				return thumbnailGifsicle($source, $dest_name);
+			else
+				$image = imagecreatefromgif($source);
 		break;
 									
 		case 'png':
