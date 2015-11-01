@@ -1536,7 +1536,7 @@ function thumbnailGifsicle($source, $dest_name) {
 		$new_width = round($width * $percent);
 		$new_height = round($height * $percent);
 		
-		shell_exec("gifsicle --resize " . $new_width."x".$new_height . " \"$source\" > \"thumbs/$dest_name\" 2>&1");
+		shell_exec("gifsicle --no-warnings --colors 256 --resize " . $new_width."x".$new_height . " \"$source\" > \"thumbs/$dest_name\"");
 		$dest_filesize = filesize("thumbs/$dest_name");
 		
 		if(!file_exists("thumbs/$dest_name") || $dest_filesize == 0) {
