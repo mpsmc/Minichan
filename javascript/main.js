@@ -484,34 +484,27 @@ function init() {
         if($img.hasClass("img-loading")) return;
         
         if($img.hasClass("img-expanded")) {
-            var doneWithAnimation = function() {
-                $img.attr("width", $img.data("width"));
-                $img.attr("height", $img.data("height"));
-                $img.css("max-width", "");
-                $img.css("float", "left");
-                $img.css("display", "");
-                $img.css("width", "");
-                $img.attr("src", $img.data("src"));
-                $img.removeClass("img-expanded");
-                $("video", $this).remove();
-                $img.show();
-            };
-            
-            if($img.data("isVideo")) {
-                doneWithAnimation();
-            }else{
-                $img.animate({
-                    width: $img.data("width")+"px"
-                }, 100, doneWithAnimation);
-            }
+			$img.css({
+				'width': $img.data('width'),
+				'float': 'left',
+				'display': ''
+			});
+			$img.attr("src", $img.data("src"));
+			$img.removeClass("img-expanded");
+			$("video", $this).remove();
+			$img.show();
         }else{
             var videoRegex = /\.(webm|gifv)$/;
             var isVideo = $this.attr("href").match(videoRegex);
             
-            $img.data("width", $img.attr("width"));
-            $img.data("height", $img.attr("height"));
-            $img.data("src", $img.attr("src"));
-            $img.data("isVideo", isVideo);
+			if(!$img.data("storedData")) {
+				$img.data("width", $img.attr("width"));
+				$img.data("height", $img.attr("height"));
+				$img.data("src", $img.attr("src"));
+				$img.data("isVideo", isVideo);
+				$img.data("storedData", true);
+			}
+			
             $img.addClass("img-expanded");
             
             if(!isVideo) {
@@ -522,18 +515,15 @@ function init() {
                 $(preload).on("load", function() {
                     $img.attr("width", "");
                     $img.attr("height", "");
-                    $img.css("float", "none");
-                    $img.css("display", "block");
                     
                     $img.attr("src", $this.attr("href"));
                     
-                    $img.css("max-width", "100%");
-                    $img.css("width", $img.data("width")+"px");
+					$img.css({
+						'width': preload.width+'px',
+						'float': 'none',
+						'display': 'block'
+					});
                     $img.removeClass("img-loading");
-                    
-                    $img.animate({
-                        'width': preload.width+"px"
-                    }, 150);
                 });
                 
                 $(preload).on("error", function() {

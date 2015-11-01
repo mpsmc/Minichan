@@ -29,6 +29,14 @@ a:focus {
     margin-right:7px;
 }
 
+.body img {
+	transition: width 200ms;
+}
+
+.body img.img-expanded {
+	max-width: 100%;
+}
+
 .body img.img-loading {
     opacity: 0.5;
 }
