@@ -2,6 +2,7 @@
 
 
 #Installation
+* Install dependencies with [composer](https://getcomposer.org/doc/00-intro.md) using `composer install`
 * Make an empty MySQL database.
 * Copy `includes/config.example.php` to `includes/config.php` and get editing.
 * Run `php includes/upgrade.php` from the command line.
