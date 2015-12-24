@@ -318,17 +318,47 @@ if (!MOBILE_MODE) {
     </div>
     <?php 
 } ?>
-	<?php if (!MOBILE_MODE && false) {
+	<?php if (!MOBILE_MODE) {
     ?>
 		
-		<object width="1" height="1">
-		<param name="movie" value="//www.youtube-nocookie.com/v/ujZsFOGT-Ko?fs=1&autoplay=1&loop=1"></param>
-		<param name="allowFullScreen" value="true"></param>
-		<param name="allowscriptaccess" value="always"></param>
-		<embed src="//www.youtube-nocookie.com/v/ujZsFOGT-Ko?fs=1&autoplay=1&loop=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="1" height="1">
-		</embed>
-		</object>
-		
+		<iframe width="1" height="1" src="https://www.youtube.com/embed/zYOH0Ld2hdA?autoplay=1&loop=1" frameborder="0" allowfullscreen></iframe>
+		<style>		
+			body::before,body::after {
+				content: '';
+				z-index: 1000;
+				
+				animation-name: snowanimation;
+				animation-timing-function: linear;
+				animation-iteration-count: infinite;
+				animation-direction: normal;
+				
+				display: inline-block;
+				position: fixed;
+				left: 0;
+				width: 1920px;
+				height: 2160px;
+				
+				overflow:visible;
+				pointer-events:none;
+			}
+
+			body::before {
+				animation-duration: 14s;
+				
+				background: url("/style/snow1.png");
+			}
+
+			body::after {
+				animation-duration: 8s;
+				
+				background: url("/style/snow2.png");
+			}
+
+			@keyframes snowanimation {
+				from {top: -1080px}
+				to {top: 0}
+			}
+		</style>
 		<?php 
 } ?>
 
