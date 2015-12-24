@@ -320,47 +320,47 @@ if (!MOBILE_MODE) {
 } ?>
 	<?php if (!MOBILE_MODE) {
     ?>
-		
-		<iframe width="1" height="1" src="https://www.youtube.com/embed/zYOH0Ld2hdA?autoplay=1&loop=1" frameborder="0" allowfullscreen></iframe>
-		<style>		
-			body::before,body::after {
-				content: '';
-				z-index: 1000;
-				
-				animation-name: snowanimation;
-				animation-timing-function: linear;
-				animation-iteration-count: infinite;
-				animation-direction: normal;
-				
-				display: inline-block;
-				position: fixed;
-				left: 0;
-				width: 1920px;
-				height: 2160px;
-				
-				overflow:visible;
-				pointer-events:none;
-			}
-
-			body::before {
-				animation-duration: 14s;
-				
-				background: url("/style/snow1.png");
-			}
-
-			body::after {
-				animation-duration: 8s;
-				
-				background: url("/style/snow2.png");
-			}
-
-			@keyframes snowanimation {
-				from {top: -1080px}
-				to {top: 0}
-			}
-		</style>
+		<iframe width="1" height="1" src="https://www.youtube.com/embed/zYOH0Ld2hdA?version=3&autoplay=1&loop=1&playlist=zYOH0Ld2hdA" frameborder="0" allowfullscreen></iframe>
 		<?php 
 } ?>
+
+<style>		
+	body::before,body::after {
+		content: '';
+		z-index: 1000;
+		
+		animation-name: snowanimation;
+		animation-timing-function: linear;
+		animation-iteration-count: infinite;
+		animation-direction: normal;
+		
+		display: inline-block;
+		position: fixed;
+		left: 0;
+		width: 1920px;
+		height: 2160px;
+		
+		overflow:visible;
+		pointer-events:none;
+	}
+
+	body::before {
+		animation-duration: 14s;
+		
+		background: url("/style/snow1.png");
+	}
+
+	body::after {
+		animation-duration: 8s;
+		
+		background: url("/style/snow2.png");
+	}
+
+	@keyframes snowanimation {
+		from {top: -1080px}
+		to {top: 0}
+	}
+</style>
 
 <!--		
 <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="1" height="1">
