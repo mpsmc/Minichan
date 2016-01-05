@@ -147,7 +147,7 @@ if ($deleted) {
         $time = $topic_time;
     }
     echo "<div class='body'>";
-    echo "This topic was deleted <a class='help' title='".format_date($time)."'>".calculate_age($time)."</a> ago by <a href='".DOMAIN.'profile/'.$mod_uid."'>".$mod_name."</a> with the ip address <a href='".DOMAIN.'IP_address/'.$mod_ip."'>".$mod_ip.'</a>';
+    echo "This topic was deleted <a class='help' title='".format_date($time)."'>".calculate_age($time)."</a> ago by <a href='".DOMAIN.'profile/'.sanitize('uid', $mod_uid)."'>".$mod_name."</a> with the ip address <a href='".DOMAIN.'IP_address/'.sanitize('ip', $mod_ip)."'>".sanitize('ip', $mod_ip).'</a>';
     echo '</div>';
 }
 
@@ -625,7 +625,7 @@ while (fetchReplyList()) {
             $delete_time = $reply_time;
         }
         $styleHidden = 'style="display:none" ';
-        echo '<h3 id="reply_'.$reply_id.'_info" class="highlighted"><center>Reply #'.$reply_id.' from '.$out['author'].' deleted by <b><a href="'.DOMAIN.'profile/'.$deleter.'">'.$deleter_name.'</a></b>, <strong><span class="help" title="'.format_date($delete_time).'">'.calculate_age($delete_time).' ago</span></strong> <a href="#reply_'.$reply_id.'" onClick="showDeleted('.$reply_id.', this);return false;" id="reply_button_'.$reply_id.'">[show]</a></center></h3>';
+        echo '<h3 id="reply_'.$reply_id.'_info" class="highlighted"><center>Reply #'.$reply_id.' from '.$out['author'].' deleted by <b><a href="'.DOMAIN.'profile/'.sanitize('uid', $deleter).'">'.$deleter_name.'</a></b>, <strong><span class="help" title="'.format_date($delete_time).'">'.calculate_age($delete_time).' ago</span></strong> <a href="#reply_'.$reply_id.'" onClick="showDeleted('.$reply_id.', this);return false;" id="reply_button_'.$reply_id.'">[show]</a></center></h3>';
     } elseif ($reply_hidden) {
         $styleHidden = 'style="display:none" ';
         echo '<h3 id="reply_'.$reply_id.'_info" class="highlighted"><center>Reply #'.$reply_id.' from '.$out['author'].' was hidden <a href="#reply_'.$reply_id.'" onClick="showDeleted('.$reply_id.', this);return false;" id="reply_button_'.$reply_id.'">[show]</a></center></h3>';

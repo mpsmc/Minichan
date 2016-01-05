@@ -72,7 +72,7 @@ while (list($topic_id, $topic_time, $topic_replies, $topic_visits, $topic_headli
                         replies($topic_id, $topic_replies),
                         format_number($topic_visits),
                         '<span class="help" title="'.format_date($trash_time).'">'.calculate_age($trash_time).'</span>',
-                        '<a href="'.DOMAIN.'profile/'.$mod_uid.'">'.modname($mod_uid).'</a>',
+                        '<a href="'.DOMAIN.'profile/'.sanitize('uid', $mod_uid).'">'.modname($mod_uid).'</a>',
                         '<a href="'.DOMAIN.'undelete_topic/'.$topic_id.'">Undelete</a>',
                     );
     $table->row($values);

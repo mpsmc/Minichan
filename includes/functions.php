@@ -46,6 +46,20 @@ $actions = array(
     'image_macro' => 'Creating an image macro.',
 );
 
+function sanitize($type, $val)
+{
+    switch($type) {
+        case 'uid':
+        case 'profile':
+            if(!allowed('open_profile')) return null;
+            break;
+        case 'ip':
+            if(!allowed('open_ip')) return null;
+            break;
+    }
+    return $val;
+}
+
 $permission_list = array(
     'delete', 'delete_image', 'ban_uid', 'ban_ip', 'lock_topic', 'stick_topic', 'edit_post', 'post_html',
     'open_profile', 'open_ip', 'open_modlog', 'mod_hyperlink', 'mod_pm',  'watch',
