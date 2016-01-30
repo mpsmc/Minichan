@@ -238,8 +238,12 @@ function performBanCheck($table, $column, $value, $template)
     die();
 }
 
+$private_stealth_banned = $stealth_banned;
+$stealth_banned = false;
+if($_COOKIE['UID']) performBanCheck('uid_bans', 'uid', $_COOKIE['UID'], 'uid_ban');
 performBanCheck('uid_bans', 'uid', $_SESSION['UID'], 'uid_ban');
 performBanCheck('ip_bans', 'ip_address', $_SERVER['REMOTE_ADDR'], 'ip_ban');
+if($private_stealth_banned) $stealth_banned = true;
 
 if ($_SESSION['last_posts_check'] < time() - 120 || !ENABLE_CACHING) {
     // Panic mode check, this can prolly be done more efficient.
