@@ -1935,8 +1935,8 @@ function matchIgnoredName($ignoredNames, $namefag, $tripfag)
             if (!$ignoredNamefag && !$ignoredTripfag) {
                 continue;
             }
-            $tripfag = substr(trim($tripfag), 1);
-            $namefag = trim($namefag);
+            $lTripfag = substr(trim($tripfag), 1);
+            $lNamefag = trim($namefag);
 
             $needMatches = 0;
             if ($ignoredNamefag) {
@@ -1946,10 +1946,10 @@ function matchIgnoredName($ignoredNames, $namefag, $tripfag)
                 ++$needMatches;
             }
 
-            if ($ignoredNamefag && $namefag && strcasecmp($ignoredNamefag, $namefag) == 0) {
+            if ($ignoredNamefag && $lNamefag && strcasecmp($ignoredNamefag, $lNamefag) == 0) {
                 --$needMatches;
             }
-            if ($ignoredTripfag && $tripfag && strcasecmp($ignoredTripfag, $tripfag) == 0) {
+            if ($ignoredTripfag && $lTripfag && strcasecmp($ignoredTripfag, $lTripfag) == 0) {
                 --$needMatches;
             }
 
