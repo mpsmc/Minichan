@@ -22,7 +22,7 @@ $label_form = 'square'; // 'square' or 'round' label.
 $width = 199;
 $background_color = 'FFFFFF'; // background-color of the chart...
 $text_color = '000000'; // text-color.
-$colors = array('003366', 'CCD6E0', '7F99B2','F7EFC6', 'C6BE8C', 'CC6600','990000','520000','BFBFC1','808080'); // colors of the slices.
+$colors = array('003366', 'CCD6E0', '7F99B2', 'F7EFC6', 'C6BE8C', 'CC6600', '990000', '520000', 'BFBFC1', '808080'); // colors of the slices.
 $shadow_height = 16; // Height on shadown.
 $shadow_dark = true; // true = darker shadow, false = lighter shadow...
 

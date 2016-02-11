@@ -10,4 +10,4 @@ $text .= '[url=http://jbbcode.com]links[/url], [color=red]color![/color] and mor
 
 $parser->parse($text);
 
-print $parser->getAsHtml();
+echo $parser->getAsHtml();

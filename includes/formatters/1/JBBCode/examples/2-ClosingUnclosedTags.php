@@ -8,4 +8,4 @@ $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
 $text = 'The bbcode in here [b]is never closed!';
 $parser->parse($text);
 
-print $parser->getAsBBCode();
+echo $parser->getAsBBCode();

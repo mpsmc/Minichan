@@ -102,7 +102,6 @@ class paypal_class
 
    public $fields = array();           // array holds the fields to submit to paypal
 
-
    public function paypal_class()
    {
 

@@ -22,6 +22,6 @@ class UrlValidator implements \JBBCode\InputValidator
     {
         $valid = filter_var($input, FILTER_VALIDATE_URL);
 
-        return !!$valid;
+        return (bool) $valid;
     }
 }

@@ -9,4 +9,4 @@ $text = '[b][u]There is [i]a lot[/i] of [url=http://en.wikipedia.org/wiki/Markup
 $text .= '[color=#333333]text[/color]![/u][/b]';
 $parser->parse($text);
 
-print $parser->getAsText();
+echo $parser->getAsText();

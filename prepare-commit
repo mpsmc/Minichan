@@ -1,0 +1,6 @@
+#!/bin/bash
+set -x
+git status
+php-cs-fixer fix . --verbose
+phpunit tests
+git status

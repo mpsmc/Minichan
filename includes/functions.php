@@ -48,15 +48,20 @@ $actions = array(
 
 function sanitize($type, $val)
 {
-    switch($type) {
+    switch ($type) {
         case 'uid':
         case 'profile':
-            if(!allowed('open_profile')) return null;
+            if (!allowed('open_profile')) {
+                return;
+            }
             break;
         case 'ip':
-            if(!allowed('open_ip')) return null;
+            if (!allowed('open_ip')) {
+                return;
+            }
             break;
     }
+
     return $val;
 }
 

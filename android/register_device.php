@@ -35,7 +35,7 @@ function token_exists($rand_token)
     global $link;
     $result = $link->db_exec('SELECT 1 FROM android_tokens WHERE rand_token = %1 LIMIT 1', $rand_token);
 
-    return ($link->num_rows() > 0);
+    return $link->num_rows() > 0;
 }
 
 $link = new db($db_info['server'], $db_info['username'], $db_info['password'], $db_info['database']);

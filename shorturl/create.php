@@ -37,7 +37,7 @@ if ($to && check_token() && !$erred) {
         global $link;
         $result = $link->db_exec('SELECT 1 FROM shorturls WHERE id = %1 LIMIT 1', $uid);
 
-        return ($link->num_rows() > 0);
+        return $link->num_rows() > 0;
     }
 
     do {

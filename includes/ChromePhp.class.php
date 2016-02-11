@@ -304,7 +304,7 @@ class Console
     /**
      * converts an object to a better format for logging.
      *
-     * @param Object
+     * @param object
      *
      * @return array
      */

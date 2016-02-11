@@ -37,9 +37,9 @@
 		<meta name="keywords" content="minichan, bbs, board, anonymous, free, debate, discuss, argue, drama, loldrama, youarenowbrowsingmanually" />
 		<title><?php echo strip_tags($page_title).' — '.SITE_TITLE ?></title>
 		<link rel="icon" type="image/gif" href="<?php echo STATIC_DOMAIN; ?>favicon.gif" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo(STATIC_DOMAIN.'style/layout.css') ?>?20" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo(($custom_stylesheet) ? htmlspecialchars($custom_stylesheet) : (STATIC_DOMAIN.'style/'.$stylesheet.'.css?3')) ?>" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo(STATIC_DOMAIN.'javascript/highlight-styles/vs.css') ?>" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN.'style/layout.css' ?>?20" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo ($custom_stylesheet) ? htmlspecialchars($custom_stylesheet) : (STATIC_DOMAIN.'style/'.$stylesheet.'.css?3') ?>" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN.'javascript/highlight-styles/vs.css' ?>" />
 		<?php if (MOBILE_MODE) {
     ?>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN.'style/mobile.css' ?>" />
@@ -121,7 +121,7 @@ $(document).ready(function() {
 }?>]);
 			(function() {
 				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/<?php echo(($administrator && false) ? 'u/ga_debug.js' : 'ga.js')?>';
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/<?php echo ($administrator && false) ? 'u/ga_debug.js' : 'ga.js'?>';
 				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			})();
 		</script>
@@ -300,7 +300,7 @@ if (!MOBILE_MODE) {
     if ($administrator) {
         function humanize_bytes($size)
         {
-            $unit = array('B','KB','MB','GB','TB','PB');
+            $unit = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
 
             return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2).$unit[$i];
         }

@@ -20,7 +20,7 @@ function ipCIDRCheck($IP, $CIDR)
     $ip_ip = ip2long($IP);
     $ip_ip_net = $ip_ip & $ip_mask;
 
-    return ($ip_ip_net == $ip_net);
+    return $ip_ip_net == $ip_net;
 }
 
 if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && isset($_SERVER['HTTP_CF_IPCOUNTRY'])) {
@@ -240,10 +240,14 @@ function performBanCheck($table, $column, $value, $template)
 
 $private_stealth_banned = $stealth_banned;
 $stealth_banned = false;
-if($_COOKIE['UID']) performBanCheck('uid_bans', 'uid', $_COOKIE['UID'], 'uid_ban');
+if ($_COOKIE['UID']) {
+    performBanCheck('uid_bans', 'uid', $_COOKIE['UID'], 'uid_ban');
+}
 performBanCheck('uid_bans', 'uid', $_SESSION['UID'], 'uid_ban');
 performBanCheck('ip_bans', 'ip_address', $_SERVER['REMOTE_ADDR'], 'ip_ban');
-if($private_stealth_banned) $stealth_banned = true;
+if ($private_stealth_banned) {
+    $stealth_banned = true;
+}
 
 if ($_SESSION['last_posts_check'] < time() - 120 || !ENABLE_CACHING) {
     // Panic mode check, this can prolly be done more efficient.
