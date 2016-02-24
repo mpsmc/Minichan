@@ -125,20 +125,6 @@ $(document).ready(function() {
 				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			})();
 		</script>
-<script type="text/javascript"> 
-var $buoop = {} 
-$buoop.ol = window.onload; 
-window.onload=function(){ 
- if ($buoop.ol) $buoop.ol(); 
- var e = document.createElement("script"); 
- e.setAttribute("type", "text/javascript"); 
- e.setAttribute("src", "//browser-update.org/update.js"); 
- document.body.appendChild(e); 
-} 
-</script> 
-
-<script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
-<!-- <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4db55d8a51bfcd4c"></script> -->
 </head>
 	<?php
         echo '<body';
