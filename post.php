@@ -573,7 +573,7 @@ if ($_POST['form_sent']) {
                 if ($_POST['enable_poll'] && ENABLE_POLLS) {
                     $poll_options = (array) $_POST['polloptions'];
                     $poll_options = array_slice($poll_options, 0, 25);
-                    if (trim($poll_options[0]) && trim($poll_options[1])) {
+                    if (trim($poll_options[0]) !== "" && trim($poll_options[1]) !== "") {
                         $polls_enabled = true;
                     }
                 }
@@ -593,7 +593,7 @@ if ($_POST['form_sent']) {
 
                         foreach ($poll_options as $num => $poll) {
                             $poll = trim($poll);
-                            if (!$poll) {
+                            if ($poll === "") {
                                 continue;
                             }
                             $poll = substr(trim($poll), 0, 255);
