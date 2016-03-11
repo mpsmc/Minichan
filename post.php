@@ -893,7 +893,7 @@ if (!MOBILE_MODE) {
 
             $odd = true;
             foreach ($polls as $num => $poll) {
-                if ($num > 9) {
+                if ($num >= 25) {
                     break;
                 }
                 echo "<tr class='odd'><td class='minimal'><label for='poll_option_".($num + 1)."'>Poll option #".($num + 1)."</label></td><td><input id='poll_option_1' type='text' class='pollInput' name='polloptions[]' value='".htmlspecialchars($poll)."' /></td></tr>";
