@@ -156,6 +156,7 @@ $(document).ready(function() {
         $site_slogan = array(
         'Implying implications since 2010.',
         'Banned in Iran.',
+        'We know sad cunts.',
         );
     ?>
 	<h1 class="top_text" id="logo">
