@@ -236,10 +236,7 @@ if ($_POST['form_sent']) {
     // Parse for mass quote tag ([quote]). I'm not sure about create_function, it seems kind of slow.
     $body = preg_replace_callback('/\[quote\](.+?)\[\/quote\]/s', create_function('$matches', 'return preg_replace(\'/.*[^\s]$/m\', \'> $0\', $matches[1]);'), $body);
 
-    if (detect_spam($body)) {
-        add_error('Spam.');
-    }
-    if (detect_spam($headline)) {
+    if (detect_spam($body) || detect_spam($headline)) {
         add_error('Spam.');
     }
     if ((USER_REPLIES < RECAPTCHA_MIN_POSTS) && (recaptcha_valid() !== true)) {

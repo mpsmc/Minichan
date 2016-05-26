@@ -702,8 +702,7 @@ function detect_spam($haystack)
 
 function detect_phrase($needle, $haystack)
 {
-    $needle = str_split($needle);
-    $needle = implode('{1,2}.{0,2}', $needle);
+    $needle = preg_replace('/((?<!\\\\)[a-z])/m', '\1{1,2}.{0,2}', $needle);
     $needle = str_replace('/', '\\/', $needle);
     
     if (preg_match('/'.$needle.'/si', $haystack)) {
