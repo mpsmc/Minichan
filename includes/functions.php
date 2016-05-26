@@ -687,6 +687,7 @@ function detect_spam($haystack)
 {
     global $spam_phrases, $arrChars;
     $haystack = detectFormatter($haystack)->formatAsText($haystack, false, false);
+    $haystack = preg_replace('/\s/', '', $haystack);
     foreach ($arrChars as $to => $chars) {
         $haystack = str_replace($chars, $to, $haystack);
     }
@@ -702,7 +703,7 @@ function detect_spam($haystack)
 
 function detect_phrase($needle, $haystack)
 {
-    $needle = preg_replace('/((?<!\\\\)[a-z])/m', '\1{1,2}.{0,2}', $needle);
+    //$needle = preg_replace('/((?<!\\\\)[a-z])/m', '\1{1,2}.{0,2}', $needle);
     $needle = str_replace('/', '\\/', $needle);
     
     if (preg_match('/'.$needle.'/si', $haystack)) {
