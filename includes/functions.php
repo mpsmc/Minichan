@@ -686,9 +686,11 @@ function normalize_thumb_size($thumbsize)
 function detect_spam($haystack)
 {
     global $spam_phrases, $arrChars;
+    $haystack = detectFormatter($haystack)->formatAsText($haystack, false, false);
     foreach ($arrChars as $to => $chars) {
         $haystack = str_replace($chars, $to, $haystack);
     }
+    
     foreach ($spam_phrases as $phrase) {
         if (detect_phrase($phrase, $haystack)) {
             return true;
@@ -703,6 +705,7 @@ function detect_phrase($needle, $haystack)
     $needle = str_split($needle);
     $needle = implode('{1,2}.{0,2}', $needle);
     $needle = str_replace('/', '\\/', $needle);
+    
     if (preg_match('/'.$needle.'/si', $haystack)) {
         return true;
     } else {
