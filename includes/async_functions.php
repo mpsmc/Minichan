@@ -60,7 +60,7 @@ class AsyncImplementation
                 'expiry' => 0,
                 'filed' => 'UNIX_TIMESTAMP()',
                 'who' => '',
-                'stealth' => 1,
+                'stealth' => 0,
                 'reason' => $reason,
             ));
 
@@ -71,7 +71,7 @@ class AsyncImplementation
                 'expiry' => 0,
                 'filed' => 'UNIX_TIMESTAMP()',
                 'who' => '',
-                'stealth' => 1,
+                'stealth' => 0,
                 'reason' => $reason,
             ));
 
