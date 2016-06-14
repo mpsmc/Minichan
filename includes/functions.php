@@ -222,13 +222,17 @@ function print_statistics($uid, $public = true)
     $uid = $link->escape($uid);
 
     $query = array();
-    $query['num_topics_all'] = 'SELECT count(*) FROM topics;';
-    $query['num_replies_all'] = 'SELECT count(*) FROM replies;';
+    $query['num_topics_deleted'] = 'SELECT count(*) FROM topics WHERE deleted = 1;';
+    $query['num_replies_deleted'] = 'SELECT count(*) FROM replies WHERE deleted = 1;';
+    $query['num_topics_all_anon'] = "SELECT count(*) FROM topics WHERE namefag = '' AND tripfag = '';";
+    $query['num_replies_all_anon'] = "SELECT count(*) FROM replies WHERE namefag = '' AND tripfag = '';";
     $query['num_topics'] = 'SELECT count(*) FROM topics WHERE deleted = 0;';
     $query['num_replies'] = 'SELECT count(*) FROM replies WHERE deleted = 0;';
     $query['num_bans'] = 'SELECT count(*) FROM uid_bans;';
-    $query['your_topics_all'] = "SELECT count(*) FROM topics WHERE author = '$uid';";
-    $query['your_replies_all'] = "SELECT count(*) FROM replies WHERE author = '$uid';";
+    $query['your_topics_deleted'] = "SELECT count(*) FROM topics WHERE deleted = 1 AND author = '$uid';";
+    $query['your_replies_deleted'] = "SELECT count(*) FROM replies WHERE deleted = 1 AND author = '$uid';";
+    $query['your_topics_all_anon'] = "SELECT count(*) FROM topics WHERE author = '$uid' AND namefag = '' AND tripfag = '';";
+    $query['your_replies_all_anon'] = "SELECT count(*) FROM replies WHERE author = '$uid' AND namefag = '' AND tripfag = '';";
     $query['your_topics'] = "SELECT count(*) FROM topics WHERE deleted = 0 AND author = '$uid';";
     $query['your_replies'] = "SELECT count(*) FROM replies WHERE deleted = 0 AND  author = '$uid';";
     $query['num_ip_bans'] = 'SELECT count(*) FROM ip_bans;';
@@ -240,11 +244,16 @@ function print_statistics($uid, $public = true)
 
     $query['replies_to_your_topics'] = "SELECT AVG(replies) FROM topics WHERE author = '$uid' AND deleted = 0";
     $query['replies_to_your_topics_all'] = "SELECT AVG(replies) FROM topics WHERE author = '$uid'";
-
+    
     foreach ($query as $k => $q) {
-        $result = $link->db_exec($q);
-        $row = $link->fetch_row($result);
-        $statistics[$k] = $row[0];
+        if(!($data = apcu_fetch($q))) {
+            $result = $link->db_exec($q);
+            $row = $link->fetch_row($result);
+            $data = $row[0];
+            apcu_store($q, $data, 600);
+        }
+        
+        $statistics[$k] = $data;
     }
 
     extract($statistics);
@@ -253,14 +262,24 @@ function print_statistics($uid, $public = true)
     if ($days_since_first_seen == 0) {
         $days_since_first_seen = 1;
     }
-
+    
+    $num_topics_all = $num_topics + $num_topics_deleted;
+    $num_replies_all = $num_replies + $num_replies_deleted;
+    
+    $your_topics_all = $your_topics + $your_topics_deleted;
+    $your_replies_all = $your_replies + $your_replies_deleted;
+    
     $posts_per_user = $topics_per_user + $replies_per_user;
     $replies_per_topic_all = round($num_replies_all / $num_topics_all, 2);
     $replies_per_topic = round($num_replies / $num_topics, 2);
     $your_posts_all = $your_topics_all + $your_replies_all;
+    $your_posts_all_deleted = $your_topics_deleted + $your_replies_deleted;
+    $your_posts_all_anon = $your_topics_all_anon + $your_replies_all_anon;
     $your_posts = $your_topics + $your_replies;
     $total_posts = $num_topics + $num_replies;
     $total_posts_all = $num_topics_all + $num_replies_all;
+    $total_posts_deleted = $num_topics_deleted + $num_replies_deleted;
+    $total_posts_anon = $num_topics_all_anon + $num_replies_all_anon;
     $days_since_start = floor(($_SERVER['REQUEST_TIME'] - SITE_FOUNDED) / 86400);
     if ($days_since_start == 0) {
         $days_since_start = 1;
@@ -307,17 +326,17 @@ function print_statistics($uid, $public = true)
 		<tr class="odd">
 			<th class="minimal">Total existing posts</th>
 			<td class="minimal"><?php echo format_number($total_posts) ?></td>
-			<td><span class="unimportant"><?php echo format_number($total_posts_all) ?> including deleted posts.</span></td>
+			<td><span class="unimportant"><?php echo format_number($total_posts_anon) ?> anonymous, <?php echo format_number($total_posts_deleted) ?> deleted.</span></td>
 		</tr>
 		<tr>
 			<th class="minimal">Existing topics</th>
 			<td class="minimal"><?php echo format_number($num_topics) ?></td>
-			<td><span class="unimportant"><?php echo format_number($num_topics_all) ?> including deleted topics.</span></td>
+			<td><span class="unimportant"><?php echo format_number($num_topics_all_anon) ?> anonymous, <?php echo format_number($num_topics_deleted) ?> deleted.</span></td>
 		</tr>
 		<tr class="odd">
 			<th class="minimal">Existing replies</th>
 			<td class="minimal"><?php echo format_number($num_replies) ?></td>
-			<td><span class="unimportant"><?php echo format_number($num_replies_all) ?> including deleted replies.</span></td>
+			<td><span class="unimportant"><?php echo format_number($num_replies_all_anon) ?> anonymous, <?php echo format_number($num_replies_deleted) ?> deleted.</span></td>
 		</tr>
 		<tr>
 			<th class="minimal">Ratio topics/replies</th>
@@ -394,17 +413,17 @@ function print_statistics($uid, $public = true)
 		<tr class="odd">
 			<th class="minimal">Total posts by you</th>
 			<td class="minimal"><?php echo format_number($your_posts) ?></td>
-			<td><span class="unimportant"><?php echo format_number($your_posts_all) ?> including deleted posts.</span></td>
+			<td><span class="unimportant"><?php echo format_number($your_posts_all_anon) ?> anonymous, <?php echo format_number($your_posts_all_deleted) ?> deleted.</span></td>
 		</tr>
 		<tr>
 			<th class="minimal">Total topics by you</th>
 			<td class="minimal"><?php echo format_number($your_topics) ?></td>
-			<td><span class="unimportant"><?php echo format_number($your_topics_all) ?> including deleted topics.</span></td>
+			<td><span class="unimportant"><?php echo format_number($your_topics_all_anon) ?> anonymous, <?php echo format_number($your_topics_deleted) ?> deleted.</span></td>
 		</tr>
 		<tr class="odd">
 			<th class="minimal">Total replies by you</th>
 			<td class="minimal"><?php echo format_number($your_replies) ?></td>
-			<td><span class="unimportant"><?php echo format_number($your_replies_all) ?> including deleted replies.</span></td>
+			<td><span class="unimportant"><?php echo format_number($your_replies_all_anon) ?> anonymous, <?php echo format_number($your_replies_deleted) ?> deleted.</span></td>
 		</tr>
 		<?php 
 }
