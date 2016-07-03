@@ -88,7 +88,7 @@ function abortForMaintenance($error)
 }
 
 if (file_exists('includes/locked')) {
-    abortForMaintenance('The board is currently under maintenance! Please give us a minute and refresh the page!');
+    abortForMaintenance(file_get_contents(template('locked')));
 }
 
 //print_r($_COOKIE);die();
