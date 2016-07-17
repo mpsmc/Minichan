@@ -92,7 +92,7 @@ update_activity('topic', $_GET['id']);
 $page_title = 'Topic: '.htmlspecialchars($topic_headline, ENT_COMPAT | ENT_HTML401, '');
 
 // Increment visit count.
-if (!isset($visited_topics[$_GET['id']])) {
+if ($_SESSION['UID'] && !isset($visited_topics[$_GET['id']])) {
     $link->db_exec('UPDATE topics SET visits = visits + 1 WHERE id = "%1"', $_GET['id']);
 }
 
