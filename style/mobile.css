@@ -262,27 +262,6 @@ margin:auto!important;
 text-align:center!important;
 }
 
-.c:after {
-clear:both;
-content:".";
-display:block;
-height:0;
-margin-bottom:.001em;
-visibility:hidden;
-}
-
-.c {
-display:inline-block;
-}
-
-html[xmlns] .c {
-display:block;
-}
-
-* html .c {
-height:1%;
-}
-
 #error,label,legend,#hot_topics a {
 font-weight:700!important;
 }
