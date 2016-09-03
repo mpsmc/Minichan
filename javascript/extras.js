@@ -127,12 +127,8 @@ this.all_shortcuts[shortcut_combination]={'callback':func,'target':ele,'event':o
 if(!binding)return;var type=binding['event'];var ele=binding['target'];var callback=binding['callback'];if(ele.detachEvent)ele.detachEvent('on'+type,callback);else if(ele.removeEventListener)ele.removeEventListener(type,callback,false);else ele['on'+type]=false;}}
 
 $(function() {
-	shortcut.add("Ctrl+B",function() {
+	shortcut.add("Ctrl+B", function() {
 		window.location = "/bumps";
-	}, {
-		'type':'keydown',
-		'propagate':false,
-		'target':document
 	});
 });
 
@@ -166,6 +162,14 @@ function createMarkupEditor() {
 			wrapText($this, '['+tag+']', '[/'+tag+']');
 		});
 	}
+
+	function createShortcut(shortcutSpec, tag) {
+		shortcut.add(shortcutSpec, function() {
+			wrapText($this, '['+tag+']', '[/'+tag+']');
+		}, {
+			target: $this[0]
+		});
+	}
 	
 	createBB('<strong>b</strong>', 'b');
 	createBB('<em>i</em>', 'i');
@@ -185,6 +189,10 @@ function createMarkupEditor() {
 		}
 		wrapText($this, start, end);
 	});
+
+	createShortcut("Ctrl+B", "b");
+	createShortcut("Ctrl+I", "i");
+	createShortcut("Ctrl+U", "u");
 }
 
 function wrapText(elem, openTag, closeTag) {
