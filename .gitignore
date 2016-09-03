@@ -8,3 +8,7 @@ db.log
 /phpunit.phar
 /vendor
 /.php_cs.cache
+/bin
+/node_modules/
+/includes/stats.json
+*.tmp
