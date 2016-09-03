@@ -205,13 +205,7 @@ function wrapText(elem, openTag, closeTag) {
 	var selectedText = textArea.val().substring(start, end);
 	var replacement = openTag + selectedText + closeTag;
 
-	var event = document.createEvent('TextEvent');
-	if(typeof event.initTextEvent == 'function') {
-		event.initTextEvent('textInput', true, true, null, replacement);
-		textArea.get(0).dispatchEvent(event);
-	}else{
-		textArea.val(textArea.val().substring(0, start) + replacement + textArea.val().substring(end, len));
-	}
+	textArea.val(textArea.val().substring(0, start) + replacement + textArea.val().substring(end, len));
 
 	setSelectionRange(textArea[0], end+openTag.length, end+openTag.length);
 }
