@@ -42,7 +42,7 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN.'javascript/highlight-styles/vs.css' ?>" />
 		<?php if (MOBILE_MODE) {
     ?>
-			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN.'style/mobile.css' ?>" />
+			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN.'style/mobile.css' ?>?x1" />
 			<?php 
 } ?>
 		<?php /* <link rel="stylesheet" type="text/css" href="<?php echo STATIC_DOMAIN; ?>style/april.css?13"> */ ?>
