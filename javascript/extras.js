@@ -193,6 +193,7 @@ function createMarkupEditor() {
 	createShortcut("Ctrl+B", "b");
 	createShortcut("Ctrl+I", "i");
 	createShortcut("Ctrl+U", "u");
+    createShortcut("Ctrl+S", "s");
 }
 
 function wrapText(elem, openTag, closeTag) {
