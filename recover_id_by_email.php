@@ -22,21 +22,19 @@ if (!empty($_POST['e-mail'])) {
         }
     }
 
-    if (empty($ids_for_email)) {
-        add_error('There are no IDs associated with that e-mail.');
-    }
-
     if (!$erred) {
-        $num_ids = count($ids_for_email);
-        if ($num_ids == 1) {
-            $email_body = 'Your ID is '.key($ids_for_email).' and your password is '.current($ids_for_email).'. To restore your ID, follow this link: '.DOMAIN.'restore_ID/'.key($ids_for_email).'/'.current($ids_for_email);
-        } else {
-            $email_body = 'The following IDs are associated with your e-mail address:'."\n\n";
-            foreach ($ids_for_email as $id => $password) {
-                $email_body .= 'ID: '.$id."\n".'Password: '.$password."\n".'Link to restore: '.DOMAIN.'restore_ID/'.$id.'/'.$password."\n\n";
+        if (!empty($ids_for_email)) {
+            $num_ids = count($ids_for_email);
+            if ($num_ids == 1) {
+                $email_body = 'Your ID is '.key($ids_for_email).' and your password is '.current($ids_for_email).'. To restore your ID, follow this link: '.DOMAIN.'restore_ID/'.key($ids_for_email).'/'.current($ids_for_email);
+            } else {
+                $email_body = 'The following IDs are associated with your e-mail address:'."\n\n";
+                foreach ($ids_for_email as $id => $password) {
+                    $email_body .= 'ID: '.$id."\n".'Password: '.$password."\n".'Link to restore: '.DOMAIN.'restore_ID/'.$id.'/'.$password."\n\n";
+                }
             }
+            mail($_POST['e-mail'], SITE_TITLE.' ID recovery', $email_body, 'From: '.SITE_TITLE.'<'.MAILER_ADDRESS.'>');
         }
-        mail($_POST['e-mail'], SITE_TITLE.' ID recovery', $email_body, 'From: '.SITE_TITLE.'<'.MAILER_ADDRESS.'>');
         ++$_SESSION['recovery_email_count'];
         redirect('ID recovery e-mail sent.', '');
     }
