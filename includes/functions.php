@@ -1239,7 +1239,17 @@ function indent($num_tabs = 1)
     return "\n".str_repeat("\t", $num_tabs);
 }
 
-// Print a <table>. 100 rows takes ~0.0035 seconds on my computer.
+class SelectableTable extends table {
+    public function __construct($classes='') {
+        parent::__construct($classes . ' selectable');
+    }
+
+    protected function render_column($key, $column, $primary_column) {
+        if($key == 0) $column = "<script>renderSelectAllCheckbox();</script>".$column;
+        parent::render_column($key, $column, $primary_column);
+    }
+}
+
 class table
 {
     public $num_rows_fetched = 0;
@@ -1265,15 +1275,19 @@ class table
                       .indent().'<thead>'.indent(2).'<tr>';
 
         foreach ($all_columns as $key => $column) {
-            $this->output .=   indent(3).' <th class="';
-            if ($column != $primary_column) {
-                $this->output .= 'minimal ';
-            } else {
-                $this->primary_key = $key;
-            }
-            $this->output .= string_to_stylesheet_class($column).'">'.$column.'</th>';
+            $this->render_column($key, $column, $primary_column);
         }
         $this->output .=  indent(2).'</tr>'.indent().'</thead>'.indent().'<tbody>';
+    }
+
+    protected function render_column($key, $column, $primary_column) {
+        $this->output .=   indent(3).' <th class="';
+        if ($column != $primary_column) {
+            $this->output .= 'minimal ';
+        } else {
+            $this->primary_key = $key;
+        }
+        $this->output .= string_to_stylesheet_class($column).'">'.$column.'</th>';
     }
 
     public function add_table_class($class)

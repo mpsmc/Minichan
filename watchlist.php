@@ -16,7 +16,7 @@ echo '<form name="watch_list" action="" method="post">';
 
 $stmt = $link->db_exec('SELECT watchlists.topic_id, topics.headline, topics.replies, topics.visits, topics.time FROM watchlists INNER JOIN topics ON watchlists.topic_id = topics.id WHERE watchlists.uid = %1 ORDER BY last_post DESC', $_SESSION['UID']);
 
-$topics = new table('selectable');
+$topics = new SelectableTable();
 $topic_column = 'Topic';
 $columns = array(
     $topic_column,

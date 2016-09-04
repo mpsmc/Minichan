@@ -342,25 +342,36 @@ function quickCite(id){
 }
 
 /*
+* Renders a checkbox to be later used by initialiseSelectableTables. This is done
+* so that the checkbox will show immediatelly during pageload, without later flickering
+* in.
+*/
+window.renderSelectAllCheckbox = renderSelectAllCheckbox;
+function renderSelectAllCheckbox() {
+    let input = document.createElement("input");
+    input.type = 'checkbox';
+    input.title = "Check / Uncheck all";
+    input.style.display = 'inline';
+    input.className = 'select-all-checkbox';
+    document.write(input.outerHTML);
+}
+
+/*
  * When a table has the "selectable" class, a select box is added to the heading
  * which all the select boxes (assumed to be in the first column) shall be bound to.
  */
 function initialiseSelectableTables() {
     let selectableTables = document.querySelectorAll('table.selectable');
     for (let table of Array.from(selectableTables)) {
-	let heading = table.querySelector('thead tr th');
-	let input = document.createElement("input");
-	input.type = 'checkbox';
-	input.title = "Check / Uncheck all";
-	input.style.display = 'inline';
-	heading.insertBefore(input, heading.firstChild);
-	input.addEventListener('change', e => {
-	    let value = e.target.checked;
-	    let checkboxes = table.querySelectorAll('tbody tr td:first-child input[type="checkbox"]');
-	    for (let cb of checkboxes) {
-		cb.checked = value;
-	    }
-	});
+        let heading = table.querySelector('thead tr th');
+        let input = table.querySelector(".select-all-checkbox");
+        input.addEventListener('change', e => {
+            let value = e.target.checked;
+            let checkboxes = table.querySelectorAll('tbody tr td:first-child input[type="checkbox"]');
+            for (let cb of checkboxes) {
+                cb.checked = value;
+            }
+        });
     }
 }
 
