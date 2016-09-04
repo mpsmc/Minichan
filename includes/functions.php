@@ -1239,35 +1239,60 @@ function indent($num_tabs = 1)
     return "\n".str_repeat("\t", $num_tabs);
 }
 
-// Print a <table>. 100 rows takes ~0.0035 seconds on my computer.
+class SelectableTable extends table {
+    public function __construct($classes='') {
+        parent::__construct($classes . ' selectable');
+    }
+
+    protected function render_column($key, $column, $primary_column) {
+        if($key == 0) $column = "<script>renderSelectAllCheckbox();</script>".$column;
+        parent::render_column($key, $column, $primary_column);
+    }
+}
+
 class table
 {
     public $num_rows_fetched = 0;
     private $output = '';
     private $primary_key;
     private $columns = array();
+    private $table_tag;
     private $td_classes = array();
     private $marker_printed = false;
     private $last_seen = false;
     private $order_time = false;
     private $odd = false;
 
+    public function __construct($classes='') {
+        $this->table_tag = '<table class="'.$classes.'">';
+    }
+
     public function define_columns($all_columns, $primary_column)
     {
         $this->columns = $all_columns;
 
-        $this->output .= '<table>'.indent().'<thead>'.indent(2).'<tr>';
+        $this->output .= $this->table_tag
+                      .indent().'<thead>'.indent(2).'<tr>';
 
         foreach ($all_columns as $key => $column) {
-            $this->output .=   indent(3).' <th class="';
-            if ($column != $primary_column) {
-                $this->output .= 'minimal ';
-            } else {
-                $this->primary_key = $key;
-            }
-            $this->output .= string_to_stylesheet_class($column).'">'.$column.'</th>';
+            $this->render_column($key, $column, $primary_column);
         }
         $this->output .=  indent(2).'</tr>'.indent().'</thead>'.indent().'<tbody>';
+    }
+
+    protected function render_column($key, $column, $primary_column) {
+        $this->output .=   indent(3).' <th class="';
+        if ($column != $primary_column) {
+            $this->output .= 'minimal ';
+        } else {
+            $this->primary_key = $key;
+        }
+        $this->output .= string_to_stylesheet_class($column).'">'.$column.'</th>';
+    }
+
+    public function add_table_class($class)
+    {
+        $this->table_classes = $class;
     }
 
     public function add_td_class($column_name, $class)
