@@ -9,6 +9,7 @@
 * Copy `includes/config.example.php` to `includes/config.php` and get editing.
 * Run `php includes/upgrade.php` from the command line.
 * Run `webpack -d --watch`
+* Enable the apache2 rewrite module: `a2enmod rewrite`
 * Optional: Edit `.htaccess`
 
 On a fresh Ubuntu/Debian installation you will likely want `apt-get install apache2 php5 php5-curl php5-mysql mysql-server mysql-client` and configure your `php.ini` as follows:
