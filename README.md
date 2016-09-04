@@ -12,7 +12,7 @@
 * Enable the apache2 rewrite module: `a2enmod rewrite`
 * Optional: Edit `.htaccess`
 
-On a fresh Ubuntu/Debian installation you will likely want `apt-get install apache2 php5 php5-curl php5-mysql mysql-server mysql-client` and configure your `php.ini` as follows:
+On a fresh Ubuntu/Debian installation you will likely want `apt-get install apache2 libapache2-mod-php5 php5 php5-curl php5-mysql mysql-server mysql-client` and configure your `php.ini` as follows:
 
 ````
 display_errors = On
