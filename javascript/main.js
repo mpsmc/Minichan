@@ -310,9 +310,9 @@ function focusId(id) {
 window.addCommas = addCommas;
 function addCommas(nStr){
 	nStr += '';
-	x = nStr.split('.');
-	x1 = x[0];
-	x2 = x.length > 1 ? '.' + x[1] : '';
+	var x = nStr.split('.');
+	var x1 = x[0];
+	var x2 = x.length > 1 ? '.' + x[1] : '';
 	var rgx = /(\d+)(\d{3})/;
 	while (rgx.test(x1)) {
 		x1 = x1.replace(rgx, '$1' + ',' + '$2');
@@ -375,7 +375,7 @@ function submitDummyForm(theAction, theVariableName, theVariableValue, confirmMe
 
 window.updateCharactersRemaining  = updateCharactersRemaining;
 function updateCharactersRemaining(theInputOrTextarea, theElementToUpdate, maxCharacters) {
-	tmp = document.getElementById(theElementToUpdate);
+	var tmp = document.getElementById(theElementToUpdate);
 	tmp.firstChild.data = maxCharacters - document.getElementById(theInputOrTextarea).value.length;
 }
 
