@@ -1,5 +1,6 @@
 var num_poll_options;
 
+window.showPoll = showPoll;
 function showPoll(elem) {
 	if($("#topic_poll").css("display") == "none") {
 		$(elem).text("[-] Poll");
@@ -29,24 +30,25 @@ $(document).ready(function(){
 	pollFocus();
 });
 
+window.pollFocus = pollFocus;
 function pollFocus() {
 	if(num_poll_options>=25) return true;
 	var cont = true;
 	$(".pollInput").each(function(){
 		if(!$(this).val()) cont = false;
 	});
-	
+
 	if(!cont) return true;
 	num_poll_options++;
 	var tr = document.createElement("tr");
 	var td1 = document.createElement("td");
 	var td2 = document.createElement("td");
 	var input = document.createElement("input");
-	
+
 	if(num_poll_options%2) tr.class='odd';
 	td1.innerHTML = "<label for='poll_option_" + num_poll_options + "'>Poll option #"  + num_poll_options + "</label>";
 	td1.class = 'minimal';
-	
+
 	input.type = 'text';
 	input.id = "poll_option_" + num_poll_options;
 	input.name = 'polloptions[' + (num_poll_options - 1) + ']';
@@ -54,11 +56,11 @@ function pollFocus() {
 	$(input).focus(pollFocus);
 	$(input).keypress(pollFocus);
 	$(input).blur(pollFocus);
-	
+
 	td2.appendChild(input);
-	
+
 	tr.appendChild(td1);
 	tr.appendChild(td2);
-	
+
 	$("#topic_poll").append(tr);
 }

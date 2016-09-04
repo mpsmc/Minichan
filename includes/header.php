@@ -44,6 +44,7 @@ if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && isset($_SERVER['HTTP_CF_IPCOUNTR
 }
 
 $_start_time = microtime(); //Prepare our neat xx seconds to load thingy at the bottom of the page.
+$assetFiles = json_decode(file_get_contents(dirname(__FILE__) . '/stats.json'));
 require_once 'vendor/autoload.php';
 require_once 'includes/config.php';
 require_once 'includes/database.class.php';
@@ -277,7 +278,7 @@ function error_handler($errno, $errstr, $errfile, $errline)
         return;
     }
     if ($errno == E_NOTICE || $errno == E_USER_NOTICE) {
-        return; // Just a notice. Feh.	
+        return; // Just a notice. Feh.
     }
     switch ($errno) {
     case E_WARNING:

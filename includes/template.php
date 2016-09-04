@@ -31,44 +31,24 @@
 		<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 		<meta name="robots" content="noarchive" />
 		<?php if (MOBILE_MODE) {
-    ?><meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" /><?php 
+    ?><meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" /><?php
 } ?>
 		<meta name="description" content="Minichan; annoyingly elitist." />
 		<meta name="keywords" content="minichan, bbs, board, anonymous, free, debate, discuss, argue, drama, loldrama, youarenowbrowsingmanually" />
 		<title><?php echo strip_tags($page_title).' — '.SITE_TITLE ?></title>
-		<link rel="icon" type="image/gif" href="<?php echo STATIC_DOMAIN; ?>favicon.gif" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN.'style/layout.css' ?>?21" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo ($custom_stylesheet) ? htmlspecialchars($custom_stylesheet) : (STATIC_DOMAIN.'style/'.$stylesheet.'.css?3') ?>" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN.'javascript/highlight-styles/vs.css' ?>" />
-		<?php if (MOBILE_MODE) {
-    ?>
-			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN.'style/mobile.css' ?>" />
-			<?php 
-} ?>
-		<?php /* <link rel="stylesheet" type="text/css" href="<?php echo STATIC_DOMAIN; ?>style/april.css?13"> */ ?>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<link rel="icon" type="image/gif" href="<?php echo STATIC_DOMAIN; ?>favicon.gif?<?php echo $assetFiles->hash ?>" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN.'bin/main.css?' . $assetFiles->hash ?>" />
+    <?php if(MOBILE_MODE) { ?>
+    <link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN.'bin/mobile.css?' . $assetFiles->hash ?>" />
+    <?php } ?>
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo ($custom_stylesheet) ? htmlspecialchars($custom_stylesheet) : (STATIC_DOMAIN.'style/'.$stylesheet.'.css?'.$assetFiles->hash) ?>" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo STATIC_DOMAIN.'javascript/highlight-styles/vs.css?'.$assetFiles->hash ?>" />
 		<script type="text/javascript">var IMGUR_CLIENT_ID = "<?php echo IMGUR_CLIENT_ID; ?>";</script>
-		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/main.js?x15"></script>
-		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/extras.js?x10"></script>
-		<script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/highlight.pack.js"></script>
-		<script>hljs.initHighlightingOnLoad();</script>
-        <?php if ($administrator && false) {
-    ?><script type="text/javascript" src="<?php echo STATIC_DOMAIN;
-    ?>javascript/scrollBar.js"></script><?php 
-} ?>
-        <?php if (MOBILE_MODE && false) {
-    ?><script type="text/javascript" src="<?php echo STATIC_DOMAIN;
-    ?>javascript/textarea.js"></script><?php 
-} ?>
-
-		<?php if (false && $administrator) {
-    ?><script type="text/javascript" src="<?php echo STATIC_DOMAIN;
-    ?>javascript/inlineEdit.js"></script><?php 
-} ?>
-		<?php if (false) {
-    ?><script type="text/javascript" src="<?php echo STATIC_DOMAIN;
-    ?>javascript/snowflake.js?5"></script><?php 
-} ?>
+    <script type="text/javascript" src="<?php echo STATIC_DOMAIN; ?>javascript/highlight.pack.js"></script>
+		<script type="text/javascript" src="<?php echo STATIC_DOMAIN.'bin/main.js?' . $assetFiles->hash ?>"></script>
+    <?php if(MOBILE_MODE) { ?>
+    <script type="text/javascript" src="<?php echo STATIC_DOMAIN.'bin/mobile.js?' . $assetFiles->hash ?>"></script>
+    <?php } ?>
 		<?php
             if (BREAK_OUT_FRAME) {
                 echo "\t";
@@ -83,39 +63,13 @@ EOF;
                 echo "</script>\n";
             }
 
-                            if (false) {
-                                ?>
-<script type="text/javascript" src="<?php echo DOMAIN;
-                                ?>javascript/fool.js"></script>
-<script>
-$(document).ready(function() {
-	$.fool({
-		fallingScrollbar: Math.random()>0.9,   //  Want the scrollbar to fall over?
-		rick: Math.random()>0.9,               //  The synonymous Rick Astley video, hidden off-screen
-		hiddenVideos: Math.random()>0.9,       //  Show some wonderfully annoying videos
-		vanishingElements: false,  //  Hide random elements as they interact
-		questionTime: Math.random()>0.9,       //  Sing Spongebob with your browser!
-		upsideDown: Math.random()>0.9,         //  Flip the page upside down!
-		h4xx0r: Math.random()>0.9,             //  Make the page 100% editable
-		wonky: Math.random()>0.9,              //  Make the page a little bit crooked
-		flash: Math.random()>0.9,              //  Makes the site flash on and off
-		crashAndBurn: false,       //  Runs an endless loop. This will kill your browser!
-		shutter: false,            //  Forces a shutter on the screen
-		unclickable: false,        //  Makes the page unclickable
-	});
-});
-</script>
-		<?php
-
-                            }
-
             echo $additional_head;
         ?>
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
 			_gaq.push(['_setAccount', '<?php echo GOOGLE_ANALYTICS_ID; ?>']);
 			_gaq.push(['_setDomainName', '<?php echo GOOGLE_ANALYTICS_DOMAIN; ?>']);
-			_gaq.push(['_setCustomVar', 1, 'ID', '<?php echo $_SESSION['UID']; ?>', 2]); 
+			_gaq.push(['_setCustomVar', 1, 'ID', '<?php echo $_SESSION['UID']; ?>', 2]);
 			_gaq.push(['_trackPageview'<?php if ($analytics_track_url) {
     echo ", '".str_replace("'", '"', $analytics_track_url)."'";
 }?>]);
@@ -141,11 +95,11 @@ $(document).ready(function() {
         echo '>';
         if ($administrator && false) {
             ?>
-<script type="text/javascript"> 
+<script type="text/javascript">
 	var toolbarConfig = {title:"Minichan",link:"http://minichan.org/topic/6296",slogan:"Get all the latest drama you've come to love, direct to your browser",hide:"hideMCToolbar_",slide:true};
-	document.write("<script type=\"text/javascript\" src=\"/javascript/chrome_toolbar.js?"+Math.random()+"\"></s"+"cript>");	
+	document.write("<script type=\"text/javascript\" src=\"/javascript/chrome_toolbar.js?"+Math.random()+"\"></s"+"cript>");
 </script>
- 
+
 		<?php
 
         }
@@ -161,7 +115,7 @@ $(document).ready(function() {
         );
     ?>
 	<h1 class="top_text" id="logo">
-		<?php 
+		<?php
             if ($administrator || allowed('manage_defcon')) {
                 if (DEFCON < 5) {
                     $additional = ' - <a href="'.DOMAIN.'defcon" title="Manage defcon status.">DEFCON</a> '.DEFCON;
@@ -304,10 +258,10 @@ if (!MOBILE_MODE) {
     <div style='position: absolute; top: 0; right: 0;'>
     <a href='javascript:confirm("Spread the word to your facebook friends? (This will post a link on their walls)")'><img src="//minichan.org/img/spread.png" /></a>
     </div>
-    <?php 
+    <?php
 } ?>
 
-<!--		
+<!--
 <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="1" height="1">
   <param name="movie" value="http://breadfish.de/img/breadfish.swf" id="toonURL1"><param name="quality" value="high"><embed src="http://breadfish.de/img/breadfish.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="1" height="1"  id="toonURL2"></embed></object>
 -->
@@ -319,11 +273,11 @@ if (!MOBILE_MODE) {
 $(document).ready(function() {
     var w = $(window).width();
     var h = $(window).height();
-    
+
     function getRandomInt (min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-    
+
     setInterval(function() {
         var elem = $("<div style='width:1px;height:1px;background-color:black;position:fixed;cursor:default'></div>");
         elem.css('left', getRandomInt(0, w) + 'px');

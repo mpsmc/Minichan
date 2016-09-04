@@ -244,7 +244,7 @@ function print_statistics($uid, $public = true)
 
     $query['replies_to_your_topics'] = "SELECT AVG(replies) FROM topics WHERE author = '$uid' AND deleted = 0";
     $query['replies_to_your_topics_all'] = "SELECT AVG(replies) FROM topics WHERE author = '$uid'";
-    
+
     foreach ($query as $k => $q) {
         if(!($data = apcu_fetch($q))) {
             $result = $link->db_exec($q);
@@ -252,7 +252,7 @@ function print_statistics($uid, $public = true)
             $data = $row[0];
             apcu_store($q, $data, 600);
         }
-        
+
         $statistics[$k] = $data;
     }
 
@@ -262,13 +262,13 @@ function print_statistics($uid, $public = true)
     if ($days_since_first_seen == 0) {
         $days_since_first_seen = 1;
     }
-    
+
     $num_topics_all = $num_topics + $num_topics_deleted;
     $num_replies_all = $num_replies + $num_replies_deleted;
-    
+
     $your_topics_all = $your_topics + $your_topics_deleted;
     $your_replies_all = $your_replies + $your_replies_deleted;
-    
+
     $posts_per_user = $topics_per_user + $replies_per_user;
     $replies_per_topic_all = round($num_replies_all / $num_topics_all, 2);
     $replies_per_topic = round($num_replies / $num_topics, 2);
@@ -394,7 +394,7 @@ function print_statistics($uid, $public = true)
 			<td>We went live on <?php echo date('Y-m-d', SITE_FOUNDED).', '.calculate_age(SITE_FOUNDED) ?> ago.</td>
 		</tr>
 	</table>
-	<?php 
+	<?php
 }
     ?>
 	<table>
@@ -425,7 +425,7 @@ function print_statistics($uid, $public = true)
 			<td class="minimal"><?php echo format_number($your_replies) ?></td>
 			<td><span class="unimportant"><?php echo format_number($your_replies_all_anon) ?> anonymous, <?php echo format_number($your_replies_deleted) ?> deleted.</span></td>
 		</tr>
-		<?php 
+		<?php
 }
     ?>
 		<tr>
@@ -482,8 +482,6 @@ function sendMessageToChrome($uid, $type, $data)
         return;
     }
 
-    var_dump($subscriptions);
-
     $headers = array(
         'Authorization: key='.CHROME_TOKEN,
         'Content-Type: application/json',
@@ -505,10 +503,7 @@ function sendMessageToChrome($uid, $type, $data)
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post));
 
     $response = curl_exec($ch);
-    var_dump(curl_error($ch));
     curl_close($ch);
-
-    var_dump($response);
 
     return $response;
 }
@@ -710,7 +705,7 @@ function detect_spam($haystack)
     foreach ($arrChars as $to => $chars) {
         $haystack = str_replace($chars, $to, $haystack);
     }
-    
+
     foreach ($spam_phrases as $phrase) {
         if (detect_phrase($phrase, $haystack)) {
             return true;
@@ -724,7 +719,7 @@ function detect_phrase($needle, $haystack)
 {
     //$needle = preg_replace('/((?<!\\\\)[a-z])/m', '\1{1,2}.{0,2}', $needle);
     $needle = str_replace('/', '\\/', $needle);
-    
+
     if (preg_match('/'.$needle.'/si', $haystack)) {
         return true;
     } else {
@@ -971,7 +966,7 @@ function create_id()
     /*if(ENABLE_RECAPTCHA_ON_BOT){
         $link->db_exec("SELECT 1 FROM users WHERE ip_address = %1 AND last_seen > (UNIX_TIMESTAMP()-3600)", $_SERVER['REMOTE_ADDR']);
         $uids_recent = $link->num_rows();
-        if($uids_recent > RECAPTHCA_MAX_UIDS_PER_HOUR) { 
+        if($uids_recent > RECAPTHCA_MAX_UIDS_PER_HOUR) {
             recaptcha("Please enable cookies for this site. Enter the following captcha to continue. If you have cookies enabled and keep getting this message, try removing the ones set for <b>minichan.org</b> and <b>.minichan.org</b>. We apologize for the inconvience.");
         }
     }*/
@@ -1081,7 +1076,7 @@ function force_id($proxy_value = null, $redirect = true, $allow = false)
             echo "<input type='hidden' name='$k' value='$v' />";
         }
         echo '<input type="submit" value="Click me!"></body></html>';
-        
+
         die();
         */
     }
@@ -1133,7 +1128,7 @@ function remove_ip_ban($ip)
 }
 
 function fetch_ignore_list()
-{ // For ostrich mode. 
+{ // For ostrich mode.
     global $link, $user_settings;
 
     if (!$user_settings['ostrich_mode']) {
@@ -1244,35 +1239,60 @@ function indent($num_tabs = 1)
     return "\n".str_repeat("\t", $num_tabs);
 }
 
-// Print a <table>. 100 rows takes ~0.0035 seconds on my computer.
+class SelectableTable extends table {
+    public function __construct($classes='') {
+        parent::__construct($classes . ' selectable');
+    }
+
+    protected function render_column($key, $column, $primary_column) {
+        if($key == 0) $column = "<script>renderSelectAllCheckbox();</script>".$column;
+        parent::render_column($key, $column, $primary_column);
+    }
+}
+
 class table
 {
     public $num_rows_fetched = 0;
     private $output = '';
     private $primary_key;
     private $columns = array();
+    private $table_tag;
     private $td_classes = array();
     private $marker_printed = false;
     private $last_seen = false;
     private $order_time = false;
     private $odd = false;
 
+    public function __construct($classes='') {
+        $this->table_tag = '<table class="'.$classes.'">';
+    }
+
     public function define_columns($all_columns, $primary_column)
     {
         $this->columns = $all_columns;
 
-        $this->output .= '<table>'.indent().'<thead>'.indent(2).'<tr>';
+        $this->output .= $this->table_tag
+                      .indent().'<thead>'.indent(2).'<tr>';
 
         foreach ($all_columns as $key => $column) {
-            $this->output .=   indent(3).' <th class="';
-            if ($column != $primary_column) {
-                $this->output .= 'minimal ';
-            } else {
-                $this->primary_key = $key;
-            }
-            $this->output .= string_to_stylesheet_class($column).'">'.$column.'</th>';
+            $this->render_column($key, $column, $primary_column);
         }
         $this->output .=  indent(2).'</tr>'.indent().'</thead>'.indent().'<tbody>';
+    }
+
+    protected function render_column($key, $column, $primary_column) {
+        $this->output .=   indent(3).' <th class="';
+        if ($column != $primary_column) {
+            $this->output .= 'minimal ';
+        } else {
+            $this->primary_key = $key;
+        }
+        $this->output .= string_to_stylesheet_class($column).'">'.$column.'</th>';
+    }
+
+    public function add_table_class($class)
+    {
+        $this->table_classes = $class;
     }
 
     public function add_td_class($column_name, $class)
@@ -1432,7 +1452,7 @@ function dummy_form()
     echo "\n".'<form id="dummy_form" class="noscreen" action="" method="post">'.indent().'<div class="noscreen"> <input type="hidden" name="CSRF_token" value="'.$_SESSION['token'].'" /> </div> <div> <input type="hidden" name="some_var" value="" /> </div>'."\n".'</form>'."\n";
 }
 
-// To redirect to index, use redirect($notice, ''). To redirect back to referrer, 
+// To redirect to index, use redirect($notice, ''). To redirect back to referrer,
 // use redirect($notice). To redirect to /topic/1,  use redirect($notice, 'topic/1')
 function redirect($notice = '', $location = null)
 {

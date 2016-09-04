@@ -1,24 +1,7 @@
 <?php
 require 'includes/header.php';
-$additional_head = '<script type="text/javascript" src="'.DOMAIN.'javascript/polls.js?2"></script>';
+$additional_head = '<script type="text/javascript" src="'.DOMAIN.'bin/polls.js?'.$assetFiles->hash.'"></script>';
 force_id();
-
-// DM FUCKERY START
-// $_hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-// $_test = '.cn';
-// $chinaCIDRS = array("182.240.0.0/13", "222.219.0.0/16", "222.220.0.0/15");
-// $chinaCIDR = false;
-// foreach($chinaCIDRS as $cidr) {
-// 	if(ipCIDRCheck($_SERVER['REMOTE_ADDR'], $cidr)) $chinaCIDR = true;
-// }
-// if($chinaCIDR || (strpos($_SERVER['REMOTE_ADDR'], '65.49.') === 0 || ($_hostname && $_hostname != '.' && substr_compare($_hostname, $_test, -strlen($_test), strlen($_test)) === 0))) {
-// 	$fh = fopen('dm.txt', 'a');
-// 	fwrite($fh, date('c') . ' - ' . $_SERVER['REMOTE_ADDR'] . ' - ' . gethostbyaddr($_SERVER['REMOTE_ADDR']) . ' - ' . $_SESSION['UID'] . ' - ' . json_encode($_POST) . "\n");
-// 	fclose($fh);
-//     header('Location: http://www.irs.gov/Businesses/Small-Businesses-&-Self-Employed/Understanding-a-Federal-Tax-Lien');
-//     die();
-// }
-// DM FUCKERY END
 
 if ($_GET['get_markup']) {
     if ($_GET['reply']) {
@@ -76,7 +59,7 @@ if ($ONETHREAD != -1) {
 
 if ($_GET['reply']) {
     $reply = true;
-    $onload_javascript = 'focusId(\'body\'); init();';
+    $onload_javascript = 'focusId(\'body\');';
 
     if (!ctype_digit($_GET['reply'])) {
         add_error('Invalid topic ID.', true);
@@ -823,21 +806,21 @@ $url = htmlspecialchars($url);
 			<input id="number" name="number" type="text" size="5" maxlength="3" tabindex="2" value="-">
 		</div>
 -->
-	<?php 
+	<?php
         } ?>
 
 		<div class="row">
-			<label for="body" class="noscreen">Post body</label> 
-<?php	
+			<label for="body" class="noscreen">Post body</label>
+<?php
 // Give mobile users a slightly smaller text editing field.
 if (!MOBILE_MODE) {
     ?>
 <textarea name="body" cols="120" rows="18" tabindex="2" id="body" class="markup_editor">
-<?php 
+<?php
 } else {
     ?>
 <textarea name="body" cols="120" rows="8" tabindex="2" id="body" class="markup_editor">
-<?php 
+<?php
 }
 
         // If we've had an error or are previewing, print the submitted text.
@@ -934,11 +917,11 @@ if (!MOBILE_MODE) {
 		<div class="row">
 		<input type="submit" name="preview" tabindex="3" value="Preview" class="inline"<?php if (ALLOW_IMAGES) {
     echo ' onclick="document.getElementById(\'image\').value=\'\'"';
-} ?> /> 
+} ?> />
 			<input type="submit" name="post" tabindex="4" value="<?php echo ($editing) ? 'Update' : 'Post' ?>" class="inline">
 		</div>
 	</form>
-    
+
     <?php
         if ((ALLOW_IMAGES || ALLOW_IMGUR) && !$editing) {
             echo '<input style="visibility: hidden; width: 0px; height:0px" type="file" id="imgurupload" onchange="uploadImage(this.files[0])">';
