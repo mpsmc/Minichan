@@ -3,9 +3,12 @@
 
 #Installation
 * Install dependencies with [composer](https://getcomposer.org/doc/00-intro.md) using `composer install`
+* Install client-side dependencies with [npm](https://www.npmjs.com/) using `npm install`
+* Install webpack `npm install -g webpack`
 * Make an empty MySQL database.
 * Copy `includes/config.example.php` to `includes/config.php` and get editing.
 * Run `php includes/upgrade.php` from the command line.
+* Run `webpack -d --watch`
 * Optional: Edit `.htaccess`
 
 On a fresh Ubuntu/Debian installation you will likely want `apt-get install apache2 php5 php5-curl php5-mysql mysql-server mysql-client` and configure your `php.ini` as follows:
@@ -24,6 +27,8 @@ mbstring.internal_encoding = UTF-8
 ````
 
 It is also possible to use nginx, and a sample `rewrite.conf` is available, but this is currently not officially supported.
+
+When deploying to production use `webpack -p`.
 
 #Updating
 Update your working tree and run `php includes/upgrade.php`. See the wiki for scripts used by http://minichan.org
