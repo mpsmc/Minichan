@@ -270,8 +270,8 @@ function print_statistics($uid, $public = true)
     $your_replies_all = $your_replies + $your_replies_deleted;
 
     $posts_per_user = $topics_per_user + $replies_per_user;
-    $replies_per_topic_all = round($num_replies_all / $num_topics_all, 2);
-    $replies_per_topic = round($num_replies / $num_topics, 2);
+    $replies_per_topic_all = round($num_replies_all / $num_topics_all, 5);
+    $replies_per_topic = round($num_replies / $num_topics, 5);
     $your_posts_all = $your_topics_all + $your_replies_all;
     $your_posts_all_deleted = $your_topics_deleted + $your_replies_deleted;
     $your_posts_all_anon = $your_topics_all_anon + $your_replies_all_anon;
@@ -284,32 +284,32 @@ function print_statistics($uid, $public = true)
     if ($days_since_start == 0) {
         $days_since_start = 1;
     }
-    $posts_per_day_all = round($total_posts_all / $days_since_start, 2);
-    $topics_per_day_all = round($num_topics_all / $days_since_start, 2);
-    $replies_per_day_all = round($num_replies_all / $days_since_start, 2);
-    $posts_per_day = round($total_posts / $days_since_start, 2);
-    $topics_per_day = round($num_topics / $days_since_start, 2);
-    $replies_per_day = round($num_replies / $days_since_start, 2);
+    $posts_per_day_all = round($total_posts_all / $days_since_start, 5);
+    $topics_per_day_all = round($num_topics_all / $days_since_start, 5);
+    $replies_per_day_all = round($num_replies_all / $days_since_start, 5);
+    $posts_per_day = round($total_posts / $days_since_start, 5);
+    $topics_per_day = round($num_topics / $days_since_start, 5);
+    $replies_per_day = round($num_replies / $days_since_start, 5);
 
-    $your_posts_day = round($your_posts / $days_since_first_seen, 2);
-    $your_replies_day = round($your_replies / $days_since_first_seen, 2);
-    $your_topics_day = round($your_topics / $days_since_first_seen, 2);
+    $your_posts_day = round($your_posts / $days_since_first_seen, 5);
+    $your_replies_day = round($your_replies / $days_since_first_seen, 5);
+    $your_topics_day = round($your_topics / $days_since_first_seen, 5);
 
-    $your_posts_day_all = round($your_posts_all / $days_since_first_seen, 2);
-    $your_replies_day_all = round($your_replies_all / $days_since_first_seen, 2);
-    $your_topics_day_all = round($your_topics_all / $days_since_first_seen, 2);
+    $your_posts_day_all = round($your_posts_all / $days_since_first_seen, 5);
+    $your_replies_day_all = round($your_replies_all / $days_since_first_seen, 5);
+    $your_topics_day_all = round($your_topics_all / $days_since_first_seen, 5);
 
     if ($your_topics > 0) {
-        $your_ratio = '1:'.round($your_replies / $your_topics, 2);
-        $your_ratio_all = '1:'.round($your_replies_all / $your_topics_all, 2);
+        $your_ratio = '1:'.round($your_replies / $your_topics, 5);
+        $your_ratio_all = '1:'.round($your_replies_all / $your_topics_all, 5);
     } else {
         $your_ratio = '-';
         $your_ratio_all = '-';
     }
 
     if ($num_topics > 0) {
-        $ratio = '1:'.round($num_replies / $num_topics, 2);
-        $ratio_all = '1:'.round($num_replies_all / $num_topics_all, 2);
+        $ratio = '1:'.round($num_replies / $num_topics, 5);
+        $ratio_all = '1:'.round($num_replies_all / $num_topics_all, 5);
     } else {
         $ratio = '-';
         $ratio_all = '-';
@@ -345,37 +345,37 @@ function print_statistics($uid, $public = true)
 		</tr>
 		<tr class="odd">
 			<th class="minimal">Posts/day</th>
-			<td class="minimal">~<?php echo format_number($posts_per_day, 2) ?></td>
-			<td><span class="unimportant">~<?php echo format_number($posts_per_day_all, 2) ?> including deleted posts.</span></td>
+			<td class="minimal">~<?php echo format_number($posts_per_day, 5) ?></td>
+			<td><span class="unimportant">~<?php echo format_number($posts_per_day_all, 5) ?> including deleted posts.</span></td>
 		</tr>
 		<tr>
 			<th class="minimal">Topics/day</th>
-			<td class="minimal">~<?php echo format_number($topics_per_day, 2) ?></td>
-			<td><span class="unimportant">~<?php echo format_number($topics_per_day_all, 2) ?> including deleted topics.</span></td>
+			<td class="minimal">~<?php echo format_number($topics_per_day, 5) ?></td>
+			<td><span class="unimportant">~<?php echo format_number($topics_per_day_all, 5) ?> including deleted topics.</span></td>
 		</tr>
 		<tr class="odd">
 			<th class="minimal">Replies/day</th>
-			<td class="minimal">~<?php echo format_number($replies_per_day, 2) ?></td>
-			<td><span class="unimportant">~<?php echo format_number($replies_per_day_all, 2) ?> including deleted replies.</span></td>
+			<td class="minimal">~<?php echo format_number($replies_per_day, 5) ?></td>
+			<td><span class="unimportant">~<?php echo format_number($replies_per_day_all, 5) ?> including deleted replies.</span></td>
 		</tr>
 		<tr>
 			<th class="minimal">Posts/user</th>
-			<td class="minimal">~<?php echo format_number($posts_per_user, 2) ?></td>
+			<td class="minimal">~<?php echo format_number($posts_per_user, 5) ?></td>
 			<td><span class="unimportant">-</span></td>
 		</tr>
 		<tr class="odd">
 			<th class="minimal">Replies/user</th>
-			<td class="minimal">~<?php echo format_number($replies_per_user, 2) ?></td>
+			<td class="minimal">~<?php echo format_number($replies_per_user, 5) ?></td>
 			<td><span class="unimportant">-</span></td>
 		</tr>
 		<tr>
 			<th class="minimal">Topics/user</th>
-			<td class="minimal">~<?php echo format_number($topics_per_user, 2) ?></td>
+			<td class="minimal">~<?php echo format_number($topics_per_user, 5) ?></td>
 			<td><span class="unimportant">-</span></td>
 		</tr>
 		<tr class="odd">
 			<th class="minimal">Users/topic</th>
-			<td class="minimal">~<?php echo format_number($posters_per_topic, 2) ?></td>
+			<td class="minimal">~<?php echo format_number($posters_per_topic, 5) ?></td>
 			<td><span class="unimportant">-</span></td>
 		</tr>
 		<tr>
@@ -435,28 +435,28 @@ function print_statistics($uid, $public = true)
 		</tr>
 		<tr class="odd">
 			<th class="minimal">Average replies to your topics</th>
-			<td class="minimal"><?php echo format_number($replies_to_your_topics, 2) ?></td>
-			<td><span class="unimportant"><?php echo format_number($replies_to_your_topics_all, 2) ?> including deleted posts.</span></td>
+			<td class="minimal"><?php echo format_number($replies_to_your_topics, 5) ?></td>
+			<td><span class="unimportant"><?php echo format_number($replies_to_your_topics_all, 5) ?> including deleted posts.</span></td>
 		</tr>
 		<tr>
 			<th class="minimal">Average users/topic by you</th>
-			<td class="minimal"><?php echo format_number($your_posters_per_topic, 2) ?></td>
+			<td class="minimal"><?php echo format_number($your_posters_per_topic, 5) ?></td>
 			<td><span class="unimportant">-</span></td>
 		</tr>
 		<tr class="odd">
 			<th class="minimal">Average posts/day by you</th>
-			<td class="minimal"><?php echo format_number($your_posts_day, 2) ?></td>
-			<td><span class="unimportant">~<?php echo format_number($your_posts_day_all, 2) ?> including deleted posts.</span></td>
+			<td class="minimal"><?php echo format_number($your_posts_day, 5) ?></td>
+			<td><span class="unimportant">~<?php echo format_number($your_posts_day_all, 5) ?> including deleted posts.</span></td>
 		</tr>
 		<tr>
 			<th class="minimal">Average topics/day by you</th>
-			<td class="minimal"><?php echo format_number($your_topics_day, 2) ?></td>
-			<td><span class="unimportant">~<?php echo format_number($your_topics_day_all, 2) ?> including deleted posts.</span></td>
+			<td class="minimal"><?php echo format_number($your_topics_day, 5) ?></td>
+			<td><span class="unimportant">~<?php echo format_number($your_topics_day_all, 5) ?> including deleted posts.</span></td>
 		</tr>
 		<tr class="odd">
 			<th class="minimal">Average replies/day by you</th>
-			<td class="minimal"><?php echo format_number($your_replies_day, 2) ?></td>
-			<td><span class="unimportant">~<?php echo format_number($your_replies_day_all, 2) ?> including deleted posts.</span></td>
+			<td class="minimal"><?php echo format_number($your_replies_day, 5) ?></td>
+			<td><span class="unimportant">~<?php echo format_number($your_replies_day_all, 5) ?> including deleted posts.</span></td>
 		</tr>
 	</table>
 	<?php
