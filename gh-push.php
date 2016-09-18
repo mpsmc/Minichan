@@ -15,7 +15,7 @@ if ($payload->ref != 'refs/heads/minichan') {
 $body = array();
 
 foreach ($payload->commits as $commit) {
-    $body[] = '* [raw]'.$commit->message.'[/raw]';
+    $body[] = '* [raw]'.$commit->message.'[/raw]'.' [b]-[raw]'.$commit->author->name.'[/raw][/b]';
 }
 
 $body = "[list]\n".implode($body, "\n").'[/list]'.$payload->compare;

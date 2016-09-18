@@ -12,3 +12,4 @@ db.log
 /node_modules/
 /includes/stats.json
 *.tmp
+.idea
