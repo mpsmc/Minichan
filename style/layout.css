@@ -59,8 +59,7 @@ div#body_wrapper h2 {
 .codebox2 {
     overflow: auto;
     margin: 0;
-	display: inline-block;
-	line-height: normal;
+    line-height: normal;
 }
 
 .codebox {
@@ -378,7 +377,7 @@ body.rounded a.video,
 body.rounded #main_menu,
 body.rounded table,
 body.rounded ul.body.standalone
-{     
+{
     border-radius: 9px;
 }
 
