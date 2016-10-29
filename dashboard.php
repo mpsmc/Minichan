@@ -107,11 +107,11 @@ print_errors();
 	<?php csrf_token() ?>
 	<div>
 		<label class="common" for="memorable_name">Memorable name:</label>
-		<input type="text" id="memorable_name" name="form[memorable_name]"  value="<?php echo htmlspecialchars($user_config['memorable_name']) ?>" maxlength="100" />
+		<input type="text" id="memorable_name" name="form[memorable_name]" class="inline" value="<?php echo htmlspecialchars($user_config['memorable_name']) ?>" maxlength="100" />
 	</div>
 	<div>
 		<label class="common" for="memorable_password">Memorable password:</label>
-		<input type="password"  id="memorable_password" name="form[memorable_password]" maxlength="100" /> <?php if ($user_config['memorable_password'] != '') {
+		<input type="password" class="inline" id="memorable_password" name="form[memorable_password]" maxlength="100" /> <?php if ($user_config['memorable_password'] != '') {
     ;
 } ?>
 		
@@ -119,13 +119,13 @@ print_errors();
 	</div>
 	<div class="row">
 		<label class="common" for="e-mail">E-mail address:</label>
-		<input type="text" id="e-mail" name="form[email]"  value="<?php echo htmlspecialchars($user_config['email']) ?>"  size="35" maxlength="100" />
+		<input type="text" id="e-mail" name="form[email]" class="inline" value="<?php echo htmlspecialchars($user_config['email']) ?>"  size="35" maxlength="100" />
 		
 		<p class="caption">Used to recover your internal ID <a href="<?php echo DOMAIN; ?>recover_ID_by_email">via e-mail</a>.</p>
 	</div>
 	<div class="row">
-		<label class="common" for="topics_mode" >Sort topics by:</label>
-		<select id="topics_mode" name="form[topics_mode]" >
+		<label class="common" for="topics_mode" class="inline">Sort topics by:</label>
+		<select id="topics_mode" name="form[topics_mode]" class="inline">
 			<option value="0"<?php if ($user_config['topics_mode'] == 0) {
     echo ' selected';
 } ?>>Last post (default)</option>
@@ -135,8 +135,8 @@ print_errors();
 		</select>
 	</div>
 	<div class="row">
-		<label class="common" for="style" >Stylesheet:</label>
-		<select id="style" name="form[style]" >
+		<label class="common" for="style" class="inline">Stylesheet:</label>
+		<select id="style" name="form[style]" class="inline">
         <?php
         $_AVAILABLE_STYLES = explode(';', AVAILABLE_STYLES);
         $_AVAILABLE_STYLES[] = 'Custom';
@@ -154,12 +154,12 @@ print_errors();
 	</div>
 	<div class="row">
 		<label class="common" for="custom_style" calss="inline">Custom Stylesheet:</label>
-		<input type="text" name="form[custom_style]" value="<?php echo htmlspecialchars($user_config['custom_style']) ?>" maxlength="255"  />
+		<input type="text" name="form[custom_style]" value="<?php echo htmlspecialchars($user_config['custom_style']) ?>" maxlength="255" class="inline" />
 		<p class="caption">When the Stylesheet above is set to Custom, the CSS from this URL is loaded.</p>
 	</div>
     <div class="row">
-    	<label class="common" for="image_viewer" >Image viewer:</label>
-        <select id="image_viewer" name="form[image_viewer]" >
+    	<label class="common" for="image_viewer" class="inline">Image viewer:</label>
+        <select id="image_viewer" name="form[image_viewer]" class="inline">
         <option value="1"<?php if ($user_config['image_viewer'] == 1) {
     echo ' selected';
 } ?>>On</option>
@@ -172,8 +172,8 @@ print_errors();
         </select>
     </div>
 	<div class="row">
-		<label class="common" for="snippet_length" >Snippet length in characters:</label>
-		<select id="snippet_length" name="form[snippet_length]" >
+		<label class="common" for="snippet_length" class="inline">Snippet length in characters:</label>
+		<select id="snippet_length" name="form[snippet_length]" class="inline">
 			<option value="80"<?php if ($user_config['snippet_length'] == 0) {
     echo ' selected';
 } ?>>80 (default)</option>
@@ -194,21 +194,21 @@ print_errors();
 	</div>
 	<div class="row">
 		<label class="common" for="rounded_corners">Rounded corners</label>
-		<input type="checkbox" id="rounded_corners" name="form[rounded_corners]" value="1" <?php if ($user_config['rounded_corners'] == 1) {
+		<input type="checkbox" id="rounded_corners" name="form[rounded_corners]" value="1" class="inline"<?php if ($user_config['rounded_corners'] == 1) {
     echo ' checked="checked"';
 } ?> />
 		<p class="caption">Are you craving some Web 2.0? This is the option for you!</p>
 	</div>
 	<div class="row">
 		<label class="common" for="spoiler_mode">Spoiler mode</label>
-		<input type="checkbox" id="spoiler_mode" name="form[spoiler_mode]" value="1" <?php if ($user_config['spoiler_mode'] == 1) {
+		<input type="checkbox" id="spoiler_mode" name="form[spoiler_mode]" value="1" class="inline"<?php if ($user_config['spoiler_mode'] == 1) {
     echo ' checked="checked"';
 } ?> />
 		<p class="caption">When enabled, snippets of the bodies will show in the topic list. Not recommended unless you have a very high-resolution screen.</p>
 	</div>
 	<div class="row">
 		<label class="common" for="ostrich_mode">Ostrich mode</label>
-		<input type="checkbox" id="ostrich_mode" name="form[ostrich_mode]" value="1" <?php if ($user_config['ostrich_mode'] == 1) {
+		<input type="checkbox" id="ostrich_mode" name="form[ostrich_mode]" value="1" class="inline"<?php if ($user_config['ostrich_mode'] == 1) {
     echo ' checked="checked"';
 } ?> />
 		
@@ -216,7 +216,7 @@ print_errors();
 	</div>
 	<div class="row">
 		<label class="common" for="disable_images">Disable images</label>
-		<input type="checkbox" id="disable_images" name="form[disable_images]" value="1" <?php if ($user_config['disable_images'] == 1) {
+		<input type="checkbox" id="disable_images" name="form[disable_images]" value="1" class="inline"<?php if ($user_config['disable_images'] == 1) {
     echo ' checked="checked"';
 } ?> />
 		
