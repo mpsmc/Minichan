@@ -140,7 +140,7 @@ function renderTopics($table, $topics)
 
         $visited = ((!$visited_topics[$topic['id']] && isset($visited_topics[$topic['id']])) || (($topic['replies'] - $visited_topics[$topic['id']] != $topic['replies'])) ? ' class="visited"' : '');
 
-        $lockTxt = "<small class='topic_info'>".implode(' ', $lockTxt).'</a>';
+        $lockTxt = "<small class='topic_info'>".implode(' ', $lockTxt);
 
         $values = array(
                             '<a'.$visited.' href="'.DOMAIN.'topic/'.$topic['id'].'">'.htmlspecialchars($topic['headline'], ENT_COMPAT | ENT_HTML401, '').'</a>'.$pollTxt.$lockTxt,
