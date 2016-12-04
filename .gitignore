@@ -4,6 +4,7 @@
 /minecraft/
 /dump/
 db.log
+/logs
 /composer.phar
 /phpunit.phar
 /vendor
@@ -13,3 +14,5 @@ db.log
 /includes/stats.json
 *.tmp
 .idea
+*.log
+.vagrant
