@@ -167,7 +167,7 @@ var replyCursor = window.replyCursor = (function() {
 				return /[0-9]+/.exec(el.id);
 			});
 
-		replies = document.querySelectorAll("#body_wrapper h3");
+		replies = document.querySelectorAll("#body_wrapper > h3");
 	});
 
 	function _replyArrayIndex() {
