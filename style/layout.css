@@ -297,6 +297,10 @@ p.caption {
     display:inline;
 }
 
+.g-recaptcha-response {
+    display: none !important;
+}
+
 #snapback_link {
     left:2px;
     position:fixed;
